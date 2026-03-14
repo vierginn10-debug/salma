@@ -1,28 +1,45 @@
-import { motion } from 'framer-motion';
-import { ArrowDown, Github, Linkedin, Youtube, Instagram } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import ThreeScene from './ThreeScene';
+import { motion } from "framer-motion";
+import { ArrowDown, Github, Linkedin, Youtube, Instagram } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import ThreeScene from "./ThreeScene";
 
 export default function HeroSection() {
+
   const scrollToAbout = () => {
-    const element = document.querySelector('#about');
+    const element = document.querySelector("#about");
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      element.scrollIntoView({ behavior: "smooth" });
     }
   };
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-hero">
+    <section
+      id="home"
+      className="relative min-h-screen flex items-center overflow-hidden bg-gradient-hero"
+    >
       <ThreeScene />
-      
+
       <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+
+          {/* FOTO PROFIL */}
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: -40 }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
+            className="flex justify-center"
           >
-            <motion.span 
+            <img
+              src="/profile.jpg"
+              alt="Salma"
+              className="w-72 h-72 md:w-96 md:h-96 object-cover rounded-full border-4 border-primary shadow-glow"
+            />
+          </motion.div>
+
+          {/* TEXT HERO */}
+          <div className="text-center md:text-left">
+
+            <motion.span
               className="inline-block px-4 py-2 rounded-full glass text-sm font-medium text-primary mb-6"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -30,85 +47,91 @@ export default function HeroSection() {
             >
               👋 Selamat datang di portfolio saya
             </motion.span>
-          </motion.div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="font-display text-4xl md:text-6xl lg:text-7xl font-bold mb-6"
-          >
-          Hey There!
-            <br />
-            <span className="text-gradient">I'm Salma</span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto"
-          >
-            Saya membangun aplikasi web yang indah dan fungsional, 
-            serta membagikan pengetahuan melalui konten yang inspiratif.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.7 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12"
-          >
-            <Button 
-              size="lg" 
-              className="rounded-full px-8 shadow-glow"
-              onClick={() => {
-                const element = document.querySelector('#projects');
-                if (element) element.scrollIntoView({ behavior: 'smooth' });
-              }}
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="font-display text-4xl md:text-6xl font-bold mb-6"
             >
-              Lihat Projects
-            </Button>
-            <Button 
-              variant="outline" 
-              size="lg" 
-              className="rounded-full px-8"
-              onClick={() => {
-                const element = document.querySelector('#contact');
-                if (element) element.scrollIntoView({ behavior: 'smooth' });
-              }}
-            >
-              Hubungi Saya
-            </Button>
-          </motion.div>
+              Hey there!
+              <br />
+              <span className="text-gradient">I'm Salma</span>
+            </motion.h1>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.9 }}
-            className="flex items-center justify-center gap-6"
-          >
-            {[
-              { icon: Github, href: '#', label: 'GitHub' },
-              { icon: Linkedin, href: '#', label: 'LinkedIn' },
-              { icon: Youtube, href: '#', label: 'YouTube' },
-              { icon: Instagram, href: '#', label: 'Instagram' },
-            ].map((social) => (
-              <motion.a
-                key={social.label}
-                href={social.href}
-                className="p-3 rounded-full glass hover:shadow-glow transition-all duration-300"
-                whileHover={{ scale: 1.1, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                aria-label={social.label}
+            <motion.p
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              className="text-lg text-muted-foreground mb-8 max-w-xl"
+            >
+              Saya membangun aplikasi web yang indah dan fungsional, serta
+              membagikan pengetahuan melalui konten yang inspiratif.
+            </motion.p>
+
+            {/* BUTTON */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.7 }}
+              className="flex flex-wrap gap-4 justify-center md:justify-start mb-10"
+            >
+              <Button
+                size="lg"
+                className="rounded-full px-8 shadow-glow"
+                onClick={() => {
+                  const element = document.querySelector("#projects");
+                  if (element) element.scrollIntoView({ behavior: "smooth" });
+                }}
               >
-                <social.icon className="h-5 w-5 text-foreground" />
-              </motion.a>
-            ))}
-          </motion.div>
+                Lihat Projects
+              </Button>
+
+              <Button
+                variant="outline"
+                size="lg"
+                className="rounded-full px-8"
+                onClick={() => {
+                  const element = document.querySelector("#contact");
+                  if (element) element.scrollIntoView({ behavior: "smooth" });
+                }}
+              >
+                Hubungi Saya
+              </Button>
+            </motion.div>
+
+            {/* SOCIAL MEDIA */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.9 }}
+              className="flex gap-6 justify-center md:justify-start"
+            >
+              {[
+                { icon: Github, href: "https://github.com/vierginn10-debug/", label: "GitHub" },
+                // { icon: Linkedin, href: "#", label: "LinkedIn" },
+                // { icon: Youtube, href: "#", label: "YouTube" },
+                { icon: Instagram, href: "https://www.instagram.com/salmayyawnn", label: "Instagram" },
+              ].map((social) => (
+                <motion.a
+                  key={social.label}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-3 rounded-full glass hover:shadow-glow transition-all duration-300"
+                  whileHover={{ scale: 1.1, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                  aria-label={social.label}
+                >
+                  <social.icon className="h-5 w-5 text-foreground" />
+                </motion.a>
+              ))}
+            </motion.div>
+          </div>
         </div>
       </div>
 
+      {/* SCROLL DOWN */}
       <motion.button
         onClick={scrollToAbout}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 p-3 rounded-full glass animate-float cursor-pointer"
