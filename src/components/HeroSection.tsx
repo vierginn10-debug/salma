@@ -30,7 +30,7 @@ export default function HeroSection() {
             className="flex justify-center"
           >
             <img
-              src="/profile.jpg"
+              src="/foto salma.jpg"
               alt="Salma"
               className="w-72 h-72 md:w-96 md:h-96 object-cover rounded-full border-4 border-primary shadow-glow"
             />
