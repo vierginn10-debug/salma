@@ -40,12 +40,12 @@ export default function HeroSection() {
           <div className="text-center md:text-left">
 
             <motion.span
-              className="inline-block px-4 py-2 rounded-full glass text-sm font-medium text-primary mb-6"
+              className="inline-block px-2 py-1 rounded-full glass text-sm font-medium text-primary mb-6"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 }}
             >
-              👋 Selamat datang di portfolio saya
+              Hello, I'm exploring the web! ✨
             </motion.span>
 
             <motion.h1
@@ -54,7 +54,7 @@ export default function HeroSection() {
               transition={{ duration: 0.8, delay: 0.3 }}
               className="font-display text-4xl md:text-6xl font-bold mb-6"
             >
-              Hey there!
+              Hey there! 👋
               <br />
               <span className="text-gradient">I'm Salma</span>
             </motion.h1>
@@ -63,10 +63,14 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.5 }}
-              className="text-lg text-muted-foreground mb-8 max-w-xl"
+              className="text-lg text-muted-foreground mb-8 max-w-xl leading-relaxed"
             >
-              Saya membangun aplikasi web yang indah dan fungsional, serta
-              membagikan pengetahuan melalui konten yang inspiratif.
+              <span className="block text-foreground font-semibold mb-2">
+                Exploring Ideas & Lines of Code 🚀
+              </span>
+              I am a student <strong>turning imagination into reality</strong> through web development. 
+              Currently, I am on a journey of learning, coding, and creating new things. 
+              Welcome to my coding journey!
             </motion.p>
 
             {/* BUTTON */}
