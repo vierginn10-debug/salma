@@ -15,7 +15,8 @@ export default function HeroSection() {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center overflow-hidden bg-gradient-hero"
+      // pt-15 md:pt-28 ditambahkan agar konten tidak tertutup Navbar fixed
+      className="relative min-h-screen flex items-center overflow-hidden bg-gradient-hero pt-10 md:pt-20 pb-32"
     >
       <ThreeScene />
 
@@ -40,12 +41,12 @@ export default function HeroSection() {
           <div className="text-center md:text-left">
 
             <motion.span
-              className="inline-block px-2 py-1 rounded-full glass text-sm font-medium text-primary mb-6"
+              className="inline-block px-4 py-2 rounded-full glass text-sm font-medium text-primary mb-6"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 }}
             >
-              Hello, I'm exploring the web! ✨
+              Welcome to My Coding Lab 💻
             </motion.span>
 
             <motion.h1
@@ -66,11 +67,9 @@ export default function HeroSection() {
               className="text-lg text-muted-foreground mb-8 max-w-xl leading-relaxed"
             >
               <span className="block text-foreground font-semibold mb-2">
-                Exploring Ideas & Lines of Code 🚀
+                🪄 "The Place Where I Transform Tutorials into Code."
               </span>
-              I am a student <strong>turning imagination into reality</strong> through web development. 
-              Currently, I am on a journey of learning, coding, and creating new things. 
-              Welcome to my coding journey!
+              Hi! I’m a high school student just starting my coding journey 🌱. This website is my personal playground and learning space to practice everything I learn independently. Every feature here is a living proof of my process in understanding code, one step at a time.
             </motion.p>
 
             {/* BUTTON */}
