@@ -46,7 +46,7 @@ export default function HeroSection() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 }}
             >
-              Welcome to My Coding Lab 💻
+             ✨ Salma’s Digital Lab
             </motion.span>
 
             <motion.h1
@@ -55,9 +55,9 @@ export default function HeroSection() {
               transition={{ duration: 0.8, delay: 0.3 }}
               className="font-display text-4xl md:text-6xl font-bold mb-6"
             >
-              Hey there! 👋
+              Hello, World! 🌎
               <br />
-              <span className="text-gradient">I'm Salma</span>
+              <span className="text-gradient">Meet Salma. ⚡</span>
             </motion.h1>
 
             <motion.p
@@ -67,9 +67,9 @@ export default function HeroSection() {
               className="text-lg text-muted-foreground mb-8 max-w-xl leading-relaxed"
             >
               <span className="block text-foreground font-semibold mb-2">
-                🪄 "The Place Where I Transform Tutorials into Code."
+                🔢 From Zero to One: Small Steps in the Digital World
               </span>
-              Hi! I’m a high school student just starting my coding journey 🌱. This website is my personal playground and learning space to practice everything I learn independently. Every feature here is a living proof of my process in understanding code, one step at a time.
+              ⌨️ Salma's Informatics learning journal — A student of MAN 1 Banda Aceh who is currently trying to tame lines of code.
             </motion.p>
 
             {/* BUTTON */}
