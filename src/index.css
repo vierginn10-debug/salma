@@ -1,3 +1,4 @@
+/* tailwindcss v3.0 */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -39,7 +40,7 @@
     /* Custom tokens */
     --gradient-primary: linear-gradient(180deg, hsl(68, 100%, 83%), hsl(0, 0%, 100%));
     --gradient-hero: linear-gradient(180deg, hsl(312, 78%, 82%) 0%, hsl(64, 73%, 85%) 100%);
-    --navbg: linear-gradient(180deg, hsl(326, 62%, 74%) 0%, hsl(0, 0%, 100%)100%);
+    --navbg: linear-gradient(180deg, hsl(326, 62%, 74%) 0%, hsl(0, 0%, 100%) 100%);
     --shadow-glow: 0 0 40px hsla(330, 100%, 81%, 0.931);
     --shadow-card: 0 4px 20px hsla(218, 32%, 51%, 0.08);
     --shadow-card-hover: 0 8px 30px hsl(220 20% 10% / 0.12);
@@ -83,9 +84,9 @@
     --input: 220 20% 18%;
     --ring: 175 80% 50%;
 
-    /* Custom tokens dark */
+    /* Perbaikan typo koma di sini */
     --gradient-primary: linear-gradient(180deg, hsl(0, 44%, 92%), hsl(204, 66%, 29%));
-    --navbg: linear-gradient(180deg hsl(290, 41%, 67%)0%, hsl(300, 2%, 17%)100%);
+    --navbg: linear-gradient(180deg, hsl(290, 41%, 67%) 0%, hsl(300, 2%, 17%) 100%);
     --gradient-hero: linear-gradient(180deg, hsl(218, 97%, 27%) 0%, hsl(216, 71%, 1%) 100%);
     --shadow-glow: 0 0 60px hsla(195, 93%, 61%, 0.883);
     --shadow-card: 0 4px 20px hsl(0 0% 0% / 0.3);
@@ -108,7 +109,7 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    @apply bg-background text-foreground antialiased;
     font-family: 'Inter', sans-serif;
   }
 
@@ -165,20 +166,12 @@
   }
 
   @keyframes float {
-    0%, 100% {
-      transform: translateY(0px);
-    }
-    50% {
-      transform: translateY(-20px);
-    }
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
   }
 
   @keyframes pulse-glow {
-    0%, 100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.7;
-    }
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
   }
 }
