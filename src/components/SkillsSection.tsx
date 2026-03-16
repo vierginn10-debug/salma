@@ -1,219 +1,148 @@
 import { motion } from 'framer-motion';
 
-// ==========================================================
-// 1. DATA SKILLS (Edisi "Weapon Labels" Salma)
-// Kita buang angka 'level', ganti dengan data yang lebih personal.
-// ==========================================================
-const skillWeapons = {
+// 1. DATA SKILLS (Technical & Human Arsenal)
+const skillArsenal = {
   foundation: [
-    { icon: '🧱', name: 'HTML5', desc: 'Arsitek yang menyusun struktur dunia digital.', status: 'Blooming', color: 'bg-[#8A2BE2]' }, // Ungu Mekar
-    { icon: '🎨', name: 'CSS3', desc: 'Pelukis yang memberi warna dan gaya di setiap sudut.', status: 'Growing', color: 'bg-[#FF1493]' }, // Pink Tumbuh
-    { icon: '⚡', name: 'Tailwind', desc: 'Alat kilat untuk membuat desain yang modern.', status: 'Sprouting', color: 'bg-[#00FFFF]' }, // Cyan Tunas
+    { name: 'HTML5', icon: '🧱', desc: 'The architect crafting the digital world’s structure.', level: 0, color: 'bg-[#FF1493]' },
+    { name: 'CSS3', icon: '🎨', desc: 'The painter adding color and style to every corner.', level: 10, color: 'bg-[#FF1493]' },
+    { name: 'Tailwind CSS', icon: '⚡', desc: 'Lightning-fast tool for building modern designs.', level: 30, color: 'bg-[#FF1493]' },
   ],
   logic: [
-    { icon: '🐍', name: 'Python', desc: 'Sang pawang logika untuk perintah yang cerdas.', status: 'Blooming', color: 'bg-[#8A2BE2]' },
-    { icon: '⚡', name: 'JavaScript', desc: "Pemberi 'nyawa' agar website bisa berinteraksi.", status: 'Growing', color: 'bg-[#FF1493]' },
-    { icon: '⚙️', name: 'Node.js', desc: 'Mesin di balik layar yang mengatur segalanya.', status: 'Sprouting', color: 'bg-[#00FFFF]' },
+    { name: 'Node.js', icon: '⚙️', desc: 'The engine behind the scenes managing everything.', level: 20, color: 'bg-[#00FFFF]' },
+    { name: 'Python', icon: '🐍', desc: 'The logic master for intelligent commands.', level: 5, color: 'bg-[#00FFFF]' },
+    { name: 'JavaScript', icon: '⚡', desc: 'Breathing life into websites for interaction.', level: 0, color: 'bg-[#00FFFF]' },
   ],
   workshop: [
-    { icon: '💻', name: 'VS Code', desc: 'Markas utama tempat ide berubah menjadi kode.', status: 'On Orbit', color: 'bg-[#FFFF00]' }, // Kuning Meluncur
-    { icon: '🐙', name: 'GitHub', desc: 'Mesin waktu untuk menjaga setiap jejak langkah.', status: 'Blooming', color: 'bg-[#8A2BE2]' },
-    { icon: '🔍', name: 'DevTools', desc: 'Kaca pembesar membedah dan mencari error.', status: 'Growing', color: 'bg-[#FF1493]' },
+    { name: 'VS Code', icon: '💻', desc: 'The main HQ where ideas transform into lines of code.', level: 55, color: 'bg-[#FFFF00]' },
+    { name: 'Git', icon: '🐙', desc: 'A time machine to track every development step.', level: 50, color: 'bg-[#FFFF00]' },
+    { name: 'DevTools', icon: '🔍', desc: 'The magnifying glass for dissecting and debugging.', level: 5, color: 'bg-[#FFFF00]' },
+  ],
+  human: [
+    { name: 'Fast Learner', icon: '🚀', desc: 'Quickly grasping new concepts from teachers.', level: 95, color: 'bg-[#ADFF2F]' },
+    { name: 'Documentation', icon: '📝', desc: 'Consistently logging progress—proof is this web!', level: 100, color: 'bg-[#ADFF2F]' },
+    { name: 'Collaboration', icon: '🤝', desc: 'Thriving in team discussions and group projects.', level: 90, color: 'bg-[#ADFF2F]' },
   ],
 };
 
-// ==========================================================
-// 2. DEFINISI LEVEL EVOLUSI (The "Evolution" Labels)
-// Menentukan teks, emoji, dan perkiraan lebar bar untuk visualisasi.
-// ==========================================================
-const evolutionLevels = {
-  Sprouting: { label: '🌱 Sprouting (Tunas)', width: '25%' },
-  Growing: { label: '🌿 Growing (Tumbuh)', width: '50%' },
-  Blooming: { label: '🌳 Blooming (Mekar)', width: '75%' },
-  'On Orbit': { label: '🚀 On Orbit (Meluncur)', width: '100%' },
-};
-
-// ==========================================================
-// 3. KOMPONEN SKILLBAR (Edisi Tanpa Angka, Pake Level Evolusi)
-// ==========================================================
-function PawangSkillBar({ icon, name, desc, status, color, delay }) {
-  const levelInfo = evolutionLevels[status] || evolutionLevels['Sprouting'];
-
+// 2. SKILLBAR COMPONENT (Description below the bar)
+function SkillBar({ name, icon, desc, level, color, delay }) {
   return (
     <motion.div
-      initial={{ opacity: 0, x: -20 }}
-      whileInView={{ opacity: 1, x: 0 }}
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay }}
-      className="space-y-3 pb-2 border-b-2 border-black/5 last:border-b-0"
+      className="mb-8 group"
     >
-      {/* Label Skill & Kalimat Unik (Weapon Labels) */}
-      <div className="space-y-1">
+      {/* Label & Percentage */}
+      <div className="flex justify-between items-end mb-2 px-1 text-black">
         <div className="flex items-center gap-2">
           <span className="text-xl">{icon}</span>
-          <span className="font-black uppercase italic tracking-tight text-lg text-black">{name}</span>
+          <span className="font-black uppercase italic text-sm tracking-tight">{name}</span>
         </div>
-        <p className="text-xs text-foreground/70 font-medium leading-relaxed italic px-1">
-          "{desc}"
-        </p>
+        <span className="font-mono text-[10px] font-black bg-black text-white px-2 py-0.5 rounded shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+          {level}%
+        </span>
       </div>
 
-      {/* Wadah Progress Bar (Neo-Brutalism: Kotak, Border Hitam, Shadow Keras) */}
-      {/* Kita targetting background wadah barnya agar sama dengan warna barnya (trik Salma sebelumnya) */}
-      <div 
-        className={`h-6 border-4 border-black ${color} shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] rounded-full overflow-hidden cursor-default relative group`}
-      >
-        {/* Bar Progres Solid (Warna Hitam Pekat agar kontras) */}
+      {/* Visual Bar & Status */}
+      <div className={`relative h-6 border-4 border-black ${color} shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden flex items-center mb-2`}>
         <motion.div
           initial={{ width: 0 }}
-          whileInView={{ width: levelInfo.width }}
+          whileInView={{ width: `${level}%` }}
           viewport={{ once: true }}
-          transition={{ duration: 1, delay: delay + 0.2, ease: 'circOut' }}
-          className="h-full rounded-full bg-black border-r-4 border-black"
+          transition={{ duration: 1.5, delay: delay + 0.2, ease: [0.23, 1, 0.32, 1] }}
+          className="absolute left-0 top-0 h-full bg-black z-0"
         />
-
-        {/* LABEL EVOLUSI (🌱/🌿/🌳/🚀) - Muncul di pojok kanan atas bar saat hover */}
-        <div className="absolute top-1/2 right-2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-black text-white px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider z-10 shadow-[2px_2px_0px_0px_rgba(255,255,255,1)]">
-          {levelInfo.label}
+        <div className="relative z-10 w-full px-2 flex justify-end mix-blend-difference text-white">
+          <span className="text-[8px] font-black uppercase tracking-widest opacity-80">
+            {level > 80 ? 'Mastered' : level > 40 ? 'Learning' : 'Sprouting'}
+          </span>
         </div>
+      </div>
+
+      {/* Narrative Description */}
+      <div className="px-1">
+        <p className="text-[11px] font-bold italic leading-snug text-black/70 border-l-2 border-black pl-2 py-1">
+          "{desc}"
+        </p>
       </div>
     </motion.div>
   );
 }
 
-// ==========================================================
-// 4. SEKSI UTAMA (SkillsSection - Final Edisi Pawang Kode)
-// ==========================================================
+// 3. MAIN SECTION
 export default function SkillsSection() {
   return (
-    <section 
-      id="skills" 
-      className="py-24 md:py-36 bg-[#E6E6FA] border-t-8 border-black text-black"
-    >
+    <section id="skills" className="py-24 md:py-36 bg-[#E6E6FA] border-t-8 border-black text-black">
       <div className="container mx-auto px-6">
         
-        {/* HEADLINE (Hirarki Dramatis: Jumbo vs Kalem Bersih) */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-24 max-w-5xl mx-auto"
-        >
-          {/* JUDUL UTAMA (Pake Border & Shadow Keras) - Jumbo */}
-          <div className="inline-block border-4 border-black bg-white px-12 py-5 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] -rotate-1 mb-10 hover:rotate-0 hover:scale-105 transition-all cursor-default relative">
-            <h1 className="font-black uppercase italic text-5xl md:text-8xl tracking-tighter leading-none text-black">
+        {/* Headline Section */}
+        <div className="text-center mb-24">
+          <motion.div 
+            initial={{ scale: 0.9, opacity: 0 }}
+            whileInView={{ scale: 1, opacity: 1 }}
+            viewport={{ once: true }}
+            className="inline-block border-4 border-black bg-white px-8 md:px-12 py-5 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] -rotate-1 mb-8"
+          >
+            <h1 className="font-black uppercase italic text-4xl md:text-7xl tracking-tighter leading-none">
               FROM ZERO TO CODE
             </h1>
-            {/* Ikon tambahan stiker miring */}
-            <span className="absolute -top-6 -right-6 text-5xl rotate-12">🎮</span>
-          </div>
-
-          {/* SUBHEADLINE (Bersih Tanpa Border) - Kalem */}
-          <div className="max-w-3xl mx-auto pt-4 border-t-4 border-black/10">
-            <h2 className="font-black uppercase italic text-base md:text-xl tracking-tight text-foreground/80 leading-tight">
-              "Documenting my journey of mastering the basics, tackling curriculum challenges, 
-              and building my very first digital foundations."
-            </h2>
-          </div>
-        </motion.div>
-
-        {/* GRID KARTU SKILL ("The Arsenal") */}
-        <div className="grid md:grid-cols-3 gap-10 max-w-7xl mx-auto mb-20">
+          </motion.div>
           
-          {/* --- Kategori 1: The Foundation --- */}
-          <motion.div className="p-8 bg-white/50 glass rounded-3xl group border-2 border-black/5 hover:border-black transition-all">
-            <div className="flex items-center gap-4 mb-10 border-b-4 border-black pb-6">
-              <div className="p-4 rounded-2xl bg-black/5 group-hover:rotate-6 transition-transform">
-                <span className="text-3xl">🧱</span>
-              </div>
-              <h3 className="font-black uppercase italic text-3xl tracking-tight text-black leading-none">The Foundation</h3>
-            </div>
-            <div className="space-y-8">
-              {skillWeapons.foundation.map((weapon, index) => (
-                <PawangSkillBar key={weapon.name} {...weapon} delay={index * 0.1} />
-              ))}
-            </div>
-          </motion.div>
-
-          {/* --- Kategori 2: The Logic --- */}
-          <motion.div className="p-8 bg-white/50 glass rounded-3xl group border-2 border-black/5 hover:border-black transition-all">
-            <div className="flex items-center gap-4 mb-10 border-b-4 border-black pb-6">
-              <div className="p-4 rounded-2xl bg-black/5 group-hover:-rotate-6 transition-transform">
-                <span className="text-3xl">🐍</span>
-              </div>
-              <h3 className="font-black uppercase italic text-3xl tracking-tight text-black leading-none">The Logic</h3>
-            </div>
-            <div className="space-y-8">
-              {skillWeapons.logic.map((weapon, index) => (
-                <PawangSkillBar key={weapon.name} {...weapon} delay={index * 0.1} />
-              ))}
-            </div>
-          </motion.div>
-
-          {/* --- Kategori 3: The Workshop --- */}
-          <motion.div className="p-8 bg-white/50 glass rounded-3xl group border-2 border-black/5 hover:border-black transition-all">
-            <div className="flex items-center gap-4 mb-10 border-b-4 border-black pb-6">
-              <div className="p-4 rounded-2xl bg-black/5 group-hover:rotate-6 transition-transform">
-                <span className="text-3xl">💻</span>
-              </div>
-              <h3 className="font-black uppercase italic text-3xl tracking-tight text-black leading-none">The Workshop</h3>
-            </div>
-            <div className="space-y-8">
-              {skillWeapons.workshop.map((weapon, index) => (
-                <PawangSkillBar key={weapon.name} {...weapon} delay={index * 0.1} />
-              ))}
-            </div>
-          </motion.div>
+          <div className="max-w-3xl mx-auto px-4 mt-4">
+            <p className="font-black uppercase italic text-black/80 text-lg md:text-xl tracking-tight mb-4">
+              "Not a master yet, but definitely not at zero anymore."
+            </p>
+            <div className="w-24 h-1 bg-black mx-auto mb-6"></div>
+            <p className="font-medium text-black/60 leading-relaxed text-sm md:text-lg italic">
+              Documenting my journey of mastering the basics, tackling challenges, and growing as a student coder.
+            </p>
+          </div>
         </div>
 
-        {/* ==========================================================
-            SARAN TAMBAHAN AGAR WEB "NAIK LEVEL"
-        =========================================================== */}
-        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10">
-          
-          {/* A. "Pawang Error Minggu Ini" ⚠️ */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="p-8 border-4 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] rounded-xl"
-          >
-            <div className="flex items-center gap-3 mb-5 border-b-2 border-black pb-4">
-              <span className="text-3xl">⚠️</span>
-              <h4 className="font-black uppercase italic text-2xl tracking-tight text-black">Pawang Error Minggu Ini</h4>
+        {/* 4-Column Skills Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-24">
+          {Object.entries(skillArsenal).map(([category, items], idx) => (
+            <div key={category} className="p-6 border-4 border-black bg-white shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all duration-200">
+              <h3 className="font-black uppercase italic text-xl mb-8 border-b-4 border-black pb-2 flex items-center gap-2">
+                {category === 'foundation' ? '🏗️ Foundation' : 
+                 category === 'logic' ? '🐍 Logic' : 
+                 category === 'workshop' ? '🛠️ Workshop' : '🚀 Human Skill'}
+              </h3>
+              {items.map((item, i) => (
+                <SkillBar key={item.name} {...item} delay={(idx * 0.1) + (i * 0.1)} />
+              ))}
             </div>
-            <p className="font-medium text-sm text-black/80 leading-relaxed bg-[#FFFACD] p-4 border-2 border-black rounded-lg">
-              "Lupa tutup tag <span className="font-mono bg-black/10 px-1">div</span> sampai tampilan websitenya berantakan total selama 1 jam, tapi akhirnya ketemu dan rasanya lega banget! 😂" 
-              <span className="block mt-2 font-bold text-black">— Jiwa Problem Solver: ON!</span>
-            </p>
-          </motion.div>
-
-          {/* B. Tombol "Lihat Markas GitHub" 🐙 */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="p-8 border-4 border-black bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] rounded-xl flex flex-col justify-center items-center text-center group"
-          >
-            <span className="text-6xl mb-6 group-hover:scale-110 transition-transform">🐙</span>
-            <h4 className="font-black uppercase italic text-2xl tracking-tight text-black mb-3">Penasaran dengan Kode Aslinya?</h4>
-            <p className="text-sm text-black/70 mb-8 max-w-sm">
-              Dokumentasi lengkap dan semua jejak langkah kodingku tersimpan rapi di markas GitHub. Mari bedah kodenya bersama-masing!
-            </p>
-            {/* Tombol Gaya Neo-Brutalism Ceria (Warna Pink Tumbuh) */}
-            <a 
-              href="https://github.com/salma-anda" // GANTI DENGAN LINK GITHUBMU
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="inline-block border-4 border-black bg-[#FF1493] text-black font-black uppercase italic px-10 py-4 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all tracking-tighter text-lg"
-            >
-              Kunjungi Markas GitHub 🚀
-            </a>
-          </motion.div>
-
+          ))}
         </div>
 
+        {/* GitHub Call-to-Action (All English) */}
+        <div className="flex justify-center mt-20">
+          <motion.a
+            href="https://github.com/vierginn10-debug/" // Change to your GitHub URL
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="group relative inline-flex items-center gap-6 bg-[#FFFF00] border-8 border-black px-10 py-6 shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-2 hover:translate-y-2 transition-all cursor-pointer"
+          >
+            <span className="text-5xl md:text-6xl group-hover:rotate-12 transition-transform duration-300">
+              🐙
+            </span>
+            <div className="flex flex-col text-left text-black">
+              <span className="font-black uppercase italic text-3xl md:text-4xl tracking-tighter leading-none">
+                View Original Code
+              </span>
+              <span className="font-mono text-[10px] md:text-xs font-bold uppercase tracking-widest text-black/60 mt-2">
+                Verify my progress on GitHub →
+              </span>
+            </div>
+            <div className="absolute -top-4 -right-4 bg-black text-white px-3 py-1 font-black text-[10px] uppercase rotate-12 group-hover:rotate-0 transition-transform shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)]">
+              Verified Source
+            </div>
+          </motion.a>
+        </div>
       </div>
     </section>
   );
