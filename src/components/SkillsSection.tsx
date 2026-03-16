@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 
+// 1. DATA SKILLS (Tetap sama, hanya untuk konteks)
 const skills = {
   frontend: [
     { name: 'React', level: 95 },
@@ -24,6 +25,7 @@ const skills = {
   ],
 };
 
+// 2. KOMPONEN SKILLBAR (Diubah Wadah Bar agar Rounded Modern)
 function SkillBar({ name, level, delay }: { name: string; level: number; delay: number }) {
   return (
     <motion.div
@@ -31,103 +33,180 @@ function SkillBar({ name, level, delay }: { name: string; level: number; delay: 
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay }}
-      className="space-y-2"
+      className="space-y-3" // Beri jarak sedikit lebih lega
     >
-      <div className="flex justify-between items-center">
-        <span className="font-medium">{name}</span>
-        <span className="text-sm text-muted-foreground">{level}%</span>
+      {/* Label Skill & Persentase */}
+      <div className="flex justify-between items-center px-1">
+        <span className="font-bold uppercase text-xs tracking-wider text-black">{name}</span>
+        <span className="font-mono text-xs font-bold text-gray-800">{level}%</span>
       </div>
-      <div className="h-2 bg-muted rounded-full overflow-hidden">
+
+      {/* Wadah Progress Bar (Ubah Rounded agar Modern, Hapus Border Ujung Bar, Hapus bg-muted yang akan di-override) */}
+      <div className="h-5 bg-white shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] rounded-full overflow-hidden cursor-default">
         <motion.div
           initial={{ width: 0 }}
           whileInView={{ width: `${level}%` }}
           viewport={{ once: true }}
-          transition={{ duration: 1, delay: delay + 0.2, ease: 'easeOut' }}
-          className="h-full rounded-full bg-gradient-to-r from-primary to-accent"
+          transition={{ duration: 1, delay: delay + 0.2, ease: 'circOut' }} // Ganti ease agar lebih "pop"
+          // Hapus border ujung bar, ganti warna solid primer yang tegas (Akan di-override di induk)
+          className="h-full rounded-full bg-primary"
         />
       </div>
     </motion.div>
   );
 }
 
+// 3. SEKSI UTAMA (SkillsSection)
 export default function SkillsSection() {
   return (
-    <section id="skills" className="py-20 md:py-32">
-      <div className="container mx-auto px-4">
+    // UBAH BACKGROUND DI SINI: Soft Lavender (Lavender)
+    <section 
+      id="skills" 
+      className="py-24 md:py-36 bg-[#E6E6FA] border-t-8 border-black text-black"
+    >
+      <div className="container mx-auto px-6">
+        
+        {/* ==========================================================
+            MODUL HEADLINE (Gaya Kontras Ekstrim Neo-Brutalism)
+            DI SINI TEMPAT PERUBAHAN HIRARKI, SALMA!
+        =========================================================== */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          // Centerkan container agar rapi
+          className="text-center mb-24 max-w-5xl mx-auto"
         >
-          <span className="text-primary font-medium mb-2 block">Keahlian</span>
-          <h2 className="font-display text-3xl md:text-5xl font-bold mb-4">
-            Skills &amp; Teknologi
-          </h2>
-          <div className="w-20 h-1 bg-primary mx-auto rounded-full" />
+          {/* 1. JUDUL UTAMA (FROM ZERO TO CODE) -> PAKAI BORDER & SHADOW KERAS */}
+          {/* DI SINI SALMA! -> Kita pasang border tebal hitam dan hard shadow keras */}
+          {/* text-5xl md:text-8xl -> Font size jumbo, sangat besar di Desktop */}
+          {/* -rotate-1 -> Sedikit miring agar terlihat seperti stiker tempel */}
+          <div className="inline-block border-4 border-black bg-white px-12 py-5 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] -rotate-1 mb-10 hover:rotate-0 hover:scale-105 transition-all cursor-default">
+            <h1 className="font-black uppercase italic text-5xl md:text-8xl tracking-tighter leading-none text-black">
+              FROM ZERO TO CODE
+            </h1>
+          </div>
+
+          {/* 2. SUBHEADLINE ("Documenting...") -> TIDAK PAKAI BORDER/SHADOW (BERSIH) */}
+          {/* DI SINI SALMA! -> Kita hapus semua border, shadow, dan background wadah deskripsi */}
+          {/* text-base md:text-xl -> Font size standar, nyaman dibaca */}
+          {/* tracking-tight -> Rapatkan jarak antar huruf agar terasa padat */}
+          {/* text-foreground/80 -> Warna teks sedikit diredupkan agar kalem */}
+          <div className="max-w-3xl mx-auto">
+            <h2 className="font-medium text-base md:text-xl tracking-tight text-foreground/80 leading-relaxed">
+              "Documenting my journey of mastering the basics, tackling curriculum challenges, 
+              and building my very first digital foundations."
+            </h2>
+          </div>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {/* Frontend */}
+        {/* ==========================================================
+            GRID KARTU SKILL (Gaya Kotak Minimalis Modern - Tanpa Border/Shadow Keras)
+        =========================================================== */}
+        <div className="grid md:grid-cols-3 gap-10 max-w-7xl mx-auto">
+          
+          {/* ==========================================================
+              --- Frontend ---
+              Bar Progres & Background Bar: Pink Neon/Magenta Pekat
+              UBAH WARNA BAR & BACKGROUND BAR DI SINI: Magenta Pekat
+          =========================================================== */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="p-6 glass rounded-2xl shadow-card hover:shadow-card-hover transition-shadow"
+            // Hapus shadow keras, gunakan glassmorphism/bg-white bersih
+            className="p-8 bg-white/50 glass rounded-3xl group"
           >
-            <div className="flex items-center gap-3 mb-6">
-              <div className="p-3 rounded-xl bg-primary/10">
-                <span className="text-2xl">🎨</span>
+            {/* Header Kartu - Hapus border bawah hitam */}
+            <div className="flex items-center gap-4 mb-8">
+              <div className="p-4 rounded-2xl bg-black/5 group-hover:rotate-6 transition-transform">
+                <span className="text-3xl block">🎨</span>
               </div>
-              <h3 className="font-display text-xl font-bold">Frontend</h3>
+              <h3 className="font-black uppercase italic text-3xl tracking-tight text-black leading-none">Frontend</h3>
             </div>
-            <div className="space-y-4">
+            
+            {/* Daftar Skill - Trik Tailwind Spesifik Tanpa Border Ujung */}
+            <div className="space-y-6">
               {skills.frontend.map((skill, index) => (
-                <SkillBar key={skill.name} {...skill} delay={index * 0.1} />
+                // Kita targetting elemen bar dalam dan wadah barnya sekaligus
+                // [&_div_div_div]:bg-[#FF1493] [&_div_div_div]:rounded-full -> Ganti warna bar jadi Magenta & rounded
+                // [&_div_div]:bg-[#FF1493] -> **DI SINI SALMA!** Kita ganti background wadah bar progresnya jadi Magenta
+                // [&_div_div]:border-4 [&_div_div]:border-black -> Tambah border tebal hitam di wadah bar
+                // [&_div_div]:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] -> Tambah shadow keras di wadah bar
+                <div 
+                  key={skill.name} 
+                  className="[&_div_div_div]:bg-[#FF1493] [&_div_div_div]:rounded-full [&_div_div]:bg-[#FF1493] [&_div_div]:border-4 [&_div_div]:border-black [&_div_div]:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] [&_div_div]:cursor-default"
+                >
+                  <SkillBar {...skill} delay={index * 0.1} />
+                </div>
               ))}
             </div>
           </motion.div>
 
-          {/* Backend */}
+          {/* --- Backend ---
+              Bar Progres & Background Bar: Biru Cyan/Aqua Ceria
+              UBAH WARNA BAR & BACKGROUND BAR DI SINI: Cyan/Aqua Ceria
+          =========================================================== */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="p-6 glass rounded-2xl shadow-card hover:shadow-card-hover transition-shadow"
+            className="p-8 bg-white/50 glass rounded-3xl group"
           >
-            <div className="flex items-center gap-3 mb-6">
-              <div className="p-3 rounded-xl bg-primary/10">
-                <span className="text-2xl">⚙️</span>
+            {/* Header Kartu */}
+            <div className="flex items-center gap-4 mb-8">
+              <div className="p-4 rounded-2xl bg-black/5 group-hover:-rotate-6 transition-transform">
+                <span className="text-3xl block">⚙️</span>
               </div>
-              <h3 className="font-display text-xl font-bold">Backend</h3>
+              <h3 className="font-black uppercase italic text-3xl tracking-tight text-black leading-none">Backend</h3>
             </div>
-            <div className="space-y-4">
+            {/* Daftar Skill dengan Bar Warna Biru Cyan */}
+            <div className="space-y-6">
               {skills.backend.map((skill, index) => (
-                <SkillBar key={skill.name} {...skill} delay={index * 0.1} />
+                // [&_div_div_div]:bg-[#00FFFF] -> Warna bar Cyan/Aqua
+                // [&_div_div]:bg-[#00FFFF] -> Warna background bar Cyan/Aqua
+                <div 
+                  key={skill.name} 
+                  className="[&_div_div_div]:bg-[#00FFFF] [&_div_div_div]:rounded-full [&_div_div]:bg-[#00FFFF] [&_div_div]:border-4 [&_div_div]:border-black [&_div_div]:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] [&_div_div]:cursor-default"
+                >
+                  <SkillBar {...skill} delay={index * 0.1} />
+                </div>
               ))}
             </div>
           </motion.div>
 
-          {/* Tools */}
+          {/* --- Tools ---
+              Bar Progres & Background Bar: Kuning Stabilo/Lime Ceria
+              UBAH WARNA BAR & BACKGROUND BAR DI SINI: Lime/KuningStabilo Ceria
+          =========================================================== */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="p-6 glass rounded-2xl shadow-card hover:shadow-card-hover transition-shadow"
+            className="p-8 bg-white/50 glass rounded-3xl group"
           >
-            <div className="flex items-center gap-3 mb-6">
-              <div className="p-3 rounded-xl bg-primary/10">
-                <span className="text-2xl">🛠️</span>
+            {/* Header Kartu */}
+            <div className="flex items-center gap-4 mb-8">
+              <div className="p-4 rounded-2xl bg-black/5 group-hover:rotate-6 transition-transform">
+                <span className="text-3xl block">🛠️</span>
               </div>
-              <h3 className="font-display text-xl font-bold">Tools &amp; Lainnya</h3>
+              <h3 className="font-black uppercase italic text-3xl tracking-tight text-black leading-none">Tools</h3>
             </div>
-            <div className="space-y-4">
+            {/* Daftar Skill dengan Bar Warna Kuning Stabilo */}
+            <div className="space-y-6">
               {skills.tools.map((skill, index) => (
-                <SkillBar key={skill.name} {...skill} delay={index * 0.1} />
+                // [&_div_div_div]:bg-[#FFFF00] -> Warna bar Lime/KuningStabilo
+                // [&_div_div]:bg-[#FFFF00] -> Warna background bar Lime/KuningStabilo
+                <div 
+                  key={skill.name} 
+                  className="[&_div_div_div]:bg-[#FFFF00] [&_div_div_div]:rounded-full [&_div_div]:bg-[#FFFF00] [&_div_div]:border-4 [&_div_div]:border-black [&_div_div]:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] [&_div_div]:cursor-default"
+                >
+                  <SkillBar {...skill} delay={index * 0.1} />
+                </div>
               ))}
             </div>
           </motion.div>
