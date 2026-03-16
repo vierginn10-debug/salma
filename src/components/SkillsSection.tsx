@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 
-// 1. DATA SKILLS (Technical & Human Arsenal)
+// 1. DATA SKILLS (Tetap konsisten dengan warna aksen)
 const skillArsenal = {
   foundation: [
     { name: 'HTML5', icon: '🧱', desc: 'The architect crafting the digital world’s structure.', level: 0, color: 'bg-[#FF1493]' },
@@ -24,7 +24,7 @@ const skillArsenal = {
   ],
 };
 
-// 2. SKILLBAR COMPONENT (Description below the bar)
+// 2. DYNAMIC SKILLBAR (Auto-adjust for Light/Dark)
 function SkillBar({ name, icon, desc, level, color, delay }) {
   return (
     <motion.div
@@ -34,25 +34,23 @@ function SkillBar({ name, icon, desc, level, color, delay }) {
       transition={{ duration: 0.5, delay }}
       className="mb-8 group"
     >
-      {/* Label & Percentage */}
-      <div className="flex justify-between items-end mb-2 px-1 text-black">
+      <div className="flex justify-between items-end mb-2 px-1 text-black dark:text-white">
         <div className="flex items-center gap-2">
           <span className="text-xl">{icon}</span>
           <span className="font-black uppercase italic text-sm tracking-tight">{name}</span>
         </div>
-        <span className="font-mono text-[10px] font-black bg-black text-white px-2 py-0.5 rounded shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+        <span className="font-mono text-[10px] font-black bg-black text-white dark:bg-white dark:text-black px-2 py-0.5 rounded shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_rgba(255,255,255,0.3)]">
           {level}%
         </span>
       </div>
 
-      {/* Visual Bar & Status */}
-      <div className={`relative h-6 border-4 border-black ${color} shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] overflow-hidden flex items-center mb-2`}>
+      <div className={`relative h-6 border-4 border-black dark:border-white ${color} shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,0.1)] overflow-hidden flex items-center mb-2`}>
         <motion.div
           initial={{ width: 0 }}
           whileInView={{ width: `${level}%` }}
           viewport={{ once: true }}
           transition={{ duration: 1.5, delay: delay + 0.2, ease: [0.23, 1, 0.32, 1] }}
-          className="absolute left-0 top-0 h-full bg-black z-0"
+          className="absolute left-0 top-0 h-full bg-black dark:bg-white z-0"
         />
         <div className="relative z-10 w-full px-2 flex justify-end mix-blend-difference text-white">
           <span className="text-[8px] font-black uppercase tracking-widest opacity-80">
@@ -61,9 +59,8 @@ function SkillBar({ name, icon, desc, level, color, delay }) {
         </div>
       </div>
 
-      {/* Narrative Description */}
-      <div className="px-1">
-        <p className="text-[11px] font-bold italic leading-snug text-black/70 border-l-2 border-black pl-2 py-1">
+      <div className="px-1 text-black/70 dark:text-white/50">
+        <p className="text-[11px] font-bold italic leading-snug border-l-2 border-current pl-2 py-1">
           "{desc}"
         </p>
       </div>
@@ -71,41 +68,41 @@ function SkillBar({ name, icon, desc, level, color, delay }) {
   );
 }
 
-// 3. MAIN SECTION
+// 3. MAIN SECTION (Responsive Background)
 export default function SkillsSection() {
   return (
-    <section id="skills" className="py-24 md:py-36 bg-[#E6E6FA] border-t-8 border-black text-black">
+    <section id="skills" className="py-24 md:py-36 bg-[#E6E6FA] dark:bg-[#0F0F0F] border-t-8 border-black dark:border-white transition-colors duration-500">
       <div className="container mx-auto px-6">
         
-        {/* Headline Section */}
+        {/* Headline */}
         <div className="text-center mb-24">
           <motion.div 
             initial={{ scale: 0.9, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
             viewport={{ once: true }}
-            className="inline-block border-4 border-black bg-white px-8 md:px-12 py-5 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] -rotate-1 mb-8"
+            className="inline-block border-4 border-black dark:border-white bg-white dark:bg-black px-8 md:px-12 py-5 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] dark:shadow-[12px_12px_0px_0px_#ADFF2F] -rotate-1 mb-8"
           >
-            <h1 className="font-black uppercase italic text-4xl md:text-7xl tracking-tighter leading-none">
+            <h1 className="font-black uppercase italic text-4xl md:text-7xl tracking-tighter leading-none text-black dark:text-white">
               FROM ZERO TO CODE
             </h1>
           </motion.div>
           
           <div className="max-w-3xl mx-auto px-4 mt-4">
-            <p className="font-black uppercase italic text-black/80 text-lg md:text-xl tracking-tight mb-4">
+            <p className="font-black uppercase italic text-black/80 dark:text-white/90 text-lg md:text-xl tracking-tight mb-4">
               "Not a master yet, but definitely not at zero anymore."
             </p>
-            <div className="w-24 h-1 bg-black mx-auto mb-6"></div>
-            <p className="font-medium text-black/60 leading-relaxed text-sm md:text-lg italic">
+            <div className="w-24 h-1 bg-black dark:bg-white mx-auto mb-6"></div>
+            <p className="font-medium text-black/60 dark:text-white/50 leading-relaxed text-sm md:text-lg italic">
               Documenting my journey of mastering the basics, tackling challenges, and growing as a student coder.
             </p>
           </div>
         </div>
 
-        {/* 4-Column Skills Grid */}
+        {/* Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-24">
           {Object.entries(skillArsenal).map(([category, items], idx) => (
-            <div key={category} className="p-6 border-4 border-black bg-white shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all duration-200">
-              <h3 className="font-black uppercase italic text-xl mb-8 border-b-4 border-black pb-2 flex items-center gap-2">
+            <div key={category} className="p-6 border-4 border-black dark:border-white bg-white dark:bg-[#1A1A1A] shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] dark:shadow-none transition-all duration-300">
+              <h3 className="font-black uppercase italic text-xl mb-8 border-b-4 border-black dark:border-white pb-2 flex items-center gap-2 text-black dark:text-white">
                 {category === 'foundation' ? '🏗️ Foundation' : 
                  category === 'logic' ? '🐍 Logic' : 
                  category === 'workshop' ? '🛠️ Workshop' : '🚀 Human Skill'}
@@ -117,29 +114,26 @@ export default function SkillsSection() {
           ))}
         </div>
 
-        {/* GitHub Call-to-Action (All English) */}
+        {/* GitHub Button */}
         <div className="flex justify-center mt-20">
           <motion.a
-            href="https://github.com/vierginn10-debug/" // Change to your GitHub URL
+            href="https://github.com/USERNAME_KAMU" 
             target="_blank"
             rel="noopener noreferrer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="group relative inline-flex items-center gap-6 bg-[#FFFF00] border-8 border-black px-10 py-6 shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-2 hover:translate-y-2 transition-all cursor-pointer"
+            className="group relative inline-flex items-center gap-6 bg-[#FFFF00] dark:bg-[#ADFF2F] border-8 border-black dark:border-white px-10 py-6 shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] dark:shadow-[16px_16px_0px_0px_rgba(255,255,255,0.1)] hover:shadow-none hover:translate-x-2 hover:translate-y-2 transition-all cursor-pointer"
           >
-            <span className="text-5xl md:text-6xl group-hover:rotate-12 transition-transform duration-300">
+            <span className="text-5xl md:text-6xl group-hover:rotate-12 transition-transform duration-300 filter dark:drop-shadow-[0_0_10px_rgba(0,0,0,0.2)] text-black">
               🐙
             </span>
-            <div className="flex flex-col text-left text-black">
-              <span className="font-black uppercase italic text-3xl md:text-4xl tracking-tighter leading-none">
+            <div className="flex flex-col text-left text-black font-black uppercase italic">
+              <span className="text-3xl md:text-4xl tracking-tighter leading-none">
                 View Original Code
               </span>
-              <span className="font-mono text-[10px] md:text-xs font-bold uppercase tracking-widest text-black/60 mt-2">
+              <span className="font-mono text-[10px] md:text-xs tracking-widest opacity-60 mt-2">
                 Verify my progress on GitHub →
               </span>
-            </div>
-            <div className="absolute -top-4 -right-4 bg-black text-white px-3 py-1 font-black text-[10px] uppercase rotate-12 group-hover:rotate-0 transition-transform shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)]">
-              Verified Source
             </div>
           </motion.a>
         </div>
