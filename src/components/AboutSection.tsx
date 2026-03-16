@@ -1,33 +1,33 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { Code2, BookOpen, Laptop, Sparkles, ChevronDown } from "lucide-react";
+import { Code2, BookOpen, Laptop, Sparkles, ChevronDown, Rocket, Terminal, Cpu } from "lucide-react";
 import { useState, useEffect } from "react";
 
 export default function AboutSection() {
-  const [active, setActive] = useState(0); // Default buka yang pertama
+  const [active, setActive] = useState(0);
   const [typedLines, setTypedLines] = useState([]);
 
   const stats = [
-    { icon: Code2, value: "10+", label: "Learning Projects" },
-    { icon: BookOpen, value: "20+", label: "Tutorials Completed" },
-    { icon: Laptop, value: "100%", label: "Self-Taught" },
-    { icon: Sparkles, value: "∞", label: "Curiosity" },
+    { icon: Code2, value: "10+", label: "Projects", color: "text-blue-400" },
+    { icon: BookOpen, value: "20+", label: "Tutorials", color: "text-purple-400" },
+    { icon: Laptop, value: "100%", label: "Self-Taught", color: "text-emerald-400" },
+    { icon: Sparkles, value: "∞", label: "Curiosity", color: "text-amber-400" },
   ];
 
   const accordion = [
     {
-      title: "Who I am? 🪄",
-      content:
-        "I am a high school student with a big dream in the digital world. I treat my computer as a laboratory where I experiment with code, turning curiosity into functional websites."
+      title: " Introduction: Starting from Scratch",
+      icon: <Terminal className="w-5 h-5" />,
+      content: "Hello! I am a student at MAN 1 Banda Aceh who was initially unfamiliar with the world of programming. Through the Informatics subject, I was challenged to step out of my comfort zone and learn to build something from zero. This website is my 'digital notebook'—a space to document every bit of progress, failure, and small success in this coding journey."
     },
     {
-      title: "The Learning Process 🌱",
-      content:
-        "I believe the best way to learn is by doing. I spend my time studying tutorials and documentation, then I manually type every line in VS Code to truly understand how things work."
+      title: " The Process: Behind the Scenes",
+      icon: <Cpu className="w-5 h-5" />,
+      content: "Learning to use VS Code turned out to be both exciting and challenging! At first, I was often confused when the web layout broke just because of a single character. But from that, I learned the true meaning of precision. Every time I successfully fix an error and update my code to GitHub, there’s a sense of pride."
     },
     {
-      title: "My Mission 🚀",
-      content:
-        "My mission is to bridge the gap between imagination and reality. I want to continue growing, mastering modern technologies, and sharing my journey with other learners."
+      title: " Hopes: Future Journey",
+      icon: <Rocket className="w-5 h-5" />,
+      content: "This assignment made me realize that technology is not just to be enjoyed, but something we can create. My goal is simple: I want to keep learning and not give up easily on new things. I hope this first coding experience becomes a valuable foundation for me to understand the wider world of technology."
     },
   ];
 
@@ -44,127 +44,142 @@ export default function AboutSection() {
       const typeSentence = () => {
         if (currentIndex < sentences.length) {
           const sentence = sentences[currentIndex] + (currentIndex < sentences.length - 1 ? "." : "");
-          // Highlight keywords matching the Hero Section theme
-          const highlighted = sentence
-            .replace(/laboratory|code|websites|VS Code|technologies|imagination|reality/gi, 
-              (match) => `<span class="text-primary font-bold decoration-primary/30 underline decoration-2">${match}</span>`);
+          const highlighted = sentence.replace(
+            /(VS Code|GitHub|Informatics|programming|technology|coding|digital notebook)/gi,
+            (match) => `<span class="text-primary font-bold border-b border-primary/30">${match}</span>`
+          );
           
           setTypedLines((prev) => [...prev, highlighted]);
           currentIndex++;
-          setTimeout(typeSentence, 400);
+          setTimeout(typeSentence, 300);
         }
       };
-
       typeSentence();
-    } else {
-      setTypedLines([]);
     }
   }, [active]);
 
-  const accordionVariants = {
-    hidden: { opacity: 0, height: 0 },
-    visible: { opacity: 1, height: "auto", transition: { duration: 0.5, ease: "circOut" } },
-    exit: { opacity: 0, height: 0, transition: { duration: 0.3, ease: "circIn" } }
-  };
-
   return (
-    <section id="about" className="py-20 md:py-32 bg-background relative overflow-hidden">
-      {/* Background Decor */}
-      <div className="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none">
-        <div className="absolute top-10 left-10 w-64 h-64 bg-primary rounded-full blur-3xl"></div>
+    <section id="about" className="py-24 md:py-32 bg-[#030712] text-slate-200 relative overflow-hidden">
+      {/* --- BACKGROUND ANIMATION --- */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <motion.div 
+          animate={{ 
+            scale: [1, 1.2, 1],
+            opacity: [0.1, 0.2, 0.1] 
+          }}
+          transition={{ duration: 10, repeat: Infinity }}
+          className="absolute -top-[10%] -left-[10%] w-[50%] h-[50%] bg-blue-600/20 rounded-full blur-[120px]" 
+        />
+        <motion.div 
+          animate={{ 
+            scale: [1, 1.3, 1],
+            opacity: [0.1, 0.15, 0.1] 
+          }}
+          transition={{ duration: 15, repeat: Infinity, delay: 2 }}
+          className="absolute -bottom-[10%] -right-[10%] w-[50%] h-[50%] bg-purple-600/20 rounded-full blur-[120px]" 
+        />
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
-        {/* Section Title */}
+      <div className="container mx-auto px-6 relative z-10">
+        {/* Header Section */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-20"
         >
-          <span className="text-primary font-mono text-sm tracking-widest mb-2 block uppercase">Inside the Lab</span>
-          <h2 className="font-display text-3xl md:text-5xl font-bold mb-4">Behind the Code</h2>
-          <div className="w-16 h-1 bg-primary mx-auto rounded-full" />
+          <h2 className="text-4xl md:text-6xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-emerald-400 mb-4">
+            Hello World: My Journey into Coding
+          </h2>
+          <p className="text-slate-400 font-mono tracking-widest uppercase text-sm">Turning Logic into Art</p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-12 items-start max-w-6xl mx-auto">
-          {/* LEFT: ANIMATED ICON/IMAGE */}
+        <div className="grid lg:grid-cols-2 gap-16 items-center max-w-7xl mx-auto">
+          
+          {/* LEFT SIDE: Visual Element */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="relative group"
+            className="relative"
           >
-            <div className="aspect-square rounded-3xl overflow-hidden glass border border-white/10 shadow-glow flex items-center justify-center bg-gradient-to-br from-primary/10 via-transparent to-accent/10">
+            <div className="relative z-10 aspect-square rounded-[2rem] bg-gradient-to-br from-white/10 to-white/5 border border-white/10 backdrop-blur-xl flex items-center justify-center shadow-2xl overflow-hidden group">
+              {/* Inner Glow */}
+              <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              
               <motion.div
-                animate={{ 
-                  rotate: [0, 5, -5, 0],
-                  scale: [1, 1.05, 1] 
-                }}
+                animate={{ y: [0, -15, 0], rotate: [0, 5, -5, 0] }}
                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                className="relative"
+                className="text-[140px] md:text-[200px] filter drop-shadow-[0_0_30px_rgba(59,130,246,0.5)]"
               >
-                <span className="text-[120px] md:text-[180px] drop-shadow-2xl">🪄</span>
-                {/* Floating Particles */}
-                <motion.div 
-                  animate={{ y: [-20, 20], opacity: [0, 1, 0] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                  className="absolute top-0 right-0 text-4xl"
-                >✨</motion.div>
+                🪄
               </motion.div>
+
+              {/* Decorative Tags */}
+              <div className="absolute top-8 left-8 bg-blue-500/20 border border-blue-500/30 px-3 py-1 rounded-full text-xs font-mono text-blue-300">
+                &lt;student /&gt;
+              </div>
             </div>
-            
-            {/* Experience Badge */}
-            <div className="absolute -bottom-6 -right-6 p-6 glass rounded-2xl shadow-xl border border-white/20">
-              <p className="font-display font-bold text-3xl text-primary">Student</p>
-              <p className="text-xs uppercase tracking-wider text-muted-foreground">Leveling Up Daily</p>
-            </div>
+
+            {/* Experience Card */}
+            <motion.div 
+              whileHover={{ scale: 1.05 }}
+              className="absolute -bottom-8 -right-8 bg-[#1e293b]/90 backdrop-blur-md p-6 rounded-2xl border border-white/10 shadow-2xl z-20"
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center shadow-[0_0_15px_rgba(59,130,246,0.5)]">
+                  <Sparkles className="text-white" />
+                </div>
+                <div>
+                  <p className="text-sm text-slate-400 uppercase tracking-tighter">Current Status</p>
+                  <p className="text-xl font-bold text-white">Learning Ninja</p>
+                </div>
+              </div>
+            </motion.div>
           </motion.div>
 
-          {/* RIGHT: CONTENT & ACCORDION */}
-          <div className="space-y-8">
-            <motion.h3 
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              className="font-display text-2xl md:text-3xl font-bold"
-            >
-              Turning <span className="text-primary italic">Ideas</span> into Reality
-            </motion.h3>
-
+          {/* RIGHT SIDE: Accordion & Stats */}
+          <div className="flex flex-col gap-8">
             <div className="space-y-4">
               {accordion.map((item, index) => (
-                <div key={index} className="border-b border-white/10">
+                <motion.div 
+                  key={index}
+                  initial={false}
+                  className={`rounded-2xl border transition-all duration-300 ${
+                    active === index ? 'bg-white/5 border-primary/50 shadow-[0_0_20px_rgba(59,130,246,0.1)]' : 'bg-transparent border-white/10 hover:border-white/20'
+                  }`}
+                >
                   <button
                     onClick={() => toggleAccordion(index)}
-                    className="flex items-center justify-between w-full py-4 text-left group"
+                    className="flex items-center justify-between w-full p-5 text-left"
                   >
-                    <span className={`text-lg font-medium transition-colors ${active === index ? 'text-primary' : 'text-foreground/70'}`}>
-                      {item.title}
-                    </span>
-                    <motion.div
-                      animate={{ rotate: active === index ? 180 : 0, color: active === index ? "#3b82f6" : "#94a3b8" }}
-                    >
-                      <ChevronDown size={20} />
-                    </motion.div>
+                    <div className="flex items-center gap-4">
+                      <span className={`p-2 rounded-lg ${active === index ? 'bg-primary text-white' : 'bg-white/5 text-slate-400'}`}>
+                        {item.icon}
+                      </span>
+                      <span className={`text-lg font-semibold ${active === index ? 'text-white' : 'text-slate-400'}`}>
+                        {item.title}
+                      </span>
+                    </div>
+                    <ChevronDown className={`transition-transform duration-300 ${active === index ? 'rotate-180 text-primary' : 'text-slate-600'}`} />
                   </button>
 
                   <AnimatePresence>
                     {active === index && (
                       <motion.div
-                        variants={accordionVariants}
-                        initial="hidden"
-                        animate="visible"
-                        exit="exit"
-                        className="overflow-hidden"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3 }}
                       >
-                        <div className="pb-6 pr-4">
+                        <div className="px-5 pb-6 ml-14">
+                          <div className="h-px bg-gradient-to-r from-primary/50 to-transparent mb-4" />
                           {typedLines.map((line, i) => (
                             <motion.p
                               key={i}
-                              initial={{ opacity: 0, y: 5 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{ duration: 0.3 }}
-                              className="text-muted-foreground leading-relaxed mb-2"
+                              initial={{ opacity: 0, x: -10 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              className="text-slate-400 leading-relaxed mb-2"
                               dangerouslySetInnerHTML={{ __html: line }}
                             />
                           ))}
@@ -172,25 +187,26 @@ export default function AboutSection() {
                       </motion.div>
                     )}
                   </AnimatePresence>
-                </div>
+                </motion.div>
               ))}
             </div>
 
-            {/* STATS GRID */}
-            <div className="grid grid-cols-2 gap-4">
-              {stats.map((stat, index) => (
+            {/* Stats Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-4">
+              {stats.map((stat, i) => (
                 <motion.div
-                  key={stat.label}
-                  whileHover={{ y: -5 }}
-                  className="p-4 rounded-2xl bg-white/5 border border-white/5 hover:bg-white/10 transition-all"
+                  key={i}
+                  whileHover={{ y: -5, backgroundColor: "rgba(255,255,255,0.08)" }}
+                  className="p-4 rounded-2xl bg-white/5 border border-white/5 text-center flex flex-col items-center justify-center transition-all"
                 >
-                  <stat.icon size={20} className="text-primary mb-2" />
-                  <div className="text-xl font-bold">{stat.value}</div>
-                  <div className="text-xs text-muted-foreground uppercase">{stat.label}</div>
+                  <stat.icon className={`w-6 h-6 mb-2 ${stat.color}`} />
+                  <span className="text-2xl font-bold text-white block">{stat.value}</span>
+                  <span className="text-[10px] uppercase tracking-widest text-slate-500 font-medium">{stat.label}</span>
                 </motion.div>
               ))}
             </div>
           </div>
+
         </div>
       </div>
     </section>
