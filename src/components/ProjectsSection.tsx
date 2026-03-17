@@ -1,57 +1,68 @@
+
 import { motion } from 'framer-motion';
 import { ExternalLink, Github, Play } from 'lucide-react';
+
+// --- 0. IMPORT ASSETS ---
+// pastikan nama file sama dengan yang ada dalam folder assets
+import folderimg from '../assets/folder.png';
+import errorimg from '../assets/error.png';
+import jamimg from '../assets/jam.png';
+import progresimg from '../assets/progres.png';
+import lampuimg from '../assets/lampu.png';
+import videoimg from '../assets/video.png';
+
 
 const projects = [
   {
     title: 'Digital Class Library',
-    description: 'Pusat arsip materi dan tugas kelas Informatika. Membantu teman-teman mengakses materi belajar dengan satu klik.',
+    description: 'A centralized archive for Informatics materials and class assignments. Designed to help classmates access learning resources with just one click.',
     tags: ['The Foundation', 'Responsive'],
-    image: '📂',
+    image: <img src={folderimg} alt="folder" className="w- h-full object-contain p-4 hover:scale-110 transition-transform duration-500" />,
     color: 'bg-[#FFD1DC]', // Pastel Pink
     github: '#',
     demo: '#',
   },
   {
     title: 'The Error Diary',
-    description: 'Buku catatan digital berisi daftar error saat belajar VS Code dan solusinya. Menjinakkan bug satu demi satu!',
-    tags: ['Problem Solving', 'Logika'],
-    image: '📖',
+    description: 'A digital logbook documenting common errors encountered while learning VS Code and their solutions. Taming bugs one line at a time!',
+    tags: ['Problem Solving', 'Logic'],
+    image: <img src={errorimg} alt="error" className="w- h-full object-contain p-4 hover:scale-110 transition-transform duration-500" />,
     color: 'bg-[#B2E2F2]', // Pastel Blue
     github: '#',
     demo: '#',
   },
   {
     title: 'Aceh Study Pomodoro',
-    description: 'Alat bantu fokus belajar dengan timer yang dilengkapi quotes motivasi untuk siswa madrasah.',
+    description: 'A productivity tool with a focus timer, featuring motivational quotes to help students stay disciplined during study sessions.',
     tags: ['The Logic', 'Productivity'],
-    image: '⏱️',
+    image: <img src={jamimg} alt="jam" className="w- h-full object-contain p-4 hover:scale-110 transition-transform duration-500" />,
     color: 'bg-[#C1E1C1]', // Pastel Green
     github: '#',
     demo: '#',
   },
   {
-    title: 'Portofolio: Jurnal Belajar',
-    description: 'Website ini sendiri! Sebuah ruang untuk mendokumentasikan setiap progres belajar koding saya dari nol.',
+    title: 'Portfolio: Learning Journal',
+    description: 'This very website! A dedicated space to document every step of my coding journey from scratch.',
     tags: ['Creative', 'Workshop'],
-    image: '✨',
+    image: <img src={progresimg} alt="progres" className="w- h-full object-contain p-4 hover:scale-110 transition-transform duration-500" />,
     color: 'bg-[#D7BDE2]', // Pastel Purple
     github: '#',
     demo: '#',
   },
   {
     title: 'Daily Coding Tips',
-    description: 'Berbagi tips cepat koding dan penggunaan VS Code untuk pemula di media sosial.',
+    description: 'Sharing quick programming tips and VS Code hacks for beginners through social media content.',
     tags: ['Content', 'Education'],
-    image: '💡',
+    image: <img src={lampuimg} alt="lampu" className="w- h-full object-contain p-4 hover:scale-110 transition-transform duration-500" />,
     color: 'bg-[#FDFD96]', // Pastel Yellow
     isContent: true,
     youtube: '#',
   },
   {
-    title: 'Informatika MAN 1 Vlog',
-    description: 'Dokumentasi keseruan belajar teknologi di sekolah dalam format video pendek.',
+    title: 'Informatics MAN 1 Vlog',
+    description: 'Documenting the excitement of learning technology at school through short-form video content.',
     tags: ['Vlog', 'School Life'],
-    image: '🎬',
+    image: <img src={videoimg} alt="video" className="w- h-full object-contain p-4 hover:scale-110 transition-transform duration-500" />,
     color: 'bg-[#FFB7B2]', // Pastel Salmon
     isContent: true,
     youtube: '#',
@@ -60,10 +71,9 @@ const projects = [
 
 export default function ProjectsSection() {
   return (
-    // MENGGANTI bg MENJADI bg-[#FFF1F2] (Soft Rose/Pink Pastel)
     <section id="projects" className="py-24 bg-[#FFF1F2] dark:bg-[#0A192F] relative overflow-hidden transition-colors duration-500">
       
-      {/* Background Decor - Dot pattern dengan warna pink yang sedikit lebih gelap */}
+      {/* Background Decor */}
       <div className="absolute top-0 left-0 w-full h-full opacity-[0.1] pointer-events-none dark:opacity-[0.05]" 
            style={{ backgroundImage: 'radial-gradient(#FDA4AF 1.5px, transparent 1.5px)', backgroundSize: '30px 30px' }} />
 
