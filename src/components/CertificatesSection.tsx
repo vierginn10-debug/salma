@@ -1,6 +1,5 @@
 import { motion } from 'framer-motion';
-import { Award, ExternalLink, Calendar } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Award, ExternalLink, Calendar, ShieldCheck, Bookmark } from 'lucide-react';
 
 const certificates = [
   {
@@ -9,7 +8,7 @@ const certificates = [
     date: '2024',
     credentialId: 'AWS-SAA-123456',
     image: '🏆',
-    color: 'from-orange-500/20 to-yellow-500/20',
+    color: 'bg-[#FF71CE]', // Neon Pink
     link: '#',
   },
   {
@@ -18,7 +17,7 @@ const certificates = [
     date: '2023',
     credentialId: 'GCP-PCD-789012',
     image: '☁️',
-    color: 'from-blue-500/20 to-cyan-500/20',
+    color: 'bg-[#01CDFE]', // Neon Blue
     link: '#',
   },
   {
@@ -27,7 +26,7 @@ const certificates = [
     date: '2023',
     credentialId: 'META-FE-345678',
     image: '⚛️',
-    color: 'from-blue-600/20 to-indigo-500/20',
+    color: 'bg-[#05FFA1]', // Neon Green
     link: '#',
   },
   {
@@ -36,7 +35,7 @@ const certificates = [
     date: '2023',
     credentialId: 'MDB-DEV-901234',
     image: '🍃',
-    color: 'from-green-500/20 to-emerald-500/20',
+    color: 'bg-[#B967FF]', // Purple
     link: '#',
   },
   {
@@ -45,7 +44,7 @@ const certificates = [
     date: '2022',
     credentialId: 'CKA-567890',
     image: '⚙️',
-    color: 'from-indigo-500/20 to-purple-500/20',
+    color: 'bg-[#FFFB96]', // Yellow
     link: '#',
   },
   {
@@ -54,75 +53,107 @@ const certificates = [
     date: '2022',
     credentialId: 'PSM-I-234567',
     image: '📋',
-    color: 'from-teal-500/20 to-cyan-500/20',
+    color: 'bg-[#ADFF2F]', // Greenish Yellow
     link: '#',
   },
 ];
 
 export default function CertificatesSection() {
   return (
-    <section id="certificates" className="py-20 md:py-32">
-      <div className="container mx-auto px-4">
+    <section id="certificates" className="py-24 bg-white dark:bg-[#0F0F0F] relative transition-colors duration-500">
+      <div className="container mx-auto px-6">
+        
+        {/* HEADER SECTION */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-20"
         >
-          <span className="text-primary font-medium mb-2 block">Kredensial</span>
-          <h2 className="font-display text-3xl md:text-5xl font-bold mb-4">
-            Sertifikat &amp; Lisensi
+          <div className="inline-block border-4 border-black dark:border-white bg-[#FFFB96] dark:bg-black px-6 py-2 mb-4 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_#ADFF2F] -rotate-2">
+            <span className="font-black text-xs uppercase tracking-[0.2em] text-black dark:text-white">Verification Center</span>
+          </div>
+          <h2 className="text-5xl md:text-7xl font-black uppercase italic tracking-tighter dark:text-white">
+            CERTIFIED <span className="text-[#FF71CE]">SKILLS</span>
           </h2>
-          <div className="w-20 h-1 bg-primary mx-auto rounded-full" />
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+        {/* GRID SECTION */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
           {certificates.map((cert, index) => (
             <motion.div
               key={cert.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              transition={{ duration: 0.4, delay: index * 0.1 }}
+              whileHover={{ rotate: index % 2 === 0 ? 1 : -1 }}
               className="group"
             >
-              <div className="h-full p-6 glass rounded-2xl shadow-card hover:shadow-card-hover transition-all duration-300 hover:-translate-y-2">
-                <div className={`w-16 h-16 rounded-xl mb-4 flex items-center justify-center bg-gradient-to-br ${cert.color}`}>
-                  <span className="text-3xl">{cert.image}</span>
+              {/* Certificate Card */}
+              <div className="h-full p-8 bg-white dark:bg-[#1A1A1A] border-4 border-black dark:border-white shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] dark:shadow-[10px_10px_0px_0px_rgba(255,255,255,0.1)] relative overflow-hidden flex flex-col">
+                
+                {/* Visual Icon with "Stamp" effect */}
+                <div className={`w-20 h-20 border-4 border-black dark:border-white ${cert.color} mb-6 flex items-center justify-center rotate-3 group-hover:rotate-0 transition-transform shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]`}>
+                  <span className="text-4xl drop-shadow-[2px_2px_rgba(0,0,0,0.2)]">{cert.image}</span>
                 </div>
                 
-                <div className="space-y-3">
-                  <div className="flex items-start gap-2">
-                    <Award className="h-5 w-5 text-primary mt-0.5 shrink-0" />
-                    <h3 className="font-display text-lg font-bold group-hover:text-primary transition-colors">
+                {/* Content */}
+                <div className="flex-grow">
+                  <div className="flex items-start gap-3 mb-2">
+                    <Award className="h-6 w-6 text-black dark:text-white shrink-0" strokeWidth={3} />
+                    <h3 className="text-xl font-black uppercase italic tracking-tight leading-none dark:text-white">
                       {cert.title}
                     </h3>
                   </div>
                   
-                  <p className="text-sm text-muted-foreground">
-                    {cert.issuer}
+                  <p className="text-xs font-black uppercase tracking-widest text-black/40 dark:text-white/40 mb-4 ml-9">
+                    Issued by {cert.issuer}
                   </p>
-                  
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Calendar className="h-4 w-4" />
-                    <span>{cert.date}</span>
+
+                  <div className="flex flex-col gap-2 ml-9 mb-8">
+                    <div className="flex items-center gap-2 text-[10px] font-bold uppercase text-black dark:text-white/60">
+                      <Calendar className="h-3 w-3" />
+                      <span>Batch {cert.date}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-[10px] font-mono font-bold text-black/50 dark:text-white/30">
+                      <Bookmark className="h-3 w-3" />
+                      <span>ID: {cert.credentialId}</span>
+                    </div>
                   </div>
-                  
-                  <p className="text-xs text-muted-foreground/70 font-mono">
-                    ID: {cert.credentialId}
-                  </p>
-                  
-                  <Button variant="outline" size="sm" className="rounded-full mt-2" asChild>
-                    <a href={cert.link} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="h-4 w-4 mr-1" />
-                      Verifikasi
-                    </a>
-                  </Button>
+                </div>
+
+                {/* Neo-Brutalist Button */}
+                <div className="mt-auto">
+                  <a 
+                    href={cert.link} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="block text-center py-3 border-4 border-black dark:border-white bg-[#05FFA1] dark:bg-[#ADFF2F] text-black font-black uppercase italic text-xs shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all"
+                  >
+                    <span className="flex items-center justify-center gap-2">
+                      <ExternalLink className="h-4 w-4" strokeWidth={3} />
+                      Verify Credential
+                    </span>
+                  </a>
+                </div>
+
+                {/* Decoration Corner Seal */}
+                <div className="absolute -top-6 -right-6 w-12 h-12 bg-black dark:bg-white rotate-45 flex items-end justify-center pb-1">
+                   <ShieldCheck className="text-white dark:text-black h-4 w-4" />
                 </div>
               </div>
             </motion.div>
           ))}
+        </div>
+
+        {/* FOOTER DECORATION */}
+        <div className="mt-20 flex justify-center">
+          <div className="h-1 w-full bg-black dark:bg-white/10 relative">
+             <div className="absolute left-1/2 -translate-x-1/2 -top-4 bg-white dark:bg-[#0F0F0F] px-8 py-2 border-2 border-black dark:border-white font-black italic uppercase text-[10px] dark:text-white">
+               END OF GALLERY
+             </div>
+          </div>
         </div>
       </div>
     </section>
