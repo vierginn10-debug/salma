@@ -10,19 +10,19 @@ export default function AboutSection() {
     {
       title: "Introduction: Starting from Scratch",
       icon: <Terminal className="w-6 h-6" />,
-      color: "bg-[#FF71CE]", 
+      color: "bg-[#FF71CE]", // Neon Pink
       content: "Hello! I am a student at MAN 1 Banda Aceh who was initially unfamiliar with the world of programming. Through the Informatics subject, I was challenged to step out of my comfort zone and learn to build something from zero. This website is my 'digital notebook'—a space to document every bit of progress, failure, and small success in this coding journey."
     },
     {
       title: "The Process: Behind the Scenes",
       icon: <Cpu className="w-6 h-6" />,
-      color: "bg-[#01CDFE]", 
+      color: "bg-[#01CDFE]", // Neon Blue
       content: "Learning to use VS Code turned out to be both exciting and challenging! At first, I was often confused when the web layout broke just because of a single character. But from that, I learned the true meaning of precision. Every time I successfully fix an error and update my code to GitHub, there’s a sense of pride."
     },
     {
       title: "Hopes: Future Journey",
       icon: <Rocket className="w-6 h-6" />,
-      color: "bg-[#05FFA1]", 
+      color: "bg-[#05FFA1]", // Neon Green
       content: "This assignment made me realize that technology is not just to be enjoyed, but something we can create. My goal is simple: I want to keep learning and not give up easily on new things. I hope this first coding experience becomes a valuable foundation for me to understand the wider world of technology."
     },
   ], []);
@@ -36,6 +36,7 @@ export default function AboutSection() {
 
   useEffect(() => {
     if (active !== null) {
+      // Membagi teks berdasarkan titik untuk efek muncul per kalimat
       const sentences = accordion[active].content.split(". ").filter(Boolean);
       setTypedLines([]);
       let currentIndex = 0;
@@ -43,17 +44,20 @@ export default function AboutSection() {
       const typeSentence = () => {
         if (currentIndex < sentences.length) {
           const sentence = sentences[currentIndex] + (currentIndex < sentences.length - 1 ? "." : "");
+          
+          // Menambahkan MAN 1 Banda Aceh ke dalam daftar highlight
           const highlighted = sentence.replace(
-            /(VS Code|GitHub|Informatics|programming|technology|coding|digital notebook)/gi,
-            (match) => `<span class="bg-black dark:bg-[#64FFDA] text-white dark:text-[#0A192F] px-1.5 py-0.5 mx-0.5 font-black uppercase text-[10px] italic border border-white/20 dark:border-black/20">${match}</span>`
+            /(VS Code|GitHub|Informatics|programming|technology|coding|digital notebook|MAN 1 Banda Aceh)/gi,
+            (match) => `<span class="bg-black dark:bg-[#64FFDA] text-white dark:text-[#0A192F] px-1.5 py-0.5 mx-0.5 font-black uppercase text-[10px] italic border border-white/20 dark:border-black/20 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">${match}</span>`
           );
           
           setTypedLines((prev) => [...prev, highlighted]);
           currentIndex++;
-          setTimeout(typeSentence, 150);
+          setTimeout(typeSentence, 200); // Kecepatan antar kalimat
         }
       };
-      const timer = setTimeout(typeSentence, 100);
+      
+      const timer = setTimeout(typeSentence, 150);
       return () => clearTimeout(timer);
     }
   }, [active, accordion]);
@@ -63,14 +67,14 @@ export default function AboutSection() {
       
       {/* --- DEKORASI LATAR BELAKANG --- */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-10 left-[5%] w-32 h-32 border-8 border-black dark:border-[#64FFDA]/10 bg-[#FF71CE] rotate-12 opacity-20" />
-        <div className="absolute top-60 right-[5%] w-48 h-48 border-8 border-black dark:border-[#64FFDA]/10 rounded-full bg-[#01CDFE] -rotate-12 opacity-20" />
+        <div className="absolute top-10 left-[5%] w-32 h-32 border-8 border-black dark:border-[#64FFDA]/10 bg-[#FF71CE] rotate-12 opacity-20 animate-pulse" />
+        <div className="absolute top-60 right-[5%] w-48 h-48 border-8 border-black dark:border-[#64FFDA]/10 rounded-full bg-[#01CDFE] -rotate-12 opacity-20 animate-bounce" style={{ animationDuration: '6s' }} />
         <div className="absolute bottom-20 left-[15%] w-24 h-24 border-8 border-black dark:border-[#64FFDA]/10 bg-[#B967FF] rotate-45 opacity-20" />
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
         
-        {/* HEADER SECTION: FIXED WITH NEON TEAL */}
+        {/* HEADER SECTION */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -82,7 +86,6 @@ export default function AboutSection() {
           </div>
           
           <h2 className="text-5xl md:text-8xl font-black mb-8 tracking-tighter uppercase leading-[0.85] italic">
-            {/* Teks "From Logic" diganti menjadi Cyan Neon agar menyala di malam hari */}
             <span className="text-black dark:text-[#64FFDA] drop-shadow-[0_0_15px_rgba(100,255,218,0.3)]">
               From Logic
             </span>
@@ -109,12 +112,12 @@ export default function AboutSection() {
             viewport={{ once: true }}
             className="relative"
           >
-            <div className="relative z-10 aspect-square border-[10px] border-black dark:border-[#64FFDA] bg-[#B967FF] dark:bg-[#112240] shadow-[20px_20px_0px_0px_rgba(0,0,0,1)] dark:shadow-[20px_20px_0px_0px_#64FFDA] flex items-center justify-center overflow-hidden">
+            <div className="relative z-10 aspect-square border-[10px] border-black dark:border-[#64FFDA] bg-[#B967FF] dark:bg-[#112240] shadow-[20px_20px_0px_0px_rgba(0,0,0,1)] dark:shadow-[20px_20px_0px_0px_#64FFDA] flex items-center justify-center overflow-hidden group">
               <div className="absolute inset-0 opacity-40 bg-[radial-gradient(#000_3px,transparent_1px)] dark:bg-[radial-gradient(#64FFDA_1px,transparent_1px)] [background-size:24px_24px]" />
               <motion.div
                 animate={{ scale: [1, 1.1, 1], rotate: [0, 5, -5, 0], y: [0, -20, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="text-[200px] md:text-[280px] z-10 filter drop-shadow-[15px_15px_0px_rgba(0,0,0,1)] dark:drop-shadow-[15px_15px_0px_#64FFDA]"
+                className="text-[200px] md:text-[280px] z-10 filter drop-shadow-[15px_15px_0px_rgba(0,0,0,1)] dark:drop-shadow-[15px_15px_0px_#64FFDA] group-hover:grayscale transition-all"
               >
                 🪄
               </motion.div>
@@ -141,7 +144,7 @@ export default function AboutSection() {
               {accordion.map((item, index) => (
                 <motion.div 
                   key={index}
-                  className={`border-4 border-black dark:border-white transition-all duration-300 ${
+                  className={`border-4 border-black dark:border-white transition-all duration-300 overflow-hidden ${
                     active === index ? 'shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] dark:shadow-[12px_12px_0px_0px_#64FFDA] translate-x-[-4px] translate-y-[-4px]' : 'bg-white dark:bg-[#112240] shadow-none'
                   }`}
                 >
@@ -153,7 +156,7 @@ export default function AboutSection() {
                       <span className="p-3 border-4 border-black dark:border-white bg-white dark:bg-black text-black dark:text-white shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] font-black text-xl italic">
                         ?
                       </span>
-                      <span className={`text-2xl md:text-3xl font-black uppercase italic tracking-tighter leading-tight ${active === index ? 'text-black' : 'text-black dark:text-white'}`}>
+                      <span className={`text-2xl md:text-3xl font-black uppercase italic tracking-tighter leading-tight text-black ${active === index ? 'text-black' : 'dark:text-white'}`}>
                         {item.title}
                       </span>
                     </div>
@@ -163,14 +166,18 @@ export default function AboutSection() {
                   <AnimatePresence>
                     {active === index && (
                       <motion.div
-                        initial={{ height: 0 }} animate={{ height: "auto" }} exit={{ height: 0 }}
+                        initial={{ height: 0 }} 
+                        animate={{ height: "auto" }} 
+                        exit={{ height: 0 }}
                         className="overflow-hidden bg-white dark:bg-[#0D1B2A]"
                       >
                         <div className="p-8 border-t-4 border-black dark:border-white">
                           {typedLines.map((line, i) => (
                             <motion.p
-                              key={i} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
-                              className="text-lg md:text-xl font-bold leading-tight mb-4 text-black dark:text-[#8892B0]"
+                              key={i} 
+                              initial={{ opacity: 0, x: -20 }} 
+                              animate={{ opacity: 1, x: 0 }}
+                              className="text-lg md:text-xl font-bold leading-tight mb-4 text-black dark:text-[#CCD6F6]"
                               dangerouslySetInnerHTML={{ __html: line }}
                             />
                           ))}
@@ -182,6 +189,7 @@ export default function AboutSection() {
               ))}
             </div>
 
+            {/* STATS GRID */}
             <div className="grid grid-cols-2 gap-6">
               {stats.map((stat, i) => (
                 <motion.div

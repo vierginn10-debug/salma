@@ -9,6 +9,7 @@ export default function HeroSection() {
     if (element) element.scrollIntoView({ behavior: "smooth" });
   };
 
+  // Varians untuk animasi huruf (staggered)
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -44,9 +45,34 @@ export default function HeroSection() {
                  bg-gradient-to-br from-amber-100 via-rose-100 to-purple-200
                  dark:from-[#030712] dark:via-[#111827] dark:to-[#1e1b4b] pt-20 pb-20" 
     >
-      {/* Background 3D */}
+      {/* 1. BACKGROUND LAYER: 3D Scene */}
       <div className="absolute inset-0 z-0 opacity-40 dark:opacity-40 pointer-events-none">
         <ThreeScene />
+      </div>
+
+      {/* 2. EFFECT LAYER: Floating Particles (Efek Debu Berkilau) */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        {[...Array(8)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-2 h-2 bg-pink-400/20 dark:bg-pink-500/10 rounded-full blur-sm"
+            animate={{
+              y: [0, -150, 0],
+              x: [0, Math.random() * 80 - 40, 0],
+              opacity: [0, 0.6, 0]
+            }}
+            transition={{
+              duration: Math.random() * 10 + 10,
+              repeat: Infinity,
+              ease: "linear",
+              delay: i * 1.5
+            }}
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+            }}
+          />
+        ))}
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
@@ -145,7 +171,6 @@ export default function HeroSection() {
           {/* SEBELAH KANAN: Foto Profil Transparent & Signal */}
           <div className="w-full md:w-2/5 flex justify-center order-1 md:order-2 px-4">
             <div className="relative group">
-              {/* Efek Sinyal Berlapis */}
               <div className="absolute inset-0 rounded-full bg-pink-400/30 animate-[ping_3s_ease-in-out_infinite] scale-90 z-0" />
               <div className="absolute inset-0 rounded-full bg-purple-400/20 animate-[ping_4s_ease-in-out_infinite] scale-100 z-0" />
               
@@ -164,7 +189,6 @@ export default function HeroSection() {
                 }}
                 className="relative z-10"
               >
-                {/* Ikon Sinyal Gradien */}
                 <div className="absolute -top-2 -right-2 md:top-4 md:right-4 z-30 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl p-3 rounded-2xl shadow-2xl border border-white/50 dark:border-white/10 flex flex-col items-center gap-1">
                   <div className="flex gap-[3px] items-end h-4 w-6 justify-center">
                     <motion.div 
@@ -186,7 +210,6 @@ export default function HeroSection() {
                   <span className="text-[8px] font-black text-slate-500 dark:text-slate-300 uppercase tracking-tighter">Live Lab</span>
                 </div>
 
-                {/* Container Foto - Background dibuat transparan dan backdrop blur */}
                 <div className="w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 rounded-full border-[6px] border-white/60 backdrop-blur-sm shadow-[0_30px_70px_-15px_rgba(236,72,153,0.3)] overflow-hidden bg-transparent group">
                    <img
                     src="/foto salma.jpg" 
@@ -195,7 +218,6 @@ export default function HeroSection() {
                   />
                 </div>
                 
-                {/* Shadow Refleksi Bawah */}
                 <motion.div 
                   animate={{ scale: [1, 0.8, 1], opacity: [0.2, 0.1, 0.2] }}
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
@@ -208,7 +230,6 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* Button Scroll Down - Saran: Menggunakan Mouse Scroll Icon yang modern */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -217,9 +238,7 @@ export default function HeroSection() {
         className="absolute bottom-10 left-1/2 -translate-x-1/2 cursor-pointer z-20 group"
       >
         <div className="flex flex-col items-center gap-2">
-            {/* Mouse Frame */}
             <div className="w-6 h-10 border-2 border-pink-500/50 rounded-full p-1 flex justify-center group-hover:border-pink-500 transition-colors">
-                {/* Animating Wheel/Dot */}
                 <motion.div 
                     animate={{ y: [0, 12, 0], opacity: [1, 0, 1] }}
                     transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
