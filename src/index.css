@@ -38,7 +38,7 @@
     --radius: 0.75rem;
 
     /* Custom tokens */
-    --gradient-primary: linear-gradient(180deg, hsl(68, 100%, 83%), hsl(0, 0%, 100%));
+    --gradient-primary: linear-gradient(180deg, hsl(0, 73%, 81%), hsl(314, 95%, 85%));
     --gradient-hero: linear-gradient(180deg, hsl(312, 78%, 82%) 0%, hsl(64, 73%, 85%) 100%);
     --navbg: linear-gradient(180deg, hsl(326, 62%, 74%) 0%, hsl(0, 0%, 100%) 100%);
     --shadow-glow: 0 0 40px hsla(330, 100%, 81%, 0.931);
