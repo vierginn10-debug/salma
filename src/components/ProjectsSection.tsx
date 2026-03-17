@@ -1,9 +1,8 @@
-
 import { motion } from 'framer-motion';
 import { ExternalLink, Github, Play } from 'lucide-react';
 
 // --- 0. IMPORT ASSETS ---
-// pastikan nama file sama dengan yang ada dalam folder assets
+// Pastikan file-file ini sudah ada di folder src/assets/ kamu
 import folderimg from '../assets/folder.png';
 import errorimg from '../assets/error.png';
 import jamimg from '../assets/jam.png';
@@ -11,13 +10,12 @@ import progresimg from '../assets/progres.png';
 import lampuimg from '../assets/lampu.png';
 import videoimg from '../assets/video.png';
 
-
 const projects = [
   {
     title: 'Digital Class Library',
     description: 'A centralized archive for Informatics materials and class assignments. Designed to help classmates access learning resources with just one click.',
     tags: ['The Foundation', 'Responsive'],
-    image: <img src={folderimg} alt="folder" className="w- h-full object-contain p-4 hover:scale-110 transition-transform duration-500" />,
+    image: <img src={folderimg} alt="folder" className="w-full h-full object-contain p-4 transition-transform hover:scale-110 duration-500" />,
     color: 'bg-[#FFD1DC]', // Pastel Pink
     github: '#',
     demo: '#',
@@ -26,7 +24,7 @@ const projects = [
     title: 'The Error Diary',
     description: 'A digital logbook documenting common errors encountered while learning VS Code and their solutions. Taming bugs one line at a time!',
     tags: ['Problem Solving', 'Logic'],
-    image: <img src={errorimg} alt="error" className="w- h-full object-contain p-4 hover:scale-110 transition-transform duration-500" />,
+    image: <img src={errorimg} alt="error" className="w-full h-full object-contain p-2 hover:scale-105 transition-transform duration-500" />,
     color: 'bg-[#B2E2F2]', // Pastel Blue
     github: '#',
     demo: '#',
@@ -35,7 +33,7 @@ const projects = [
     title: 'Aceh Study Pomodoro',
     description: 'A productivity tool with a focus timer, featuring motivational quotes to help students stay disciplined during study sessions.',
     tags: ['The Logic', 'Productivity'],
-    image: <img src={jamimg} alt="jam" className="w- h-full object-contain p-4 hover:scale-110 transition-transform duration-500" />,
+    image: <img src={jamimg} alt="jam" className="w-full h-full object-contain p-4 hover:scale-110 duration-500" />,
     color: 'bg-[#C1E1C1]', // Pastel Green
     github: '#',
     demo: '#',
@@ -44,7 +42,7 @@ const projects = [
     title: 'Portfolio: Learning Journal',
     description: 'This very website! A dedicated space to document every step of my coding journey from scratch.',
     tags: ['Creative', 'Workshop'],
-    image: <img src={progresimg} alt="progres" className="w- h-full object-contain p-4 hover:scale-110 transition-transform duration-500" />,
+    image: <img src={lampuimg} alt="lampu" className="w-full h-full object-contain p-2 hover:scale-105 transition-transform duration-500" />,
     color: 'bg-[#D7BDE2]', // Pastel Purple
     github: '#',
     demo: '#',
@@ -53,7 +51,7 @@ const projects = [
     title: 'Daily Coding Tips',
     description: 'Sharing quick programming tips and VS Code hacks for beginners through social media content.',
     tags: ['Content', 'Education'],
-    image: <img src={lampuimg} alt="lampu" className="w- h-full object-contain p-4 hover:scale-110 transition-transform duration-500" />,
+    image: <img src={progresimg} alt="progress" className="w-full h-full object-contain p-2" />,
     color: 'bg-[#FDFD96]', // Pastel Yellow
     isContent: true,
     youtube: '#',
@@ -62,7 +60,7 @@ const projects = [
     title: 'Informatics MAN 1 Vlog',
     description: 'Documenting the excitement of learning technology at school through short-form video content.',
     tags: ['Vlog', 'School Life'],
-    image: <img src={videoimg} alt="video" className="w- h-full object-contain p-4 hover:scale-110 transition-transform duration-500" />,
+    image: <img src={videoimg} alt="video" className="w-full h-full object-contain p-4 hover:scale-110 duration-500" />,
     color: 'bg-[#FFB7B2]', // Pastel Salmon
     isContent: true,
     youtube: '#',
@@ -128,7 +126,7 @@ export default function ProjectsSection() {
                 {/* Preview Area */}
                 <div className={`h-44 border-b-[5px] border-black dark:border-white relative flex items-center justify-center overflow-hidden ${project.color}`}>
                    <div className="absolute inset-0 opacity-[0.15] bg-[radial-gradient(#000_1.5px,transparent_1px)] [background-size:10px_10px]" />
-                   <span className="text-7xl z-10 group-hover:scale-125 transition-transform duration-500 drop-shadow-[2px_2px_0px_rgba(0,0,0,0.1)]">
+                   <span className="w-full h-full z-10 group-hover:scale-110 transition-transform duration-500">
                     {project.image}
                    </span>
                 </div>
@@ -161,6 +159,11 @@ export default function ProjectsSection() {
                     {project.demo && (
                       <a href={project.demo} className="flex-1 flex items-center justify-center gap-2 py-2.5 border-[3px] border-black dark:border-white bg-white dark:bg-transparent text-black dark:text-white font-black uppercase text-[10px] hover:bg-black hover:text-white dark:hover:bg-[#64FFDA] dark:hover:text-black transition-all active:translate-y-1">
                         <ExternalLink size={14} /> Demo
+                      </a>
+                    )}
+                    {project.isContent && (
+                      <a href={project.youtube} className="flex-1 flex items-center justify-center gap-2 py-2.5 border-[3px] border-black dark:border-white bg-[#FFB7B2] text-black font-black uppercase text-[10px] hover:bg-black hover:text-white transition-all active:translate-y-1">
+                        <Play size={14} /> Watch
                       </a>
                     )}
                   </div>
