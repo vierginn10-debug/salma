@@ -19,8 +19,8 @@ const contactInfo = [
   {
     icon: Mail,
     label: 'Email',
-    value: 'vierginyou@gmail.com',
-    href: 'mailto:vierginyou@gmail.com',
+    value: 'vierginn10@gmail.com',
+    href: 'mailto:vierginn10@gmail.com',
     color: 'bg-[#E0FFFB]', 
   },
   {
