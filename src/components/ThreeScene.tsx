@@ -17,7 +17,7 @@ function AnimatedSphere() {
     <Float speed={2} rotationIntensity={1} floatIntensity={2}>
       <Sphere ref={meshRef} args={[1, 64, 64]} position={[0, 0, 0]}>
         <MeshDistortMaterial
-          color="#14b8a6"
+          color="#64FFDA" // Hijau Neon kamu
           attach="material"
           distort={0.4}
           speed={2}
@@ -31,21 +31,14 @@ function AnimatedSphere() {
 
 function FloatingTorus() {
   const meshRef = useRef<THREE.Mesh>(null);
-  
-  useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x = state.clock.elapsedTime * 0.5;
-      meshRef.current.rotation.z = state.clock.elapsedTime * 0.3;
-    }
-  });
-
   return (
     <Float speed={1.5} rotationIntensity={2} floatIntensity={1}>
-      <Torus ref={meshRef} args={[0.6, 0.2, 32, 64]} position={[2.5, 1, -1]}>
+      <Torus ref={meshRef} args={[0.6, 0.2, 32, 64]} position={[3, 1.5, -2]}>
         <meshStandardMaterial
-          color="#0ea5e9"
+          color="#FF71CE" // Pink Neon
           roughness={0.3}
           metalness={0.9}
+          wireframe // Membuat efek garis-garis digital
         />
       </Torus>
     </Float>
@@ -54,19 +47,11 @@ function FloatingTorus() {
 
 function FloatingBox() {
   const meshRef = useRef<THREE.Mesh>(null);
-  
-  useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x = state.clock.elapsedTime * 0.4;
-      meshRef.current.rotation.y = state.clock.elapsedTime * 0.2;
-    }
-  });
-
   return (
     <Float speed={1.8} rotationIntensity={1.5} floatIntensity={1.5}>
-      <Box ref={meshRef} args={[0.5, 0.5, 0.5]} position={[-2.5, -0.5, -0.5]}>
+      <Box ref={meshRef} args={[0.5, 0.5, 0.5]} position={[-3, -1, -1]}>
         <meshStandardMaterial
-          color="#8b5cf6"
+          color="#B967FF" // Ungu
           roughness={0.2}
           metalness={0.8}
         />
@@ -77,21 +62,12 @@ function FloatingBox() {
 
 function FloatingIcosahedron() {
   const meshRef = useRef<THREE.Mesh>(null);
-  
-  useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x = state.clock.elapsedTime * 0.3;
-      meshRef.current.rotation.y = state.clock.elapsedTime * 0.5;
-    }
-  });
-
   return (
     <Float speed={2.2} rotationIntensity={1} floatIntensity={2}>
-      <Icosahedron ref={meshRef} args={[0.4, 1]} position={[-1.8, 1.5, 0]}>
+      <Icosahedron ref={meshRef} args={[0.4, 0]} position={[-2, 2, 0]}>
         <meshStandardMaterial
-          color="#f97316"
-          roughness={0.3}
-          metalness={0.7}
+          color="#64FFDA"
+          wireframe
         />
       </Icosahedron>
     </Float>
@@ -99,13 +75,13 @@ function FloatingIcosahedron() {
 }
 
 function ParticleField() {
-  const count = 100;
+  const count = 80; // Dikurangi sedikit agar lebih ringan
   const positions = useMemo(() => {
     const pos = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
-      pos[i * 3] = (Math.random() - 0.5) * 10;
-      pos[i * 3 + 1] = (Math.random() - 0.5) * 10;
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 10;
+      pos[i * 3] = (Math.random() - 0.5) * 12;
+      pos[i * 3 + 1] = (Math.random() - 0.5) * 12;
+      pos[i * 3 + 2] = (Math.random() - 0.5) * 12;
     }
     return pos;
   }, []);
@@ -128,7 +104,7 @@ function ParticleField() {
           itemSize={3}
         />
       </bufferGeometry>
-      <pointsMaterial size={0.02} color="#14b8a6" transparent opacity={0.6} />
+      <pointsMaterial size={0.03} color="#64FFDA" transparent opacity={0.4} />
     </points>
   );
 }
@@ -137,9 +113,10 @@ export default function ThreeScene() {
   return (
     <div className="absolute inset-0 -z-10">
       <Canvas camera={{ position: [0, 0, 5], fov: 75 }}>
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[10, 10, 5]} intensity={1} />
-        <pointLight position={[-10, -10, -10]} intensity={0.5} color="#14b8a6" />
+        <ambientLight intensity={0.4} />
+        <pointLight position={[10, 10, 10]} intensity={1} color="#64FFDA" />
+        <pointLight position={[-10, -10, -10]} intensity={0.5} color="#FF71CE" />
+        
         <AnimatedSphere />
         <FloatingTorus />
         <FloatingBox />

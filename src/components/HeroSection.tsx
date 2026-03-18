@@ -9,13 +9,14 @@ export default function HeroSection() {
     if (element) element.scrollIntoView({ behavior: "smooth" });
   };
 
+  // Varian animasi untuk teks "Hello World!" agar muncul satu per satu
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: { 
         staggerChildren: 0.08, 
-        delayChildren: 1.2 
+        delayChildren: 0.5 
       }
     }
   };
@@ -47,12 +48,12 @@ export default function HeroSection() {
                  bg-gradient-to-br from-[#E0FFFB] via-[#8EC5FC] to-[#E0C3FC]
                  dark:from-[#000000] dark:via-[#050A30] dark:to-[#1B1464]" 
     >
-      {/* 1. BACKGROUND LAYER */}
-      <div className="absolute inset-0 z-0 opacity-40 dark:opacity-40 pointer-events-none">
+      {/* 1. BACKGROUND LAYER (ThreeJS) */}
+      <div className="absolute inset-0 z-0 opacity-40 pointer-events-none">
         <ThreeScene />
       </div>
 
-      {/* 2. EFFECT LAYER: Floating Particles */}
+      {/* 2. FLOATING PARTICLES EFFECT */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         {[...Array(12)].map((_, i) => (
           <motion.div
@@ -82,10 +83,11 @@ export default function HeroSection() {
           
           {/* SEBELAH KIRI: Teks & Deskripsi */}
           <div className="w-full md:w-3/5 text-center md:text-left order-2 md:order-1">
+            {/* Badge Version */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 1.3, duration: 0.6 }}
+              transition={{ delay: 0.3, duration: 0.6 }}
               className="inline-flex items-center gap-2 px-6 py-2 border-4 border-black dark:border-white bg-[#ADFF2F] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_#FF71CE] -rotate-1 mb-8"
             >
               <Terminal className="w-4 h-4 text-black" /> 
@@ -94,6 +96,7 @@ export default function HeroSection() {
               </span>
             </motion.div>
 
+            {/* Main Heading */}
             <motion.h1
               variants={containerVariants}
               initial="hidden"
@@ -124,21 +127,22 @@ export default function HeroSection() {
               </motion.span>
             </motion.h1>
 
+            {/* Description Box */}
             <motion.div
               variants={fadeInUp}
               initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="bg-white/80 dark:bg-slate-900/40 backdrop-blur-xl p-6 md:p-8 border-4 border-black dark:border-white shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] dark:shadow-[12px_12px_0px_0_#64FFDA] mb-10 mx-auto md:mx-0 max-w-xl group transition-all duration-500"
+              animate="visible"
+              className="bg-white/80 dark:bg-slate-900/40 backdrop-blur-xl p-6 md:p-8 border-4 border-black dark:border-white shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] dark:shadow-[12px_12px_0px_0_#64FFDA] mb-10 mx-auto md:mx-0 max-w-xl group transition-all duration-500 hover:-translate-y-1"
             >
               <p className="text-lg md:text-xl font-black text-black dark:text-[#64FFDA] mb-3 flex items-center justify-center md:justify-start gap-2 uppercase italic">
                 <Rocket className="text-[#FF71CE] dark:text-[#64FFDA] w-5 h-5 group-hover:animate-bounce" /> From Zero to One
               </p>
               <p className="text-base md:text-lg font-bold text-slate-800 dark:text-slate-200 leading-tight">
-                Salma's Informatics learning journal — A student of <span className="bg-[#01CDFE] dark:bg-transparent dark:text-[#64FFDA] px-1 border-2 border-black dark:border-none">MAN 1 Banda Aceh</span> currently taming lines of code with passion.
+                Salma's Informatics learning journal — A student of <span className="bg-[#ADFF2F] dark:bg-transparent dark:text-[#64FFDA] px-1 border-2 border-black dark:border-[#64FFDA] font-black">MAN 1 Banda Aceh</span> currently taming lines of code with passion.
               </p>
             </motion.div>
 
+            {/* Action Buttons */}
             <div className="flex flex-wrap gap-6 justify-center md:justify-start mb-10">
               <Button
                 size="lg"
@@ -161,6 +165,7 @@ export default function HeroSection() {
               </Button>
             </div>
 
+            {/* Social Links */}
             <div className="flex flex-wrap gap-4 justify-center md:justify-start">
               {[
                 { icon: Github, href: "https://github.com/vierginn10-debug/", color: "bg-black text-white dark:bg-white dark:text-black" },
@@ -183,27 +188,29 @@ export default function HeroSection() {
             </div>
           </div>
 
-          {/* SEBELAH KANAN: Foto Profil */}
+          {/* SEBELAH KANAN: Foto Profil Neobrutalism */}
           <div className="w-full md:w-2/5 flex justify-center order-1 md:order-2 px-4">
             <div className="relative">
+              {/* Background Accent Box */}
               <motion.div 
                 initial={{ opacity: 0, rotate: 0 }}
                 animate={{ opacity: 1, rotate: -3 }}
-                transition={{ delay: 1.5, duration: 0.8 }}
+                transition={{ delay: 0.6, duration: 0.8 }}
                 className="absolute -inset-4 border-4 border-black dark:border-white bg-[#ADFF2F] z-0 shadow-[10px_10px_0px_0px_#FF71CE] dark:shadow-[10px_10px_0px_0px_#64FFDA]" 
               />
               
+              {/* Image Frame */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 whileHover={{ rotate: 0 }}
-                transition={{ delay: 1.4, type: "spring", stiffness: 100 }}
+                transition={{ delay: 0.5, type: "spring", stiffness: 100 }}
                 className="relative z-10 w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 border-4 border-black dark:border-white overflow-hidden rotate-3 bg-white"
               >
                  <img
                   src="/foto salma.jpg" 
                   alt="Salma"
-                  className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500 scale-110"
+                  className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700 scale-110"
                 />
                 <div className="absolute top-4 right-4 bg-black text-[#FF71CE] dark:text-[#64FFDA] px-2 py-1 border-2 border-[#FF71CE] dark:border-[#64FFDA] text-[10px] font-black uppercase tracking-tighter animate-pulse">
                   Live Lab
@@ -218,7 +225,7 @@ export default function HeroSection() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 3 }}
+        transition={{ delay: 2 }}
         onClick={() => scrollToSection("#about")}
         className="absolute bottom-10 left-1/2 -translate-x-1/2 cursor-pointer z-20 group hidden md:block"
       >
