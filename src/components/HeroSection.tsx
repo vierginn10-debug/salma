@@ -4,12 +4,11 @@ import { Button } from "@/components/ui/button";
 import ThreeScene from "./ThreeScene";
 
 export default function HeroSection() {
-  const scrollToSection = (id) => {
+  const scrollToSection = (id: string) => {
     const element = document.querySelector(id);
     if (element) element.scrollIntoView({ behavior: "smooth" });
   };
 
-  // Varians untuk animasi huruf (staggered)
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -41,21 +40,21 @@ export default function HeroSection() {
   return (
     <section
       id="home"
-      className="relative min-h-screen flex items-center overflow-hidden transition-colors duration-700
-                 bg-gradient-to-br from-amber-100 via-rose-100 to-purple-200
-                 dark:from-[#030712] dark:via-[#111827] dark:to-[#1e1b4b] pt-20 pb-20" 
+      className="relative min-h-screen flex items-center overflow-hidden transition-colors duration-700 pt-20 pb-20
+                 bg-gradient-to-br from-[#E0FFFB] via-[#8EC5FC] to-[#E0C3FC]
+                 dark:from-[#000000] dark:via-[#050A30] dark:to-[#1B1464]" 
     >
       {/* 1. BACKGROUND LAYER: 3D Scene */}
       <div className="absolute inset-0 z-0 opacity-40 dark:opacity-40 pointer-events-none">
         <ThreeScene />
       </div>
 
-      {/* 2. EFFECT LAYER: Floating Particles (Efek Debu Berkilau) */}
+      {/* 2. EFFECT LAYER: Floating Particles */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         {[...Array(8)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-2 h-2 bg-pink-400/20 dark:bg-pink-500/10 rounded-full blur-sm"
+            className="absolute w-2 h-2 bg-pink-400/30 dark:bg-[#64FFDA]/10 rounded-full blur-sm"
             animate={{
               y: [0, -150, 0],
               x: [0, Math.random() * 80 - 40, 0],
@@ -84,33 +83,40 @@ export default function HeroSection() {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/40 dark:bg-primary/20 backdrop-blur-md text-pink-600 dark:text-pink-400 font-bold text-[10px] md:text-xs tracking-[0.2em] mb-8 shadow-sm uppercase border border-white/50"
+              className="inline-flex items-center gap-2 px-6 py-2 border-4 border-black dark:border-white bg-[#ADFF2F] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_#FF71CE] -rotate-1 mb-8"
             >
-              <Terminal className="w-4 h-4 text-amber-500" /> Salma’s Digital Lab v2.0
+              <Terminal className="w-4 h-4 text-black" /> 
+              <span className="font-black text-[10px] md:text-xs uppercase tracking-widest text-black">
+                Salma’s Digital Lab v2.0
+              </span>
             </motion.div>
 
             <motion.h1
               variants={containerVariants}
               initial="hidden"
               animate="visible"
-              className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black mb-6 text-slate-900 dark:text-white leading-tight tracking-tight flex flex-wrap justify-center md:justify-start"
+              className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-6 text-slate-900 dark:text-white leading-[0.85] tracking-tighter italic flex flex-wrap justify-center md:justify-start transition-colors duration-500"
             >
               {helloText.split("").map((char, index) => (
-                <motion.span key={index} variants={letterVariants}>
+                <motion.span 
+                  key={index} 
+                  variants={letterVariants} 
+                  className="hover:text-[#FF71CE] dark:hover:text-[#64FFDA] transition-colors cursor-default"
+                >
                   {char === " " ? "\u00A0" : char}
                 </motion.span>
               ))}
-              <motion.span 
-                animate={{ rotate: [0, 20, -20, 0] }}
-                transition={{ repeat: Infinity, duration: 2.5 }}
-                className="inline-block ml-3 text-3xl md:text-5xl"
-              >
-                🌎
-              </motion.span>
               <br className="w-full" />
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-600 via-purple-600 to-amber-500">
+              <motion.span 
+                initial={{ rotate: -2 }}
+                className="inline-block mt-2 transition-all duration-500
+                           /* LIGHT MODE: PINK + CYAN SHADOW */
+                           text-[#FF71CE] drop-shadow-[5px_5px_0px_#01CDFE] 
+                           /* DARK MODE: CYAN + PURPLE SHADOW */
+                           dark:text-[#64FFDA] dark:drop-shadow-[5px_5px_0px_#B967FF]"
+              >
                 Meet Salma.
-              </span>
+              </motion.span>
             </motion.h1>
 
             <motion.div
@@ -118,30 +124,33 @@ export default function HeroSection() {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
-              className="bg-white/50 dark:bg-slate-900/40 backdrop-blur-xl p-6 md:p-8 rounded-[2rem] border-2 border-white/50 dark:border-white/5 shadow-2xl mb-10 mx-auto md:mx-0 max-w-xl group hover:shadow-pink-500/10 transition-all duration-500"
+              className="bg-white/80 dark:bg-slate-900/40 backdrop-blur-xl p-6 md:p-8 border-4 border-black dark:border-white shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] dark:shadow-[12px_12px_0px_0_#64FFDA] mb-10 mx-auto md:mx-0 max-w-xl group transition-all duration-500"
             >
-              <p className="text-lg md:text-xl font-extrabold text-purple-900 dark:text-white mb-3 flex items-center justify-center md:justify-start gap-2">
-                <Rocket className="text-pink-500 w-5 h-5 group-hover:animate-bounce" /> From Zero to One
+              <p className="text-lg md:text-xl font-black text-black dark:text-[#64FFDA] mb-3 flex items-center justify-center md:justify-start gap-2 uppercase italic">
+                <Rocket className="text-[#FF71CE] dark:text-[#64FFDA] w-5 h-5 group-hover:animate-bounce" /> From Zero to One
               </p>
-              <p className="text-base md:text-lg font-bold text-slate-800 dark:text-slate-200 leading-relaxed">
-                Salma's Informatics learning journal — A student of <span className="text-pink-600 dark:text-primary font-black underline decoration-4 decoration-amber-400/30 underline-offset-4">MAN 1 Banda Aceh</span> currently taming lines of code with passion.
+              <p className="text-base md:text-lg font-bold text-slate-800 dark:text-slate-200 leading-tight">
+                Salma's Informatics learning journal — A student of <span className="bg-[#01CDFE] dark:bg-transparent dark:text-[#64FFDA] px-1 border-2 border-black dark:border-none">MAN 1 Banda Aceh</span> currently taming lines of code with passion.
               </p>
             </motion.div>
 
-            <div className="flex flex-wrap gap-4 justify-center md:justify-start mb-10">
+            <div className="flex flex-wrap gap-6 justify-center md:justify-start mb-10">
               <Button
                 size="lg"
-                className="h-14 rounded-xl px-8 text-base font-black bg-gradient-to-r from-pink-500 via-rose-500 to-purple-600 hover:scale-105 hover:shadow-[0_0_20px_rgba(236,72,153,0.5)] active:scale-95 transition-all text-white border-none shadow-xl flex items-center gap-2 group relative overflow-hidden"
+                className="h-16 rounded-none px-10 text-base font-black border-4 border-black 
+                           /* ADAPTIF: Pink di Light, Cyan di Dark */
+                           bg-[#FF71CE] dark:bg-[#64FFDA] text-black 
+                           shadow-[6px_6px_0px_0px_#000] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all uppercase flex items-center gap-2 group"
                 onClick={() => scrollToSection("#projects")}
               >
-                <Code2 className="h-5 w-5 group-hover:rotate-12 transition-transform relative z-10" /> 
-                <span className="relative z-10 uppercase">Lihat Projects</span>
+                <Code2 className="h-5 w-5 group-hover:rotate-12 transition-transform" /> 
+                Lihat Projects
               </Button>
 
               <Button
                 variant="outline"
                 size="lg"
-                className="h-14 rounded-xl px-8 text-base font-black border-[3px] border-purple-600/50 text-purple-700 dark:text-white hover:bg-purple-600 hover:text-white transition-all shadow-md active:scale-95 bg-white/20 backdrop-blur-sm uppercase"
+                className="h-16 rounded-none px-10 text-base font-black border-4 border-black bg-white dark:bg-transparent text-black dark:text-white shadow-[6px_6px_0px_0px_#ADFF2F] dark:shadow-[6px_6px_0px_0px_#64FFDA] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all uppercase"
                 onClick={() => scrollToSection("#contact")}
               >
                 Hubungi Saya
@@ -150,16 +159,16 @@ export default function HeroSection() {
 
             <div className="flex gap-4 justify-center md:justify-start">
               {[
-                { icon: Github, href: "https://github.com/vierginn10-debug/", color: "bg-slate-900 text-white" },
-                { icon: Instagram, href: "https://www.instagram.com/salmayyawnn", color: "bg-white/80 text-pink-600 border border-white/50 shadow-md backdrop-blur-sm" },
+                { icon: Github, href: "https://github.com/vierginn10-debug/", color: "bg-black text-white dark:bg-white dark:text-black" },
+                { icon: Instagram, href: "https://www.instagram.com/salmayyawnn", color: "bg-[#01CDFE] text-black" },
               ].map((social, idx) => (
                 <motion.a
                   key={idx}
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`p-3 rounded-xl transition-all ${social.color}`}
-                  whileHover={{ scale: 1.25, y: -5, rotate: idx % 2 === 0 ? 10 : -10 }}
+                  className={`p-3 border-4 border-black dark:border-white shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#64FFDA] transition-all ${social.color}`}
+                  whileHover={{ scale: 1.1, rotate: idx % 2 === 0 ? 5 : -5 }}
                   whileTap={{ scale: 0.9 }}
                 >
                   <social.icon className="h-6 w-6" />
@@ -168,61 +177,29 @@ export default function HeroSection() {
             </div>
           </div>
 
-          {/* SEBELAH KANAN: Foto Profil Transparent & Signal */}
+          {/* SEBELAH KANAN: Foto Profil */}
           <div className="w-full md:w-2/5 flex justify-center order-1 md:order-2 px-4">
-            <div className="relative group">
-              <div className="absolute inset-0 rounded-full bg-pink-400/30 animate-[ping_3s_ease-in-out_infinite] scale-90 z-0" />
-              <div className="absolute inset-0 rounded-full bg-purple-400/20 animate-[ping_4s_ease-in-out_infinite] scale-100 z-0" />
+            <div className="relative">
+              {/* Decorative Frame Behind Image */}
+              <div className="absolute -inset-4 border-4 border-black dark:border-white bg-[#ADFF2F] -rotate-3 z-0 shadow-[10px_10px_0px_0px_#FF71CE] dark:shadow-[10px_10px_0px_0px_#64FFDA]" />
               
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ 
-                  opacity: 1, 
-                  scale: 1, 
-                  y: [0, -25, 0] 
-                }}
-                whileHover={{ scale: 1.05 }}
-                transition={{ 
-                  opacity: { duration: 1 },
-                  y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
-                  scale: { type: "spring", stiffness: 100 }
-                }}
-                className="relative z-10"
+                animate={{ opacity: 1, scale: 1 }}
+                whileHover={{ rotate: 0 }}
+                transition={{ type: "spring", stiffness: 100 }}
+                className="relative z-10 w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 border-4 border-black dark:border-white overflow-hidden rotate-3 bg-white"
               >
-                <div className="absolute -top-2 -right-2 md:top-4 md:right-4 z-30 bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl p-3 rounded-2xl shadow-2xl border border-white/50 dark:border-white/10 flex flex-col items-center gap-1">
-                  <div className="flex gap-[3px] items-end h-4 w-6 justify-center">
-                    <motion.div 
-                      animate={{ height: ["30%", "80%", "30%"] }}
-                      transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
-                      className="w-1.5 bg-pink-600 rounded-full shadow-[0_0_8px_rgba(219,39,119,0.5)]"
-                    />
-                    <motion.div 
-                      animate={{ height: ["60%", "100%", "60%"] }}
-                      transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
-                      className="w-1.5 bg-purple-600 rounded-full shadow-[0_0_8px_rgba(147,51,234,0.5)]"
-                    />
-                    <motion.div 
-                      animate={{ height: ["20%", "60%", "20%"] }}
-                      transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut", delay: 0.4 }}
-                      className="w-1.5 bg-amber-500 rounded-full shadow-[0_0_8px_rgba(245,158,11,0.5)]"
-                    />
-                  </div>
-                  <span className="text-[8px] font-black text-slate-500 dark:text-slate-300 uppercase tracking-tighter">Live Lab</span>
-                </div>
-
-                <div className="w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 rounded-full border-[6px] border-white/60 backdrop-blur-sm shadow-[0_30px_70px_-15px_rgba(236,72,153,0.3)] overflow-hidden bg-transparent group">
-                   <img
-                    src="/foto salma.jpg" 
-                    alt="Salma"
-                    className="w-full h-full object-cover scale-105 group-hover:scale-115 transition-transform duration-700"
-                  />
-                </div>
-                
-                <motion.div 
-                  animate={{ scale: [1, 0.8, 1], opacity: [0.2, 0.1, 0.2] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute -bottom-12 left-1/2 -translate-x-1/2 w-40 h-5 bg-pink-900/20 blur-xl rounded-[100%]" 
+                 <img
+                  src="/foto salma.jpg" 
+                  alt="Salma"
+                  className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500 scale-110"
                 />
+                
+                {/* Floating "Live" Tag */}
+                <div className="absolute top-4 right-4 bg-black text-[#FF71CE] dark:text-[#64FFDA] px-2 py-1 border-2 border-[#FF71CE] dark:border-[#64FFDA] text-[10px] font-black uppercase tracking-tighter animate-pulse">
+                  Live Lab
+                </div>
               </motion.div>
             </div>
           </div>
@@ -230,6 +207,7 @@ export default function HeroSection() {
         </div>
       </div>
 
+      {/* Scroll Indicator */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -238,14 +216,14 @@ export default function HeroSection() {
         className="absolute bottom-10 left-1/2 -translate-x-1/2 cursor-pointer z-20 group"
       >
         <div className="flex flex-col items-center gap-2">
-            <div className="w-6 h-10 border-2 border-pink-500/50 rounded-full p-1 flex justify-center group-hover:border-pink-500 transition-colors">
+            <div className="w-8 h-12 border-4 border-black dark:border-white bg-[#ADFF2F] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#64FFDA] flex justify-center p-1">
                 <motion.div 
-                    animate={{ y: [0, 12, 0], opacity: [1, 0, 1] }}
-                    transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-                    className="w-1.5 h-1.5 bg-pink-600 rounded-full shadow-[0_0_8px_rgba(219,39,119,0.8)]"
+                    animate={{ y: [0, 16, 0] }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                    className="w-2 h-2 bg-black dark:bg-white rounded-full"
                 />
             </div>
-            <span className="text-[9px] font-bold text-pink-600/60 uppercase tracking-widest group-hover:text-pink-600">Scroll</span>
+            <span className="text-[10px] font-black text-black dark:text-white uppercase tracking-widest">Scroll</span>
         </div>
       </motion.div>
     </section>

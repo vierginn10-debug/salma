@@ -1,17 +1,17 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 
-// 1. DATA SKILLS (Ditambahkan ID untuk state management)
+// 1. DATA SKILLS (Warna bg disesuaikan dengan tema Cyber-Vapor Salma)
 const skillArsenal = {
   foundation: [
-    { id: 'html', name: 'HTML5', icon: '🧱', desc: 'The architect crafting the digital world’s structure.', level: 90, color: 'bg-[#FF1493]' },
-    { id: 'css', name: 'CSS3', icon: '🎨', desc: 'The painter adding color and style to every corner.', level: 85, color: 'bg-[#FF1493]' },
-    { id: 'tw', name: 'Tailwind CSS', icon: '⚡', desc: 'Lightning-fast tool for building modern designs.', level: 80, color: 'bg-[#FF1493]' },
+    { id: 'html', name: 'HTML5', icon: '🧱', desc: 'The architect crafting the digital world’s structure.', level: 90, color: 'bg-[#FF71CE]' },
+    { id: 'css', name: 'CSS3', icon: '🎨', desc: 'The painter adding color and style to every corner.', level: 85, color: 'bg-[#FF71CE]' },
+    { id: 'tw', name: 'Tailwind CSS', icon: '⚡', desc: 'Lightning-fast tool for building modern designs.', level: 80, color: 'bg-[#FF71CE]' },
   ],
   logic: [
-    { id: 'node', name: 'Node.js', icon: '⚙️', desc: 'The engine behind the scenes managing everything.', level: 40, color: 'bg-[#00FFFF]' },
-    { id: 'py', name: 'Python', icon: '🐍', desc: 'The logic master for intelligent commands.', level: 30, color: 'bg-[#00FFFF]' },
-    { id: 'js', name: 'JavaScript', icon: '⚡', desc: 'Breathing life into websites for interaction.', level: 65, color: 'bg-[#00FFFF]' },
+    { id: 'js', name: 'JavaScript', icon: '⚡', desc: 'Breathing life into websites for interaction.', level: 65, color: 'bg-[#01CDFE]' },
+    { id: 'node', name: 'Node.js', icon: '⚙️', desc: 'The engine behind the scenes managing everything.', level: 40, color: 'bg-[#01CDFE]' },
+    { id: 'py', name: 'Python', icon: '🐍', desc: 'The logic master for intelligent commands.', level: 30, color: 'bg-[#01CDFE]' },
   ],
   workshop: [
     { id: 'vs', name: 'VS Code', icon: '💻', desc: 'The main HQ where ideas transform into lines of code.', level: 95, color: 'bg-[#FFFF00]' },
@@ -25,8 +25,8 @@ const skillArsenal = {
   ],
 };
 
-// 2. KOMPONEN SKILLBAR DENGAN TOOLTIP & INTERACTIVE HOVER
-function SkillBar({ name, icon, desc, level, color, delay, id }) {
+// 2. KOMPONEN SKILLBAR
+function SkillBar({ name, icon, desc, level, color, delay }: any) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -39,7 +39,6 @@ function SkillBar({ name, icon, desc, level, color, delay, id }) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* TOOLTIP POPUP */}
       <AnimatePresence>
         {isHovered && (
           <motion.div 
@@ -64,8 +63,7 @@ function SkillBar({ name, icon, desc, level, color, delay, id }) {
         </span>
       </div>
 
-      {/* THE PROGRESS BAR */}
-      <div className={`relative h-7 border-4 border-black dark:border-white ${color} shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(100,255,218,0.2)] overflow-hidden flex items-center`}>
+      <div className={`relative h-7 border-4 border-black dark:border-white ${color} shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(100,255,218,0.3)] overflow-hidden flex items-center transition-all duration-500`}>
         <motion.div
           initial={{ width: 0 }}
           whileInView={{ width: `${level}%` }}
@@ -74,7 +72,6 @@ function SkillBar({ name, icon, desc, level, color, delay, id }) {
           className="absolute left-0 top-0 h-full bg-black dark:bg-white z-0"
         />
         
-        {/* MIX BLEND TEXT */}
         <div className="relative z-10 w-full px-3 flex justify-between items-center mix-blend-difference text-white">
            <span className="text-[9px] font-black uppercase tracking-widest italic">
             {level > 80 ? 'STABLE' : 'DEVELOPING'}
@@ -85,8 +82,8 @@ function SkillBar({ name, icon, desc, level, color, delay, id }) {
         </div>
       </div>
 
-      {/* GLOW EFFECT ON HOVER */}
-      <div className={`absolute inset-0 -z-10 blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500 ${color}`} />
+      {/* Glow Effect on Hover */}
+      <div className={`absolute inset-0 -z-10 blur-xl opacity-0 group-hover:opacity-40 transition-opacity duration-500 ${color}`} />
     </motion.div>
   );
 }
@@ -94,10 +91,15 @@ function SkillBar({ name, icon, desc, level, color, delay, id }) {
 // 3. MAIN SECTION
 export default function SkillsSection() {
   return (
-    <section id="skills" className="py-24 md:py-36 bg-[#E6E6FA] dark:bg-[#0F0F0F] border-t-8 border-black dark:border-white transition-colors duration-500 overflow-hidden">
+    <section 
+      id="skills" 
+      className="py-24 md:py-36 border-t-8 border-black dark:border-white transition-colors duration-700 overflow-hidden
+      bg-gradient-to-br from-[#E0FFFB] via-[#8EC5FC] to-[#E0C3FC]
+      dark:from-[#000000] dark:via-[#050A30] dark:to-[#1B1464]"
+    >
       <div className="container mx-auto px-6">
         
-        {/* Headline */}
+        {/* Headline Adaptive */}
         <div className="text-center mb-24 relative">
           <motion.div 
             initial={{ scale: 0.9, opacity: 0 }}
@@ -105,13 +107,13 @@ export default function SkillsSection() {
             viewport={{ once: true }}
             className="inline-block border-4 border-black dark:border-white bg-white dark:bg-black px-8 md:px-12 py-5 shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] dark:shadow-[12px_12px_0px_0px_#64FFDA] -rotate-1 mb-8 relative z-10"
           >
-            <h1 className="font-black uppercase italic text-4xl md:text-7xl tracking-tighter leading-none text-black dark:text-white">
-              SKILL <span className="text-[#FF1493] dark:text-[#64FFDA]">ARSENAL</span>
-            </h1>
+            <h2 className="font-black uppercase italic text-4xl md:text-7xl tracking-tighter leading-none text-black dark:text-white transition-colors duration-500">
+              SKILL <span className="text-[#FF71CE] dark:text-[#64FFDA] drop-shadow-[5px_5px_0px_#01CDFE] dark:drop-shadow-[5px_5px_0px_#B967FF] transition-all duration-500">ARSENAL</span>
+            </h2>
           </motion.div>
           
           <div className="max-w-3xl mx-auto px-4 mt-4">
-            <p className="font-black uppercase italic text-black/80 dark:text-[#8892B0] text-lg md:text-xl tracking-tight mb-4">
+            <p className="font-black uppercase italic text-black/80 dark:text-slate-300 text-lg md:text-xl tracking-tight mb-4">
               "Not a master yet, but definitely not at zero anymore."
             </p>
             <div className="w-24 h-2 bg-black dark:bg-[#64FFDA] mx-auto mb-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]"></div>
@@ -121,8 +123,8 @@ export default function SkillsSection() {
         {/* Grid Kategorisasi */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-24">
           {Object.entries(skillArsenal).map(([category, items], idx) => (
-            <div key={category} className="group p-6 border-4 border-black dark:border-white bg-white dark:bg-[#112240] shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] dark:shadow-[10px_10px_0px_0px_rgba(100,255,218,0.1)] hover:translate-y-[-5px] transition-all duration-300">
-              <h3 className="font-black uppercase italic text-xl mb-8 border-b-4 border-black dark:border-[#64FFDA] pb-2 flex items-center gap-2 text-black dark:text-white">
+            <div key={category} className="group p-6 border-4 border-black dark:border-white bg-white/90 dark:bg-[#112240]/60 backdrop-blur-md shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] dark:shadow-[10px_10px_0px_0px_#64FFDA] hover:translate-y-[-8px] transition-all duration-500">
+              <h3 className="font-black uppercase italic text-xl mb-8 border-b-4 border-black dark:border-[#64FFDA] pb-2 flex items-center gap-2 text-black dark:text-white transition-colors">
                 {category === 'foundation' ? '🏗️ Foundation' : 
                  category === 'logic' ? '🐍 Logic' : 
                  category === 'workshop' ? '🛠️ Workshop' : '🚀 Human'}
@@ -134,24 +136,24 @@ export default function SkillsSection() {
           ))}
         </div>
 
-        {/* GitHub Button - Tautan sudah disesuaikan ke GitHub Salma */}
-        <div className="flex justify-center mt-20">
+        {/* GitHub Button Cta */}
+        <div className="flex justify-center mt-20 px-4">
           <motion.a
             href="https://github.com/vierginn10-debug" 
             target="_blank"
             rel="noopener noreferrer"
             whileHover={{ scale: 1.05, rotate: -1 }}
             whileTap={{ scale: 0.95 }}
-            className="group relative inline-flex items-center gap-6 bg-[#FFFF00] dark:bg-[#64FFDA] border-8 border-black dark:border-white px-10 py-6 shadow-[16px_16px_0px_0px_rgba(0,0,0,1)] dark:shadow-[16px_16px_0px_0px_rgba(100,255,218,0.2)] hover:shadow-none hover:translate-x-2 hover:translate-y-2 transition-all cursor-pointer"
+            className="group relative inline-flex items-center gap-6 bg-[#FFFF00] dark:bg-[#64FFDA] border-[6px] md:border-8 border-black dark:border-white px-6 md:px-10 py-5 md:py-6 shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] dark:shadow-[12px_12px_0px_0px_#FF71CE] hover:shadow-none hover:translate-x-2 hover:translate-y-2 transition-all cursor-pointer"
           >
-            <span className="text-5xl md:text-6xl group-hover:rotate-12 transition-transform duration-300 text-black">
+            <span className="text-4xl md:text-6xl group-hover:rotate-12 transition-transform duration-300 text-black">
               🐙
             </span>
             <div className="flex flex-col text-left text-black font-black uppercase italic">
-              <span className="text-3xl md:text-4xl tracking-tighter leading-none">
+              <span className="text-2xl md:text-4xl tracking-tighter leading-none">
                 Inspect Source Code
               </span>
-              <span className="font-mono text-[10px] md:text-xs tracking-widest opacity-60 mt-2">
+              <span className="font-mono text-[9px] md:text-xs tracking-widest opacity-70 mt-2">
                 Verify my progress on GitHub @vierginn10-debug →
               </span>
             </div>

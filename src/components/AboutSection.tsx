@@ -10,19 +10,19 @@ export default function AboutSection() {
     {
       title: "Introduction: Starting from Scratch",
       icon: <Terminal className="w-6 h-6" />,
-      color: "bg-[#FF71CE]", // Neon Pink
+      color: "bg-[#FF71CE]", 
       content: "Hello! I am a student at MAN 1 Banda Aceh who was initially unfamiliar with the world of programming. Through the Informatics subject, I was challenged to step out of my comfort zone and learn to build something from zero. This website is my 'digital notebook'—a space to document every bit of progress, failure, and small success in this coding journey."
     },
     {
       title: "The Process: Behind the Scenes",
       icon: <Cpu className="w-6 h-6" />,
-      color: "bg-[#01CDFE]", // Neon Blue
+      color: "bg-[#01CDFE]", 
       content: "Learning to use VS Code turned out to be both exciting and challenging! At first, I was often confused when the web layout broke just because of a single character. But from that, I learned the true meaning of precision. Every time I successfully fix an error and update my code to GitHub, there’s a sense of pride."
     },
     {
       title: "Hopes: Future Journey",
       icon: <Rocket className="w-6 h-6" />,
-      color: "bg-[#05FFA1]", // Neon Green
+      color: "bg-[#05FFA1]", 
       content: "This assignment made me realize that technology is not just to be enjoyed, but something we can create. My goal is simple: I want to keep learning and not give up easily on new things. I hope this first coding experience becomes a valuable foundation for me to understand the wider world of technology."
     },
   ], []);
@@ -36,7 +36,6 @@ export default function AboutSection() {
 
   useEffect(() => {
     if (active !== null) {
-      // Membagi teks berdasarkan titik untuk efek muncul per kalimat
       const sentences = accordion[active].content.split(". ").filter(Boolean);
       setTypedLines([]);
       let currentIndex = 0;
@@ -44,28 +43,29 @@ export default function AboutSection() {
       const typeSentence = () => {
         if (currentIndex < sentences.length) {
           const sentence = sentences[currentIndex] + (currentIndex < sentences.length - 1 ? "." : "");
-          
-          // Menambahkan MAN 1 Banda Aceh ke dalam daftar highlight
           const highlighted = sentence.replace(
             /(VS Code|GitHub|Informatics|programming|technology|coding|digital notebook|MAN 1 Banda Aceh)/gi,
             (match) => `<span class="bg-black dark:bg-[#64FFDA] text-white dark:text-[#0A192F] px-1.5 py-0.5 mx-0.5 font-black uppercase text-[10px] italic border border-white/20 dark:border-black/20 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">${match}</span>`
           );
-          
           setTypedLines((prev) => [...prev, highlighted]);
           currentIndex++;
-          setTimeout(typeSentence, 200); // Kecepatan antar kalimat
+          setTimeout(typeSentence, 200);
         }
       };
-      
       const timer = setTimeout(typeSentence, 150);
       return () => clearTimeout(timer);
     }
   }, [active, accordion]);
 
   return (
-    <section id="about" className="py-24 bg-[#FFFB96]/10 dark:bg-[#0A192F] text-black dark:text-white relative overflow-hidden transition-colors duration-500 selection:bg-black selection:text-[#05FFA1]">
+    <section 
+      id="about" 
+      className="py-24 transition-colors duration-500 selection:bg-black selection:text-[#05FFA1] relative overflow-hidden
+      bg-gradient-to-br from-[#E0FFFB] via-[#8EC5FC] to-[#E0C3FC]
+      dark:from-[#000000] dark:via-[#050A30] dark:to-[#1B1464]"
+    >
       
-      {/* --- DEKORASI LATAR BELAKANG --- */}
+      {/* DEKORASI LATAR BELAKANG */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-10 left-[5%] w-32 h-32 border-8 border-black dark:border-[#64FFDA]/10 bg-[#FF71CE] rotate-12 opacity-20 animate-pulse" />
         <div className="absolute top-60 right-[5%] w-48 h-48 border-8 border-black dark:border-[#64FFDA]/10 rounded-full bg-[#01CDFE] -rotate-12 opacity-20 animate-bounce" style={{ animationDuration: '6s' }} />
@@ -86,13 +86,28 @@ export default function AboutSection() {
           </div>
           
           <h2 className="text-5xl md:text-8xl font-black mb-8 tracking-tighter uppercase leading-[0.85] italic">
-            <span className="text-black dark:text-[#64FFDA] drop-shadow-[0_0_15px_rgba(100,255,218,0.3)]">
+            <span className="text-black dark:text-white transition-colors duration-500">
               From Logic
             </span>
             <br />
-            <span className="text-white bg-black dark:bg-[#112240] px-4 inline-block transform rotate-1 mt-4 shadow-[8px_8px_0px_0px_#FF71CE] dark:shadow-[8px_8px_0px_0px_#64FFDA] border-4 border-black dark:border-[#64FFDA]">
-              To Magic
-            </span>
+            {/* KOTAK "TO MAGIC" DENGAN GLITCH HOVER */}
+            <motion.span 
+              whileHover={{ 
+                x: [0, -3, 3, -3, 0], 
+                y: [0, 2, -2, 2, 0],
+                skew: [0, 2, -2, 0] 
+              }}
+              transition={{ duration: 0.2, repeat: Infinity }}
+              className="inline-block cursor-none transform rotate-1 mt-6 px-8 py-3 border-[6px] border-black dark:border-white
+                           bg-black dark:bg-[#112240] 
+                           transition-all duration-500
+                           shadow-[10px_10px_0px_0px_#01CDFE] dark:shadow-[10px_10px_0px_0px_#B967FF]"
+            >
+              <span className="text-[#FF71CE] drop-shadow-[4px_4px_0px_#01CDFE]
+                             dark:text-[#64FFDA] dark:drop-shadow-[4px_4px_0px_#B967FF]">
+                To Magic
+              </span>
+            </motion.span>
           </h2>
           
           <div className="max-w-3xl mx-auto border-4 border-black dark:border-white bg-white dark:bg-[#112240] p-6 shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] dark:shadow-[10px_10px_0px_0px_rgba(100,255,218,0.1)] relative mt-10">

@@ -8,7 +8,6 @@ import { useToast } from '@/hooks/use-toast';
 import { z } from 'zod';
 import { supabase } from '@/integrations/supabase/client';
 
-// Zod Validation Schema
 const contactSchema = z.object({
   name: z.string().trim().min(1, 'Name is required').max(100, 'Name is too long'),
   email: z.string().trim().email('Invalid email format').max(255, 'Email is too long'),
@@ -22,32 +21,26 @@ const contactInfo = [
     label: 'Email',
     value: 'vierginyou@gmail.com',
     href: 'mailto:vierginyou@gmail.com',
-    color: 'bg-[#FFD1DC]', // Pastel Rose
+    color: 'bg-[#E0FFFB]', 
   },
   {
     icon: Phone,
     label: 'Phone',
     value: '+62 853 7383 3044',
     href: 'tel:+6285373833044',
-    color: 'bg-[#D7BDE2]', // Pastel Purple
+    color: 'bg-[#8EC5FC]', 
   },
   {
     icon: MapPin,
     label: 'Location',
     value: 'Banda Aceh, Indonesia',
     href: '#',
-    color: 'bg-[#FDFD96]', // Pastel Yellow
+    color: 'bg-[#E0C3FC]', 
   },
 ];
 
 export default function ContactSection() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: '',
-  });
-  
+  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
@@ -55,16 +48,14 @@ export default function ContactSection() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: '' }));
-    }
+    if (errors[name]) setErrors((prev) => ({ ...prev, [name]: '' }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrors({});
-
     const result = contactSchema.safeParse(formData);
+    
     if (!result.success) {
       const fieldErrors: Record<string, string> = {};
       result.error.errors.forEach((err) => {
@@ -75,27 +66,21 @@ export default function ContactSection() {
     }
 
     setIsSubmitting(true);
-
     try {
       const { error: supabaseError } = await supabase.functions.invoke('send-contact-email', {
         body: formData,
       });
-
       if (supabaseError) throw supabaseError;
 
       toast({
         title: 'Message Sent! ✨',
         description: "Thanks for reaching out! I'll get back to you soon.",
       });
-
       setFormData({ name: '', email: '', subject: '', message: '' });
-      
     } catch (err: unknown) {
-      const errorMessage = err instanceof Error ? err.message : 'System error occurred';
-      console.error('Submission Error:', errorMessage);
       toast({
         title: 'Failed to Send',
-        description: 'Something went wrong. Please try again later or email me directly.',
+        description: 'Something went wrong. Please try again later.',
         variant: 'destructive',
       });
     } finally {
@@ -107,30 +92,36 @@ export default function ContactSection() {
     <section 
       id="contact" 
       className="py-24 relative overflow-hidden transition-colors duration-500
-                 bg-gradient-to-br from-[#FFF1F2] via-[#F3E5F5] to-[#FEF9E7] 
-                 dark:from-[#0A192F] dark:via-[#0A192F] dark:to-[#0A192F]"
+                 bg-gradient-to-br from-[#E0FFFB] via-[#8EC5FC] to-[#E0C3FC]
+                 dark:from-[#000000] dark:via-[#050A30] dark:to-[#1B1464]
+                 border-t-8 border-black dark:border-white"
     >
       
-      {/* Top Border Decor */}
-      <div className="absolute top-0 left-0 w-full h-2 bg-black dark:bg-[#64FFDA]" />
-      <div className="absolute bottom-0 right-0 w-64 h-64 bg-[#ADFF2F] opacity-10 rounded-full blur-[100px] -z-10 hidden dark:block" />
+      {/* Background Decorative Glow */}
+      <div className="absolute top-1/2 left-0 w-96 h-96 bg-[#64FFDA] opacity-10 rounded-full blur-[120px] -z-10 hidden dark:block" />
 
       <div className="container mx-auto px-6 relative z-10">
         
-        {/* HEADER */}
+        {/* HEADER - Updated Headline Style */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mb-20"
+          className="mb-20 text-center lg:text-left"
         >
-          <div className="inline-block border-4 border-black dark:border-[#64FFDA] bg-[#FDFD96] dark:bg-[#ADFF2F] px-4 py-1 mb-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
-            <span className="font-black text-xs uppercase tracking-widest text-black flex items-center gap-2">
-              <Sparkles size={14} /> Open for Collab
+          <div className="inline-block border-4 border-black dark:border-white bg-[#ADFF2F] px-6 py-2 mb-6 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_#64FFDA] -rotate-1">
+            <span className="font-black text-sm uppercase tracking-widest text-black flex items-center gap-2 italic">
+              <Sparkles size={16} fill="black" /> Open for Collab
             </span>
           </div>
-          <h2 className="text-6xl md:text-8xl font-black uppercase italic tracking-tighter leading-[0.85] text-black dark:text-white">
-            GET IN <span className="text-black dark:text-[#64FFDA] drop-shadow-[4px_4px_0px_#FFD1DC] dark:drop-shadow-[4px_4px_0px_#FF71CE]">TOUCH</span>
+          
+          <h2 className="text-6xl md:text-8xl font-black uppercase italic tracking-tighter leading-[0.85] text-black dark:text-white transition-colors duration-500">
+            GET IN <br className="md:hidden" />
+            <span className="inline-block mt-2 transition-all duration-500
+                           text-[#FF71CE] drop-shadow-[5px_5px_0px_#01CDFE] 
+                           dark:text-[#64FFDA] dark:drop-shadow-[5px_5px_0px_#B967FF]">
+              TOUCH
+            </span>
           </h2>
         </motion.div>
 
@@ -143,7 +134,7 @@ export default function ContactSection() {
             viewport={{ once: true }}
             className="lg:col-span-5 space-y-6"
           >
-            <p className="text-xl font-bold italic text-slate-700 dark:text-slate-400 mb-10 leading-tight">
+            <p className="text-xl font-bold italic text-slate-800 dark:text-slate-300 mb-10 leading-tight border-l-8 border-black dark:border-[#64FFDA] pl-6">
               Have a cool project idea or just want to say hi? Feel free to drop a message!
             </p>
 
@@ -152,13 +143,13 @@ export default function ContactSection() {
                 <a
                   key={info.label}
                   href={info.href}
-                  className="flex items-center gap-6 p-6 bg-white dark:bg-[#112240] border-4 border-black dark:border-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_#64FFDA] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all group"
+                  className="flex items-center gap-6 p-6 bg-white dark:bg-[#112240]/50 backdrop-blur-sm border-4 border-black dark:border-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:shadow-[8px_8px_0px_0px_#64FFDA] hover:-translate-y-1 hover:-translate-x-1 hover:shadow-none transition-all group"
                 >
                   <div className={`p-4 border-4 border-black ${info.color} shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]`}>
                     <info.icon className="h-6 w-6 text-black" strokeWidth={3} />
                   </div>
                   <div>
-                    <p className="text-[10px] font-black uppercase tracking-widest opacity-50 dark:text-white">{info.label}</p>
+                    <p className="text-[10px] font-black uppercase tracking-widest opacity-60 dark:text-slate-400">{info.label}</p>
                     <p className="font-bold text-lg dark:text-white tracking-tight">{info.value}</p>
                   </div>
                 </a>
@@ -173,27 +164,25 @@ export default function ContactSection() {
             viewport={{ once: true }}
             className="lg:col-span-7"
           >
-            <div className="relative bg-white dark:bg-[#112240] border-[6px] border-black dark:border-white shadow-[15px_15px_0px_0px_rgba(0,0,0,1)] dark:shadow-[15px_15px_0px_0px_#64FFDA] p-8 md:p-12">
+            <div className="relative bg-white dark:bg-[#050A30]/80 backdrop-blur-md border-[6px] border-black dark:border-white shadow-[15px_15px_0px_0px_rgba(0,0,0,1)] dark:shadow-[15px_15px_0px_0px_#64FFDA] p-8 md:p-12">
               
-              <div className="absolute -top-6 left-10 bg-black text-white px-4 py-1 border-4 border-black font-black uppercase italic text-xs">
+              <div className="absolute -top-6 left-10 bg-black dark:bg-[#64FFDA] text-white dark:text-black px-4 py-1 border-4 border-black font-black uppercase italic text-xs">
                 send_message.exe
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid sm:grid-cols-2 gap-6">
-                  {/* Name Input */}
                   <div className="space-y-2">
                     <label className="text-xs font-black uppercase italic dark:text-white">Your Name</label>
                     <Input
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                      placeholder="Suhil"
-                      className={`h-14 border-4 border-black dark:border-white rounded-none font-medium focus-visible:ring-0 focus:bg-[#FEF9E7] dark:focus:bg-[#1a3a5a] dark:text-white transition-colors ${errors.name ? 'border-[#FF0000]' : ''}`}
+                      placeholder="salma"
+                      className={`h-14 border-4 border-black dark:border-white rounded-none font-medium focus-visible:ring-0 focus:bg-[#E0FFFB] dark:focus:bg-[#1B1464] dark:text-white transition-colors ${errors.name ? 'border-[#FF0000]' : ''}`}
                     />
                     {errors.name && <p className="text-[10px] font-bold text-[#FF0000] flex items-center gap-1 uppercase"><AlertCircle size={10}/> {errors.name}</p>}
                   </div>
-                  {/* Email Input */}
                   <div className="space-y-2">
                     <label className="text-xs font-black uppercase italic dark:text-white">Your Email</label>
                     <Input
@@ -202,35 +191,33 @@ export default function ContactSection() {
                       value={formData.email}
                       onChange={handleChange}
                       placeholder="hello@domain.com"
-                      className={`h-14 border-4 border-black dark:border-white rounded-none font-medium focus-visible:ring-0 focus:bg-[#FFF1F2] dark:focus:bg-[#1a3a5a] dark:text-white transition-colors ${errors.email ? 'border-[#FF0000]' : ''}`}
+                      className={`h-14 border-4 border-black dark:border-white rounded-none font-medium focus-visible:ring-0 focus:bg-[#8EC5FC] dark:focus:bg-[#1B1464] dark:text-white transition-colors ${errors.email ? 'border-[#FF0000]' : ''}`}
                     />
                     {errors.email && <p className="text-[10px] font-bold text-[#FF0000] flex items-center gap-1 uppercase"><AlertCircle size={10}/> {errors.email}</p>}
                   </div>
                 </div>
 
-                {/* Subject Input */}
                 <div className="space-y-2">
                   <label className="text-xs font-black uppercase italic dark:text-white">Subject</label>
                   <Input
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
-                    placeholder="Collaboration Inquiry"
-                    className={`h-14 border-4 border-black dark:border-white rounded-none font-medium focus-visible:ring-0 focus:bg-[#F3E5F5] dark:focus:bg-[#1a3a5a] dark:text-white transition-colors ${errors.subject ? 'border-[#FF0000]' : ''}`}
+                    placeholder="collaboration inquiry"
+                    className={`h-14 border-4 border-black dark:border-white rounded-none font-medium focus-visible:ring-0 focus:bg-[#E0C3FC] dark:focus:bg-[#1B1464] dark:text-white transition-colors ${errors.subject ? 'border-[#FF0000]' : ''}`}
                   />
                   {errors.subject && <p className="text-[10px] font-bold text-[#FF0000] flex items-center gap-1 uppercase"><AlertCircle size={10}/> {errors.subject}</p>}
                 </div>
 
-                {/* Message Input */}
                 <div className="space-y-2">
                   <label className="text-xs font-black uppercase italic dark:text-white">Message</label>
                   <Textarea
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
-                    placeholder="Hi Salma, i have a cool project..."
+                    placeholder="hi salma, i have a cool project..."
                     rows={5}
-                    className={`border-4 border-black dark:border-white rounded-none font-medium focus-visible:ring-0 focus:bg-[#FFF1F2] dark:focus:bg-[#1a3a5a] dark:text-white transition-colors resize-none ${errors.message ? 'border-[#FF0000]' : ''}`}
+                    className={`border-4 border-black dark:border-white rounded-none font-medium focus-visible:ring-0 focus:bg-[#E0FFFB] dark:focus:bg-[#1B1464] dark:text-white transition-colors resize-none ${errors.message ? 'border-[#FF0000]' : ''}`}
                   />
                   {errors.message && <p className="text-[10px] font-bold text-[#FF0000] flex items-center gap-1 uppercase"><AlertCircle size={10}/> {errors.message}</p>}
                 </div>
@@ -238,7 +225,7 @@ export default function ContactSection() {
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full h-16 bg-black dark:bg-[#64FFDA] text-white dark:text-black font-black uppercase italic text-xl border-4 border-black shadow-[6px_6px_0px_0px_#FDFD96] dark:shadow-[6px_6px_0px_0px_#ADFF2F] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all group disabled:opacity-70"
+                  className="w-full h-16 bg-black dark:bg-[#64FFDA] text-white dark:text-black font-black uppercase italic text-xl border-4 border-black shadow-[8px_8px_0px_0px_#B967FF] dark:shadow-[8px_8px_0px_0px_#FF71CE] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all group disabled:opacity-70"
                 >
                   {isSubmitting ? (
                     <span className="flex items-center gap-2"><Loader2 className="h-6 w-6 animate-spin" /> EXECUTING...</span>
@@ -253,15 +240,15 @@ export default function ContactSection() {
           </motion.div>
         </div>
 
-        {/* FOOTER */}
+        {/* BOTTOM DECOR */}
         <div className="mt-32 pt-10 border-t-4 border-black dark:border-white/20 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="font-black uppercase italic text-xs opacity-50 text-black dark:text-white">
+          <p className="font-black uppercase italic text-[10px] tracking-widest opacity-60 text-black dark:text-white">
             © 2026 SALMA — BUILT WITH REACT & SUPABASE
           </p>
           <div className="flex gap-4">
-            <div className="w-4 h-4 bg-[#FFD1DC] border-2 border-black rounded-full" />
-            <div className="w-4 h-4 bg-[#D7BDE2] border-2 border-black rounded-full" />
-            <div className="w-4 h-4 bg-[#FDFD96] border-2 border-black rounded-full" />
+            <div className="w-5 h-5 bg-[#E0FFFB] border-2 border-black rounded-full" />
+            <div className="w-5 h-5 bg-[#8EC5FC] border-2 border-black rounded-full" />
+            <div className="w-5 h-5 bg-[#E0C3FC] border-2 border-black rounded-full" />
           </div>
         </div>
 
