@@ -90,7 +90,8 @@ export default function AboutSection() {
               From Logic
             </span>
             <br />
-            {/* KOTAK "TO MAGIC" DENGAN GLITCH HOVER */}
+            
+            {/* KOTAK "TO MAGIC" SESUAI PERMINTAAN BARU */}
             <motion.span 
               whileHover={{ 
                 x: [0, -3, 3, -3, 0], 
@@ -98,10 +99,11 @@ export default function AboutSection() {
                 skew: [0, 2, -2, 0] 
               }}
               transition={{ duration: 0.2, repeat: Infinity }}
-              className="inline-block cursor-none transform rotate-1 mt-6 px-8 py-3 border-[6px] border-black dark:border-white
-                           bg-black dark:bg-[#112240] 
-                           transition-all duration-500
-                           shadow-[10px_10px_0px_0px_#01CDFE] dark:shadow-[10px_10px_0px_0px_#B967FF]"
+              className="inline-block transform rotate-1 mt-6 px-8 py-3 border-[6px] transition-all duration-500
+                         /* LIGHT MODE: BG Putih, Border Hitam, Shadow Cyan */
+                         bg-white border-black shadow-[10px_10px_0px_0px_#01CDFE]
+                         /* DARK MODE: BG Hitam, Border Putih, Shadow Ungu */
+                         dark:bg-black dark:border-white dark:shadow-[10px_10px_0px_0px_#B967FF]"
             >
               <span className="text-[#FF71CE] drop-shadow-[4px_4px_0px_#01CDFE]
                              dark:text-[#64FFDA] dark:drop-shadow-[4px_4px_0px_#B967FF]">
@@ -140,7 +142,7 @@ export default function AboutSection() {
 
             <motion.div 
               whileHover={{ scale: 1.1, rotate: 0 }}
-              className="absolute -bottom-10 -left-6 bg-[#FFFB96] dark:bg-[#64FFDA] border-4 border-black p-6 shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] z-20 rotate-[-8deg]"
+              className="absolute -bottom-10 -left-6 bg-[#FFFB96] dark:bg-[#64FFDA] border-4 border-black p-6 shadow-[10px_10px_0px_0px_#01CDFE] dark:shadow-[10px_10px_0px_0px_#64FFDA] z-20 rotate-[-8deg] transition-all"
             >
               <div className="flex flex-col text-center text-black">
                 <span className="text-sm font-black uppercase opacity-60">Status</span>
