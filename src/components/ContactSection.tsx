@@ -21,14 +21,14 @@ const contactInfo = [
     icon: Mail,
     label: 'Email',
     value: 'vierginyou@gmail.com',
-    href: 'mailto:hello@developer.com',
+    href: 'mailto:vierginyou@gmail.com',
     color: 'bg-[#FFD1DC]', // Pastel Rose
   },
   {
     icon: Phone,
     label: 'Phone',
     value: '+62 853 7383 3044',
-    href: 'tel:+6281234567890',
+    href: 'tel:+6285373833044',
     color: 'bg-[#D7BDE2]', // Pastel Purple
   },
   {
@@ -113,8 +113,6 @@ export default function ContactSection() {
       
       {/* Top Border Decor */}
       <div className="absolute top-0 left-0 w-full h-2 bg-black dark:bg-[#64FFDA]" />
-      
-      {/* Dark Mode Decorative Blob */}
       <div className="absolute bottom-0 right-0 w-64 h-64 bg-[#ADFF2F] opacity-10 rounded-full blur-[100px] -z-10 hidden dark:block" />
 
       <div className="container mx-auto px-6 relative z-10">
@@ -145,7 +143,7 @@ export default function ContactSection() {
             viewport={{ once: true }}
             className="lg:col-span-5 space-y-6"
           >
-            <p className="text-xl font-bold uppercase italic text-slate-700 dark:text-slate-400 mb-10 leading-tight">
+            <p className="text-xl font-bold italic text-slate-700 dark:text-slate-400 mb-10 leading-tight">
               Have a cool project idea or just want to say hi? Feel free to drop a message!
             </p>
 
@@ -161,7 +159,7 @@ export default function ContactSection() {
                   </div>
                   <div>
                     <p className="text-[10px] font-black uppercase tracking-widest opacity-50 dark:text-white">{info.label}</p>
-                    <p className="font-black text-lg uppercase italic dark:text-white tracking-tighter">{info.value}</p>
+                    <p className="font-bold text-lg dark:text-white tracking-tight">{info.value}</p>
                   </div>
                 </a>
               ))}
@@ -178,22 +176,24 @@ export default function ContactSection() {
             <div className="relative bg-white dark:bg-[#112240] border-[6px] border-black dark:border-white shadow-[15px_15px_0px_0px_rgba(0,0,0,1)] dark:shadow-[15px_15px_0px_0px_#64FFDA] p-8 md:p-12">
               
               <div className="absolute -top-6 left-10 bg-black text-white px-4 py-1 border-4 border-black font-black uppercase italic text-xs">
-                Send_Message.exe
+                send_message.exe
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid sm:grid-cols-2 gap-6">
+                  {/* Name Input */}
                   <div className="space-y-2">
                     <label className="text-xs font-black uppercase italic dark:text-white">Your Name</label>
                     <Input
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                      placeholder="SALMA"
-                      className={`h-14 border-4 border-black dark:border-white rounded-none font-black uppercase italic focus-visible:ring-0 focus:bg-[#FEF9E7] dark:focus:bg-[#1a3a5a] dark:text-white transition-colors ${errors.name ? 'border-[#FF0000]' : ''}`}
+                      placeholder="Suhil"
+                      className={`h-14 border-4 border-black dark:border-white rounded-none font-medium focus-visible:ring-0 focus:bg-[#FEF9E7] dark:focus:bg-[#1a3a5a] dark:text-white transition-colors ${errors.name ? 'border-[#FF0000]' : ''}`}
                     />
                     {errors.name && <p className="text-[10px] font-bold text-[#FF0000] flex items-center gap-1 uppercase"><AlertCircle size={10}/> {errors.name}</p>}
                   </div>
+                  {/* Email Input */}
                   <div className="space-y-2">
                     <label className="text-xs font-black uppercase italic dark:text-white">Your Email</label>
                     <Input
@@ -201,34 +201,36 @@ export default function ContactSection() {
                       type="email"
                       value={formData.email}
                       onChange={handleChange}
-                      placeholder="HELLO@DOMAIN.COM"
-                      className={`h-14 border-4 border-black dark:border-white rounded-none font-black uppercase italic focus-visible:ring-0 focus:bg-[#FFF1F2] dark:focus:bg-[#1a3a5a] dark:text-white transition-colors ${errors.email ? 'border-[#FF0000]' : ''}`}
+                      placeholder="hello@domain.com"
+                      className={`h-14 border-4 border-black dark:border-white rounded-none font-medium focus-visible:ring-0 focus:bg-[#FFF1F2] dark:focus:bg-[#1a3a5a] dark:text-white transition-colors ${errors.email ? 'border-[#FF0000]' : ''}`}
                     />
                     {errors.email && <p className="text-[10px] font-bold text-[#FF0000] flex items-center gap-1 uppercase"><AlertCircle size={10}/> {errors.email}</p>}
                   </div>
                 </div>
 
+                {/* Subject Input */}
                 <div className="space-y-2">
                   <label className="text-xs font-black uppercase italic dark:text-white">Subject</label>
                   <Input
                     name="subject"
                     value={formData.subject}
                     onChange={handleChange}
-                    placeholder="COLLABORATION INQUIRY"
-                    className={`h-14 border-4 border-black dark:border-white rounded-none font-black uppercase italic focus-visible:ring-0 focus:bg-[#F3E5F5] dark:focus:bg-[#1a3a5a] dark:text-white transition-colors ${errors.subject ? 'border-[#FF0000]' : ''}`}
+                    placeholder="Collaboration Inquiry"
+                    className={`h-14 border-4 border-black dark:border-white rounded-none font-medium focus-visible:ring-0 focus:bg-[#F3E5F5] dark:focus:bg-[#1a3a5a] dark:text-white transition-colors ${errors.subject ? 'border-[#FF0000]' : ''}`}
                   />
                   {errors.subject && <p className="text-[10px] font-bold text-[#FF0000] flex items-center gap-1 uppercase"><AlertCircle size={10}/> {errors.subject}</p>}
                 </div>
 
+                {/* Message Input */}
                 <div className="space-y-2">
                   <label className="text-xs font-black uppercase italic dark:text-white">Message</label>
                   <Textarea
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
-                    placeholder="HI SALMA, I HAVE A COOL PROJECT..."
+                    placeholder="Hi Salma, i have a cool project..."
                     rows={5}
-                    className={`border-4 border-black dark:border-white rounded-none font-black uppercase italic focus-visible:ring-0 focus:bg-[#FFF1F2] dark:focus:bg-[#1a3a5a] dark:text-white transition-colors resize-none ${errors.message ? 'border-[#FF0000]' : ''}`}
+                    className={`border-4 border-black dark:border-white rounded-none font-medium focus-visible:ring-0 focus:bg-[#FFF1F2] dark:focus:bg-[#1a3a5a] dark:text-white transition-colors resize-none ${errors.message ? 'border-[#FF0000]' : ''}`}
                   />
                   {errors.message && <p className="text-[10px] font-bold text-[#FF0000] flex items-center gap-1 uppercase"><AlertCircle size={10}/> {errors.message}</p>}
                 </div>
