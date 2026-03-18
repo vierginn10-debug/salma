@@ -20,14 +20,14 @@ const contactInfo = [
   {
     icon: Mail,
     label: 'Email',
-    value: 'hello@developer.com',
+    value: 'vierginyou@gmail.com',
     href: 'mailto:hello@developer.com',
     color: 'bg-[#FFD1DC]', // Pastel Rose
   },
   {
     icon: Phone,
     label: 'Phone',
-    value: '+62 812 3456 7890',
+    value: '+62 853 7383 3044',
     href: 'tel:+6281234567890',
     color: 'bg-[#D7BDE2]', // Pastel Purple
   },
