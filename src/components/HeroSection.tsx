@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Github, Instagram, Code2, Terminal, Rocket } from "lucide-react";
+import { Github, Instagram, Code2, Terminal, Rocket, Linkedin, Youtube } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ThreeScene from "./ThreeScene";
 
@@ -9,14 +9,13 @@ export default function HeroSection() {
     if (element) element.scrollIntoView({ behavior: "smooth" });
   };
 
-  // Konfigurasi Container: Menunggu loading screen selesai
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: { 
         staggerChildren: 0.08, 
-        delayChildren: 1.2 // Delay disesuaikan dengan durasi loading screen
+        delayChildren: 1.2 
       }
     }
   };
@@ -48,7 +47,7 @@ export default function HeroSection() {
                  bg-gradient-to-br from-[#E0FFFB] via-[#8EC5FC] to-[#E0C3FC]
                  dark:from-[#000000] dark:via-[#050A30] dark:to-[#1B1464]" 
     >
-      {/* 1. BACKGROUND LAYER: 3D Scene */}
+      {/* 1. BACKGROUND LAYER */}
       <div className="absolute inset-0 z-0 opacity-40 dark:opacity-40 pointer-events-none">
         <ThreeScene />
       </div>
@@ -162,10 +161,12 @@ export default function HeroSection() {
               </Button>
             </div>
 
-            <div className="flex gap-4 justify-center md:justify-start">
+            <div className="flex flex-wrap gap-4 justify-center md:justify-start">
               {[
                 { icon: Github, href: "https://github.com/vierginn10-debug/", color: "bg-black text-white dark:bg-white dark:text-black" },
-                { icon: Instagram, href: "https://www.instagram.com/salmayyawnn", color: "bg-[#01CDFE] text-black" },
+                // { icon: Linkedin, href: "#", color: "bg-[#0A66C2] text-white" },
+                // { icon: Youtube, href: "#", color: "bg-[#FF0000] text-white" },
+                { icon: Instagram, href: "https://www.instagram.com/salmayyawnn", color: "bg-[#FF71CE] text-black" },
               ].map((social, idx) => (
                 <motion.a
                   key={idx}
@@ -204,7 +205,6 @@ export default function HeroSection() {
                   alt="Salma"
                   className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500 scale-110"
                 />
-                
                 <div className="absolute top-4 right-4 bg-black text-[#FF71CE] dark:text-[#64FFDA] px-2 py-1 border-2 border-[#FF71CE] dark:border-[#64FFDA] text-[10px] font-black uppercase tracking-tighter animate-pulse">
                   Live Lab
                 </div>

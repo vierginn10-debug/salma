@@ -25,7 +25,7 @@ export default function Footer() {
     },
     { 
       icon: Instagram, 
-      href: '#', 
+      href: 'https://www.instagram.com/salmayyawnn', 
       label: 'Instagram', 
       color: 'hover:bg-[#FF71CE] hover:text-white hover:shadow-[5px_5px_0px_0px_#000]' 
     },
