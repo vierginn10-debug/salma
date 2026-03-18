@@ -33,7 +33,7 @@ const handler = async (req: Request): Promise<Response> => {
     // Send notification email to the portfolio owner
     const emailResponse = await resend.emails.send({
       from: "Portfolio Contact <onboarding@resend.dev>", // Use verified domain in production
-      to: ["hello@developer.com"], // Replace with your actual email
+      to: ["vierginn10@gmail.com"], // Replace with your actual email
       subject: `[Portfolio] ${subject}`,
       html: `
         <!DOCTYPE html>
@@ -91,6 +91,7 @@ const handler = async (req: Request): Promise<Response> => {
         headers: { "Content-Type": "application/json", ...corsHeaders },
       }
     );
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     console.error("Error in send-contact-email function:", error);
     return new Response(
