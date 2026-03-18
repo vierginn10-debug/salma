@@ -1,10 +1,11 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { ExternalLink, Github, Play, ChevronLeft, ChevronRight } from 'lucide-react';
 import useEmblaCarousel from 'embla-carousel-react';
+import { EmblaCarouselType } from 'embla-carousel'; 
 import Autoplay from 'embla-carousel-autoplay';
 
-// --- IMPORT ASSETS ---
+// --- 0. IMPORT ASSETS ---
 import folderimg from '../assets/folder.png';
 import errorimg from '../assets/error.png';
 import jamimg from '../assets/jam.png';
@@ -12,7 +13,6 @@ import progresimg from '../assets/progres.png';
 import lampuimg from '../assets/lampu.png';
 import videoimg from '../assets/video.png';
 
-// Definisikan tipe data untuk Project agar TS lebih bahagia
 interface Project {
   title: string;
   description: string;
@@ -41,7 +41,8 @@ const projects: Project[] = [
     tags: ['Problem Solving', 'Logic'],
     image: <img src={errorimg} alt="error" className="w-full h-full object-contain p-2" />,
     color: 'bg-[#B2E2F2]',
-    github: '#',    demo: '#',
+    github: '#',
+    demo: '#',
   },
   {
     title: 'Aceh Study Pomodoro',
@@ -82,23 +83,32 @@ const projects: Project[] = [
 ];
 
 export default function ProjectsSection() {
-  // Inisialisasi Embla dengan Autoplay
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  
+  // 1. Setup Embla Carousel dengan Plugin Autoplay
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { 
       loop: true, 
       align: 'start',
-      skipSnaps: false,
+      skipSnaps: false 
     }, 
     [Autoplay({ delay: 3000, stopOnInteraction: false })]
   );
 
-  const scrollPrev = useCallback(() => {
-    if (emblaApi) emblaApi.scrollPrev();
-  }, [emblaApi]);
+  // 2. Fungsi Logika untuk Update Indikator Dots
+  const onSelect = useCallback((api: EmblaCarouselType) => {
+    setSelectedIndex(api.selectedScrollSnap());
+  }, []);
 
-  const scrollNext = useCallback(() => {
-    if (emblaApi) emblaApi.scrollNext();
-  }, [emblaApi]);
+  useEffect(() => {
+    if (!emblaApi) return;
+    onSelect(emblaApi);
+    emblaApi.on('select', onSelect);
+    emblaApi.on('reInit', onSelect);
+  }, [emblaApi, onSelect]);
+
+  const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi]);
+  const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
 
   return (
     <section id="projects" className="py-24 bg-[#FFF1F2] dark:bg-[#0A192F] relative overflow-hidden transition-colors duration-500">
@@ -124,21 +134,16 @@ export default function ProjectsSection() {
           </h2>
         </motion.div>
 
-        {/* CAROUSEL CONTAINER */}
-        <div className="relative max-w-7xl mx-auto px-4 md:px-0">
+        {/* CAROUSEL MAIN CONTAINER */}
+        <div className="relative max-w-7xl mx-auto px-4">
           
           <div className="overflow-hidden cursor-grab active:cursor-grabbing" ref={emblaRef}>
-            {/* Menggunakan ml-[-1.5rem] untuk mengimbangi gap-6 (24px) */}
             <div className="flex ml-[-1.5rem]">
               {projects.map((project, index) => (
-                <div 
-                  key={index} 
-                  className="flex-[0_0_100%] md:flex-[0_0_50%] lg:flex-[0_0_33.333%] min-w-0 pl-[1.5rem]"
-                >
-                  <motion.div 
-                    className="bg-white dark:bg-[#112240] border-[5px] border-black dark:border-white shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] dark:shadow-[10px_10px_0px_0px_#64FFDA] flex flex-col h-full overflow-hidden transition-all group mb-4"
-                  >
-                    {/* Window Top Bar */}
+                <div key={index} className="flex-[0_0_100%] md:flex-[0_0_50%] lg:flex-[0_0_33.333%] min-w-0 pl-[1.5rem]">
+                  <motion.div className="bg-white dark:bg-[#112240] border-[5px] border-black dark:border-white shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] dark:shadow-[10px_10px_0px_0px_#64FFDA] flex flex-col h-full overflow-hidden transition-all group mb-4">
+                    
+                    {/* Window Bar */}
                     <div className="border-b-[5px] border-black dark:border-white bg-[#FFF1F2] dark:bg-slate-800 p-3 flex justify-between items-center">
                       <div className="flex gap-1.5">
                         <div className="w-3 h-3 rounded-full bg-[#FFB2B2] border-2 border-black" />
@@ -148,7 +153,7 @@ export default function ProjectsSection() {
                       <span className="font-mono text-[9px] font-black uppercase opacity-50 dark:text-white">project.exe</span>
                     </div>
 
-                    {/* Preview Area */}
+                    {/* Image Area */}
                     <div className={`h-44 border-b-[5px] border-black dark:border-white relative flex items-center justify-center overflow-hidden ${project.color}`}>
                        <div className="absolute inset-0 opacity-[0.15] bg-[radial-gradient(#000_1.5px,transparent_1px)] [background-size:10px_10px]" />
                        <div className="w-full h-full z-10 group-hover:scale-110 transition-transform duration-500">
@@ -156,7 +161,7 @@ export default function ProjectsSection() {
                        </div>
                     </div>
 
-                    {/* Info Area */}
+                    {/* Content */}
                     <div className="p-6 flex flex-col flex-grow bg-white dark:bg-[#112240]">
                       <h3 className="text-2xl font-black uppercase italic tracking-tighter mb-2 text-slate-800 dark:text-white group-hover:text-[#FB7185] transition-colors">
                         {project.title}
@@ -210,6 +215,21 @@ export default function ProjectsSection() {
           >
             <ChevronRight size={24} className="text-black" />
           </button>
+        </div>
+
+        {/* DOTS INDICATOR */}
+        <div className="flex justify-center gap-3 mt-10">
+          {projects.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => emblaApi?.scrollTo(index)}
+              className={`h-3 transition-all duration-300 border-2 border-black dark:border-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] dark:shadow-[2px_2px_0px_0px_#64FFDA] ${
+                selectedIndex === index 
+                  ? 'w-10 bg-[#FB7185] dark:bg-[#64FFDA]' 
+                  : 'w-3 bg-white dark:bg-slate-700'
+              }`}
+            />
+          ))}
         </div>
       </div>
     </section>
