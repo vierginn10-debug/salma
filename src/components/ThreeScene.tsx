@@ -3,85 +3,80 @@ import { Float, MeshDistortMaterial, Sphere, Torus, Box, Icosahedron } from '@re
 import { useRef, useMemo } from 'react';
 import * as THREE from 'three';
 
-function AnimatedSphere() {
+// 1. CORE ELEMENT: The Wireframe Globe (Aura Coding Kuat)
+function CodingGlobe() {
   const meshRef = useRef<THREE.Mesh>(null);
+  const coreRef = useRef<THREE.Mesh>(null);
   
   useFrame((state) => {
+    const t = state.clock.elapsedTime;
     if (meshRef.current) {
-      meshRef.current.rotation.x = state.clock.elapsedTime * 0.2;
-      meshRef.current.rotation.y = state.clock.elapsedTime * 0.3;
+      meshRef.current.rotation.y = t * 0.1;
+      meshRef.current.rotation.x = t * 0.05;
+    }
+    if (coreRef.current) {
+      coreRef.current.rotation.y = -t * 0.2; // Putar arah berlawanan untuk efek kompleks
     }
   });
 
   return (
-    <Float speed={2} rotationIntensity={1} floatIntensity={2}>
-      <Sphere ref={meshRef} args={[1, 64, 64]} position={[0, 0, 0]}>
+    <Float speed={2} rotationIntensity={0.5} floatIntensity={1}>
+      {/* Layer Luar: Jaring-jaring Hexagonal/Icosahedron */}
+      <Icosahedron ref={meshRef} args={[1.3, 2]} position={[0, 0, 0]}>
+        <meshStandardMaterial
+          color="#64FFDA" // Cyan Neon
+          wireframe
+          transparent
+          opacity={0.4}
+        />
+      </Icosahedron>
+      
+      {/* Layer Dalam: Bola Plasma (Efek Energi) */}
+      <Sphere ref={coreRef} args={[0.7, 32, 32]}>
         <MeshDistortMaterial
-          color="#64FFDA" // Hijau Neon kamu
-          attach="material"
-          distort={0.4}
-          speed={2}
-          roughness={0.2}
-          metalness={0.8}
+          color="#FF71CE" // Pink Neon
+          distort={0.5}
+          speed={3}
+          roughness={0}
+          metalness={1}
+          transparent
+          opacity={0.2}
         />
       </Sphere>
     </Float>
   );
 }
 
-function FloatingTorus() {
-  const meshRef = useRef<THREE.Mesh>(null);
+// 2. TECH BITS: Elemen Geometris Kecil
+function TechBits() {
   return (
-    <Float speed={1.5} rotationIntensity={2} floatIntensity={1}>
-      <Torus ref={meshRef} args={[0.6, 0.2, 32, 64]} position={[3, 1.5, -2]}>
-        <meshStandardMaterial
-          color="#FF71CE" // Pink Neon
-          roughness={0.3}
-          metalness={0.9}
-          wireframe // Membuat efek garis-garis digital
-        />
-      </Torus>
-    </Float>
+    <>
+      {/* Torus sebagai "Orbit" Data */}
+      <Float speed={3} rotationIntensity={2} floatIntensity={1}>
+        <Torus args={[0.6, 0.02, 16, 100]} position={[3, 1, -2]} rotation={[Math.PI / 4, 0, 0]}>
+          <meshStandardMaterial color="#64FFDA" emissive="#64FFDA" emissiveIntensity={2} />
+        </Torus>
+      </Float>
+
+      {/* Floating Box sebagai "Data Block" */}
+      <Float speed={1.5} rotationIntensity={1} floatIntensity={2}>
+        <Box args={[0.3, 0.3, 0.3]} position={[-2.5, -1.2, 0]}>
+          <meshStandardMaterial color="#B967FF" wireframe />
+        </Box>
+      </Float>
+    </>
   );
 }
 
-function FloatingBox() {
-  const meshRef = useRef<THREE.Mesh>(null);
-  return (
-    <Float speed={1.8} rotationIntensity={1.5} floatIntensity={1.5}>
-      <Box ref={meshRef} args={[0.5, 0.5, 0.5]} position={[-3, -1, -1]}>
-        <meshStandardMaterial
-          color="#B967FF" // Ungu
-          roughness={0.2}
-          metalness={0.8}
-        />
-      </Box>
-    </Float>
-  );
-}
-
-function FloatingIcosahedron() {
-  const meshRef = useRef<THREE.Mesh>(null);
-  return (
-    <Float speed={2.2} rotationIntensity={1} floatIntensity={2}>
-      <Icosahedron ref={meshRef} args={[0.4, 0]} position={[-2, 2, 0]}>
-        <meshStandardMaterial
-          color="#64FFDA"
-          wireframe
-        />
-      </Icosahedron>
-    </Float>
-  );
-}
-
-function ParticleField() {
-  const count = 80; // Dikurangi sedikit agar lebih ringan
+// 3. BACKGROUND: Digital Dust (Partikel)
+function DigitalDust() {
+  const count = 120;
   const positions = useMemo(() => {
     const pos = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
-      pos[i * 3] = (Math.random() - 0.5) * 12;
-      pos[i * 3 + 1] = (Math.random() - 0.5) * 12;
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 12;
+      pos[i * 3] = (Math.random() - 0.5) * 15;
+      pos[i * 3 + 1] = (Math.random() - 0.5) * 15;
+      pos[i * 3 + 2] = (Math.random() - 0.5) * 15;
     }
     return pos;
   }, []);
@@ -90,7 +85,7 @@ function ParticleField() {
 
   useFrame((state) => {
     if (pointsRef.current) {
-      pointsRef.current.rotation.y = state.clock.elapsedTime * 0.05;
+      pointsRef.current.rotation.y = state.clock.elapsedTime * 0.02;
     }
   });
 
@@ -104,24 +99,33 @@ function ParticleField() {
           itemSize={3}
         />
       </bufferGeometry>
-      <pointsMaterial size={0.03} color="#64FFDA" transparent opacity={0.4} />
+      <pointsMaterial 
+        size={0.03} 
+        color="#64FFDA" 
+        transparent 
+        opacity={0.4} 
+        sizeAttenuation={true}
+      />
     </points>
   );
 }
 
 export default function ThreeScene() {
   return (
-    <div className="absolute inset-0 -z-10">
-      <Canvas camera={{ position: [0, 0, 5], fov: 75 }}>
-        <ambientLight intensity={0.4} />
-        <pointLight position={[10, 10, 10]} intensity={1} color="#64FFDA" />
-        <pointLight position={[-10, -10, -10]} intensity={0.5} color="#FF71CE" />
+    <div className="absolute inset-0 -z-10 bg-transparent">
+      <Canvas 
+        camera={{ position: [0, 0, 5], fov: 75 }}
+        dpr={[1, 2]}
+        gl={{ antialias: true }}
+      >
+        <ambientLight intensity={0.2} />
+        <pointLight position={[10, 10, 10]} intensity={1.5} color="#64FFDA" />
+        <pointLight position={[-10, -10, -10]} intensity={1} color="#FF71CE" />
+        <spotLight position={[0, 5, 0]} intensity={0.5} color="#B967FF" />
         
-        <AnimatedSphere />
-        <FloatingTorus />
-        <FloatingBox />
-        <FloatingIcosahedron />
-        <ParticleField />
+        <CodingGlobe />
+        <TechBits />
+        <DigitalDust />
       </Canvas>
     </div>
   );
