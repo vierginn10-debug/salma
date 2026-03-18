@@ -9,11 +9,15 @@ export default function HeroSection() {
     if (element) element.scrollIntoView({ behavior: "smooth" });
   };
 
+  // Konfigurasi Container: Menunggu loading screen selesai
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.08, delayChildren: 0.5 }
+      transition: { 
+        staggerChildren: 0.08, 
+        delayChildren: 1.2 // Delay disesuaikan dengan durasi loading screen
+      }
     }
   };
 
@@ -51,13 +55,13 @@ export default function HeroSection() {
 
       {/* 2. EFFECT LAYER: Floating Particles */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        {[...Array(8)].map((_, i) => (
+        {[...Array(12)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute w-2 h-2 bg-pink-400/30 dark:bg-[#64FFDA]/10 rounded-full blur-sm"
+            className="absolute w-2 h-2 bg-pink-400/30 dark:bg-[#64FFDA]/20 rounded-full blur-sm"
             animate={{
-              y: [0, -150, 0],
-              x: [0, Math.random() * 80 - 40, 0],
+              y: [0, -200, 0],
+              x: [0, Math.random() * 100 - 50, 0],
               opacity: [0, 0.6, 0]
             }}
             transition={{
@@ -82,7 +86,7 @@ export default function HeroSection() {
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
+              transition={{ delay: 1.3, duration: 0.6 }}
               className="inline-flex items-center gap-2 px-6 py-2 border-4 border-black dark:border-white bg-[#ADFF2F] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_#FF71CE] -rotate-1 mb-8"
             >
               <Terminal className="w-4 h-4 text-black" /> 
@@ -109,10 +113,12 @@ export default function HeroSection() {
               <br className="w-full" />
               <motion.span 
                 initial={{ rotate: -2 }}
+                animate={{ 
+                    rotate: [-2, -1, -3, -2],
+                    transition: { repeat: Infinity, duration: 5, ease: "easeInOut" }
+                }}
                 className="inline-block mt-2 transition-all duration-500
-                           /* LIGHT MODE: PINK + CYAN SHADOW */
                            text-[#FF71CE] drop-shadow-[5px_5px_0px_#01CDFE] 
-                           /* DARK MODE: CYAN + PURPLE SHADOW */
                            dark:text-[#64FFDA] dark:drop-shadow-[5px_5px_0px_#B967FF]"
               >
                 Meet Salma.
@@ -138,7 +144,6 @@ export default function HeroSection() {
               <Button
                 size="lg"
                 className="h-16 rounded-none px-10 text-base font-black border-4 border-black 
-                           /* ADAPTIF: Pink di Light, Cyan di Dark */
                            bg-[#FF71CE] dark:bg-[#64FFDA] text-black 
                            shadow-[6px_6px_0px_0px_#000] hover:translate-x-1 hover:translate-y-1 hover:shadow-none transition-all uppercase flex items-center gap-2 group"
                 onClick={() => scrollToSection("#projects")}
@@ -180,14 +185,18 @@ export default function HeroSection() {
           {/* SEBELAH KANAN: Foto Profil */}
           <div className="w-full md:w-2/5 flex justify-center order-1 md:order-2 px-4">
             <div className="relative">
-              {/* Decorative Frame Behind Image */}
-              <div className="absolute -inset-4 border-4 border-black dark:border-white bg-[#ADFF2F] -rotate-3 z-0 shadow-[10px_10px_0px_0px_#FF71CE] dark:shadow-[10px_10px_0px_0px_#64FFDA]" />
+              <motion.div 
+                initial={{ opacity: 0, rotate: 0 }}
+                animate={{ opacity: 1, rotate: -3 }}
+                transition={{ delay: 1.5, duration: 0.8 }}
+                className="absolute -inset-4 border-4 border-black dark:border-white bg-[#ADFF2F] z-0 shadow-[10px_10px_0px_0px_#FF71CE] dark:shadow-[10px_10px_0px_0px_#64FFDA]" 
+              />
               
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 whileHover={{ rotate: 0 }}
-                transition={{ type: "spring", stiffness: 100 }}
+                transition={{ delay: 1.4, type: "spring", stiffness: 100 }}
                 className="relative z-10 w-64 h-64 sm:w-72 sm:h-72 md:w-80 md:h-80 border-4 border-black dark:border-white overflow-hidden rotate-3 bg-white"
               >
                  <img
@@ -196,14 +205,12 @@ export default function HeroSection() {
                   className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500 scale-110"
                 />
                 
-                {/* Floating "Live" Tag */}
                 <div className="absolute top-4 right-4 bg-black text-[#FF71CE] dark:text-[#64FFDA] px-2 py-1 border-2 border-[#FF71CE] dark:border-[#64FFDA] text-[10px] font-black uppercase tracking-tighter animate-pulse">
                   Live Lab
                 </div>
               </motion.div>
             </div>
           </div>
-
         </div>
       </div>
 
@@ -211,9 +218,9 @@ export default function HeroSection() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 2.5 }}
+        transition={{ delay: 3 }}
         onClick={() => scrollToSection("#about")}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 cursor-pointer z-20 group"
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 cursor-pointer z-20 group hidden md:block"
       >
         <div className="flex flex-col items-center gap-2">
             <div className="w-8 h-12 border-4 border-black dark:border-white bg-[#ADFF2F] shadow-[4px_4px_0px_0px_#000] dark:shadow-[4px_4px_0px_0px_#64FFDA] flex justify-center p-1">
