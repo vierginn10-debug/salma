@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 
-// 1. DATA SKILLS LENGKAP
+// 1. DATA SKILLS (Config: solid, pulse, partial)
 const skillArsenal = {
   foundation: [
     { id: 'html', name: 'HTML5', icon: '🧱', desc: 'The architect crafting the digital world’s structure.', level: 30, color: 'bg-[#FF71CE]', type: 'solid' },
@@ -9,22 +9,23 @@ const skillArsenal = {
     { id: 'tw', name: 'Tailwind CSS', icon: '⚡', desc: 'Lightning-fast tool for building modern designs.', level: 35, color: 'bg-[#FF71CE]', type: 'solid' },
   ],
   logic: [
-    { id: 'js', name: 'JavaScript', icon: '⚡', desc: 'Breathing life into websites for interaction.', level: 20, color: 'bg-[#01CDFE]', type: 'pulse' },
     { id: 'node', name: 'Node.js', icon: '⚙️', desc: 'The engine behind the scenes managing everything.', level: 30, color: 'bg-[#01CDFE]', type: 'pulse' },
     { id: 'py', name: 'Python', icon: '🐍', desc: 'The logic master for intelligent commands.', level: 25, color: 'bg-[#01CDFE]', type: 'pulse' },
+    { id: 'js', name: 'JavaScript', icon: '⚡', desc: 'Breathing life into websites for interaction.', level: 20, color: 'bg-[#01CDFE]', type: 'pulse' },
   ],
   workshop: [
-    { id: 'vs', name: 'VS Code', icon: '💻', desc: 'The main HQ where ideas transform into lines of code.', level: 45, color: 'bg-[#FFFF00]', type: 'steady' },
-    { id: 'git', name: 'Git', icon: '🐙', desc: 'A time machine to track every development step.', level: 45, color: 'bg-[#FFFF00]', type: 'steady' },
-    { id: 'dev', name: 'DevTools', icon: '🔍', desc: 'The magnifying glass for debugging.', level: 65, color: 'bg-[#FFFF00]', type: 'steady' },
+    { id: 'vs', name: 'VS Code', icon: '💻', desc: 'The main HQ where ideas transform into lines of code.', level: 45, color: 'bg-[#FFFF00]', type: 'solid' },
+    { id: 'git', name: 'Git', icon: '🐙', desc: 'A time machine to track every development step.', level: 45, color: 'bg-[#FFFF00]', type: 'solid' },
+    { id: 'dev', name: 'DevTools', icon: '🔍', desc: 'The magnifying glass for dissecting and debugging.', level: 65, color: 'bg-[#FFFF00]', type: 'solid' },
   ],
   human: [
-    { id: 'learn', name: 'Fast Learner', icon: '🚀', desc: 'Quickly grasping new concepts.', level: 55, color: 'bg-[#64FFDA]', type: 'partial' },
-    { id: 'doc', name: 'Documentation', icon: '📝', desc: 'Consistently logging progress.', level: 65, color: 'bg-[#64FFDA]', type: 'partial' },
-    { id: 'collab', name: 'Collaboration', icon: '🤝', desc: 'Thriving in team discussions.', level: 70, color: 'bg-[#64FFDA]', type: 'partial' },
+    { id: 'learn', name: 'Fast Learner', icon: '🚀', desc: 'Quickly grasping new concepts from teachers.', level: 55, color: 'bg-[#ADFF2F]', type: 'partial' },
+    { id: 'doc', name: 'Documentation', icon: '📝', desc: 'Consistently logging progress—proof is this web!', level: 65, color: 'bg-[#ADFF2F]', type: 'partial' },
+    { id: 'collab', name: 'Collaboration', icon: '🤝', desc: 'Thriving in team discussions and group projects.', level: 70, color: 'bg-[#ADFF2F]', type: 'partial' },
   ],
 };
 
+// 2. KOMPONEN SKILLBAR
 function SkillBar({ name, icon, desc, level, color, type, delay }) {
   const [isActive, setIsActive] = useState(false);
 
@@ -32,128 +33,130 @@ function SkillBar({ name, icon, desc, level, color, type, delay }) {
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
+      viewport={{ once: true, margin: "-20px" }}
       transition={{ duration: 0.4, delay }}
       className="mb-8 group relative"
-      onClick={() => setIsActive(!isActive)}
       onMouseEnter={() => setIsActive(true)}
       onMouseLeave={() => setIsActive(false)}
+      onClick={() => setIsActive(!isActive)}
     >
       <AnimatePresence>
         {isActive && (
           <motion.div 
-            initial={{ opacity: 0, y: 5 }}
-            animate={{ opacity: 1, y: -5 }}
-            exit={{ opacity: 0 }}
-            className="absolute -top-12 left-0 z-50 bg-black dark:bg-[#112240] text-white p-2 border-2 border-white dark:border-[#64FFDA] shadow-[3px_3px_0px_#01CDFE] dark:shadow-[3px_3px_0px_#B967FF] text-[8px] font-black uppercase italic pointer-events-none"
+            initial={{ opacity: 0, y: 5, scale: 0.9 }}
+            animate={{ opacity: 1, y: -5, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            className="absolute -top-14 left-0 z-50 bg-black dark:bg-[#112240] text-white p-2 border-2 border-white shadow-[4px_4px_0px_0px_#01CDFE] text-[9px] font-black uppercase italic leading-tight max-w-[180px] pointer-events-none"
           >
             {desc}
+            <div className="absolute -bottom-2 left-4 w-2 h-2 bg-inherit border-r-2 border-b-2 border-white rotate-45" />
           </motion.div>
         )}
       </AnimatePresence>
 
       <div className="flex justify-between items-end mb-2 px-1 text-black dark:text-white">
-        <div className="flex items-center gap-2 uppercase italic font-black text-[10px] tracking-tighter">
-          <span>{icon} {name}</span>
+        <div className="flex items-center gap-2">
+          <span className={`text-xl transition-transform duration-300 ${isActive ? 'scale-125' : ''}`}>{icon}</span>
+          <span className="font-black uppercase italic text-xs tracking-tight">{name}</span>
         </div>
-        <span className="font-mono text-[9px] font-black bg-black text-white px-1.5 py-0.5 rounded shadow-[2px_2px_0px_#01CDFE] dark:shadow-[2px_2px_0px_#B967FF]">
+        <span className={`font-mono text-[9px] font-black px-1.5 py-0.5 rounded shadow-[2px_2px_0px_0px_#01CDFE] transition-colors ${isActive ? 'bg-[#01CDFE] text-black' : 'bg-black text-white dark:bg-white dark:text-black'}`}>
           {level}%
         </span>
       </div>
 
       <div className={`relative h-7 border-[3px] border-black dark:border-white ${color} transition-all duration-300 z-10
-        ${isActive ? 'shadow-[6px_6px_0px_#000] scale-[1.02]' : 'shadow-[4px_4px_0px_#000]'}`}>
-        <motion.div initial={{ width: 0 }} whileInView={{ width: `${level}%` }} transition={{ duration: 1 }} className="absolute left-0 top-0 h-full bg-black dark:bg-white" />
-        <div className="relative z-10 w-full px-3 flex justify-between items-center mix-blend-difference text-white font-black italic text-[8px]">
-          <span>{level > 50 ? 'ADVANCED' : 'LEARNING'}</span>
+        ${isActive ? 'shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] scale-[1.02]' : 'shadow-[4px_4px_0px_0px_#000]'} 
+        overflow-hidden flex items-center`}>
+        <motion.div initial={{ width: 0 }} whileInView={{ width: `${level}%` }} viewport={{ once: true }} transition={{ duration: 1, delay: delay + 0.1, ease: "easeOut" }} className="absolute left-0 top-0 h-full bg-black dark:bg-white z-0" />
+        <div className="relative z-10 w-full px-3 flex justify-between items-center mix-blend-difference text-white">
+          <span className="text-[8px] font-black uppercase tracking-widest italic">{level > 80 ? 'STABLE' : 'DEVELOPING'}</span>
+          <span className="text-[8px] font-black uppercase opacity-80">{level > 40 ? 'Phase 2' : 'Phase 1'}</span>
         </div>
       </div>
+
+      <AnimatePresence>
+        {isActive && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={type === 'pulse' ? { opacity: [0.4, 0.7, 0.4], scale: [1.05, 1.15, 1.05] } : { opacity: 0.7, scale: 1.1 }}
+            exit={{ opacity: 0 }}
+            transition={type === 'pulse' ? { duration: 2, repeat: Infinity } : { duration: 0.3 }}
+            className={`absolute inset-0 -z-10 blur-xl ${color} pointer-events-none`}
+            style={{
+              clipPath: type === 'partial' ? 'polygon(0% 25%, 100% 25%, 100% 100%, 0% 100%)' : 'none',
+              width: type === 'pulse' ? '120%' : '100%',
+              left: type === 'pulse' ? '-10%' : '0',
+            }}
+          />
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }
 
+// 3. MAIN SECTION
 export default function SkillsSection() {
   return (
-    <section id="skills" className="py-24 md:py-36 border-t-[8px] border-black dark:border-white bg-gradient-to-br from-[#E0FFFB] via-[#8EC5FC] to-[#E0C3FC] dark:from-[#000000] dark:via-[#050A30] dark:to-[#1B1464] overflow-hidden transition-colors duration-500">
-      <div className="container mx-auto px-5 text-center">
+    <section id="skills" className="py-24 md:py-44 border-t-[8px] border-black dark:border-white transition-colors duration-500 overflow-hidden bg-gradient-to-br from-[#E0FFFB] via-[#8EC5FC] to-[#E0C3FC] dark:from-[#000000] dark:via-[#050A30] dark:to-[#1B1464]">
+      <div className="container mx-auto px-5">
         
-        {/* HEADLINE */}
-        <div className="mb-16 flex flex-col items-center">
-          
-          {/* SKILL - Solid Hitam/Putih Tanpa Border */}
-          <motion.h2 
-            initial={{ opacity: 0, y: -10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            className="font-black uppercase italic text-6xl md:text-8xl tracking-tighter text-black dark:text-white leading-none mb-4"
-          >
-            SKILL
-          </motion.h2>
-
-          {/* ARSENAL - Bingkai Ganda Rapat Kanan-Bawah & Border Teks Khusus */}
+        {/* HEADLINE SECTION */}
+        <div className="text-center mb-28 relative">
           <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            className="relative transform -rotate-2 group"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="flex flex-col items-center"
           >
-             <div className={`
-                px-10 md:px-14 py-4 md:py-6
-                bg-white dark:bg-black
-                border-[6px] border-black dark:border-white
-                shadow-[6px_6px_0px_0px_#01CDFE] dark:shadow-[6px_6px_0px_0px_#B967FF]
-                transition-all duration-500
-             `}>
-                <span 
-                  className="font-black uppercase italic text-5xl md:text-8xl tracking-tighter text-[#FF71CE] dark:text-[#64FFDA] transition-all duration-500"
-                  style={{
-                    // Border tulisan Cyan di Light, Ungu di Dark
-                    WebkitTextStroke: '1.5px var(--arsenal-text-border)',
-                    paintOrder: 'stroke fill'
-                  }}
-                >
-                  ARSENAL
-                  <style>{`
-                    :root { --arsenal-text-border: #01CDFE; }
-                    .dark { --arsenal-text-border: #B967FF; }
-                  `}</style>
-                </span>
-             </div>
+            <h2 className="font-black uppercase italic text-7xl md:text-9xl tracking-[-0.05em] leading-[0.85] text-black dark:text-white transform -rotate-3 mb-2">
+              SKILL
+            </h2>
+
+            <div className="inline-block border-[6px] md:border-[8px] border-black dark:border-white bg-white dark:bg-black px-6 md:px-12 py-3 md:py-5 shadow-[15px_15px_0px_0px_#01CDFE] dark:shadow-[15px_15px_0px_0px_#64FFDA] max-w-max">
+              <span className="font-black uppercase italic text-6xl md:text-9xl tracking-[-0.05em] leading-none text-[#FF71CE] dark:text-[#64FFDA] drop-shadow-[4px_4px_0px_#01CDFE] dark:drop-shadow-[4px_4px_0px_#B967FF]">
+                ARSENAL
+              </span>
+            </div>
           </motion.div>
+          
+          <div className="mt-12 flex flex-col items-center">
+            <p className="font-black uppercase italic text-black/90 dark:text-[#8892B0] text-lg md:text-2xl tracking-tighter bg-[#FFFF00] dark:bg-transparent px-4 py-1">
+              "Not a master yet, but definitely not at zero anymore."
+            </p>
+            <div className="w-32 h-3 bg-black dark:bg-[#64FFDA] mt-4 shadow-[4px_4px_0px_0px_#01CDFE]"></div>
+          </div>
         </div>
 
-        {/* KUTIPAN BERSIH */}
-        <div className="mb-24">
-          <p className="font-black uppercase italic text-black/80 dark:text-[#64FFDA]/80 text-sm md:text-xl tracking-tight opacity-80">
-            "Not a master yet, but definitely not at zero anymore."
-          </p>
-          <div className="w-16 h-1 bg-[#01CDFE] dark:bg-[#64FFDA] mx-auto mt-3 transition-colors"></div>
-        </div>
-
-        {/* GRID SKILLS */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-24 text-left">
+        {/* GRID KATEGORI */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 mb-24">
           {Object.entries(skillArsenal).map(([category, items], idx) => (
-            <div key={category} className="p-6 border-4 border-black dark:border-white bg-white dark:bg-[#112240] shadow-[10px_10px_0px_#000] hover:-translate-y-1 transition-all">
-              <h3 className="font-black uppercase italic text-xl mb-8 border-b-4 border-black dark:border-[#64FFDA] pb-2 text-black dark:text-white flex items-center gap-2">
-                <span className="w-1.5 h-5 bg-[#01CDFE] dark:bg-[#64FFDA]"></span> {category}
+            <div key={category} className="p-6 border-4 border-black dark:border-white bg-white dark:bg-[#112240] shadow-[12px_12px_0px_0px_#000] relative group transition-transform hover:-translate-y-2">
+              <h3 className="font-black uppercase italic text-2xl mb-10 border-b-4 border-black dark:border-[#64FFDA] pb-3 flex items-center gap-3 text-black dark:text-white">
+                <span className="text-3xl">
+                  {category === 'foundation' ? '🏗️' : category === 'logic' ? '🐍' : category === 'workshop' ? '🛠️' : '🚀'}
+                </span>
+                {category}
               </h3>
               {items.map((item, i) => (
-                <SkillBar key={item.id} {...item} delay={(idx * 0.1) + (i * 0.1)} />
+                <SkillBar key={item.id} {...item} delay={(idx * 0.05) + (i * 0.05)} />
               ))}
             </div>
           ))}
         </div>
 
-        {/* GITHUB BUTTON */}
-        <div className="flex justify-center">
+        {/* GITHUB BUTTON (DIPERKECIL) */}
+        <div className="flex justify-center mt-10">
           <motion.a
             href="https://github.com/vierginn10-debug" 
             target="_blank" rel="noopener noreferrer"
             whileHover={{ scale: 1.05 }}
-            className="flex items-center gap-4 bg-[#FFFF00] dark:bg-[#64FFDA] border-[4px] border-black dark:border-white px-6 py-4 shadow-[6px_6px_0px_#000] transition-all"
+            whileTap={{ scale: 0.95 }}
+            className="group relative inline-flex items-center gap-4 bg-[#FFFF00] dark:bg-[#64FFDA] border-[5px] border-black dark:border-white px-5 md:px-8 py-3 md:py-4 shadow-[8px_8px_0px_0px_#01CDFE] dark:shadow-[8px_8px_0px_0px_#B967FF] active:shadow-none active:translate-x-1 active:translate-y-1 transition-all cursor-pointer"
           >
-            <span className="text-2xl text-black">🐙</span>
+            <span className="text-3xl md:text-5xl group-hover:rotate-12 transition-transform text-black">🐙</span>
             <div className="flex flex-col text-left text-black font-black uppercase italic leading-none">
-              <span className="text-lg tracking-tighter">Inspect Code</span>
-              <span className="font-mono text-[8px] tracking-widest opacity-60">GitHub @vierginn10-debug</span>
+              <span className="text-lg md:text-2xl tracking-tighter mb-1 text-black">Inspect Code</span>
+              <span className="font-mono text-[8px] md:text-[10px] tracking-tight opacity-70 italic text-black">github.com/vierginn10-debug →</span>
             </div>
           </motion.a>
         </div>
