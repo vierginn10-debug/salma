@@ -85,11 +85,9 @@ const CertificateCard = memo(({ cert, index, onSelect }: CertificateCardProps) =
     className="group relative active:scale-[0.98] transition-transform duration-200 transform-gpu cursor-pointer"
     onClick={() => onSelect(cert.image)}
   >
-    {/* Shadow Layer */}
     <div className="absolute inset-0 bg-black dark:bg-[#64FFDA] translate-x-1.5 translate-y-1.5 -z-10" />
     
     <div className="h-full bg-white dark:bg-[#0a192f] border-[3px] border-black dark:border-white relative flex flex-col overflow-hidden">
-      {/* Container Gambar */}
       <div className="relative h-44 md:h-52 border-b-[3px] border-black dark:border-white overflow-hidden bg-slate-900">
         <img 
           src={cert.image} 
@@ -102,7 +100,6 @@ const CertificateCard = memo(({ cert, index, onSelect }: CertificateCardProps) =
         </div>
       </div>
 
-      {/* Konten Teks */}
       <div className="p-4 flex-grow flex flex-col">
         <div className="flex items-start gap-2.5 mb-2">
           <Award className="h-5 w-5 text-[#FF71CE] dark:text-[#ADFF2F] shrink-0" strokeWidth={3} />
@@ -147,11 +144,17 @@ export default function CertificatesSection() {
       id="certificates" 
       className="py-16 md:py-32 relative overflow-hidden bg-gradient-to-br from-[#E0FFFB] via-[#8EC5FC] to-[#E0C3FC] dark:from-[#000000] dark:via-[#050A30] dark:to-[#1B1464] border-t-[6px] border-black dark:border-white transform-gpu transition-colors duration-1000"
     >
+      {/* Background Matrix - Dot Pattern Added Back */}
+      <div className="absolute inset-0 opacity-[0.08] pointer-events-none transform-gpu z-0" 
+           style={{ 
+             backgroundImage: 'radial-gradient(#000 1.5px, transparent 1px)', 
+             backgroundSize: '30px 30px' 
+           }} />
+      
       {BackgroundDecor}
 
       <div className="container mx-auto px-6 relative z-10">
         
-        {/* HEADER SECTION */}
         <div className="text-center mb-16 md:mb-24 transform-gpu">
           <motion.div
             initial={{ opacity: 0 }}
@@ -173,7 +176,6 @@ export default function CertificatesSection() {
           </h2>
         </div>
 
-        {/* GRID SERTIFIKAT */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
           {certificates.map((cert, index) => (
             <CertificateCard 
@@ -185,7 +187,6 @@ export default function CertificatesSection() {
           ))}
         </div>
 
-        {/* FULLSCREEN PREVIEW MODAL */}
         <AnimatePresence>
           {selectedImg && (
             <motion.div
@@ -219,7 +220,6 @@ export default function CertificatesSection() {
           )}
         </AnimatePresence>
 
-        {/* FOOTER BUTTON */}
         <div className="mt-24 text-center">
           <button 
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
