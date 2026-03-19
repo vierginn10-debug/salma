@@ -128,8 +128,8 @@ export default function HeroSection() {
             <div className="flex flex-wrap gap-3 justify-center md:justify-start">
               {[
                 { icon: Github, href: "https://github.com/vierginn10-debug/", color: "bg-black text-white" },
-                { icon: Linkedin, href: "#", color: "bg-[#0A66C2] text-white" },
-                { icon: Youtube, href: "#", color: "bg-[#FF0000] text-white" },
+                // { icon: Linkedin, href: "#", color: "bg-[#0A66C2] text-white" },
+                // { icon: Youtube, href: "#", color: "bg-[#FF0000] text-white" },
                 { icon: Instagram, href: "https://www.instagram.com/salmayyawnn", color: "bg-[#FF71CE] text-black" },
               ].map((social, idx) => (
                 <motion.a
