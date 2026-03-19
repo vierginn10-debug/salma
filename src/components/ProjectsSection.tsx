@@ -181,25 +181,46 @@ export default function ProjectsSection() {
 
       <div className="container mx-auto px-6 relative z-10">
         
-        {/* HEADLINE - Scaled to match Skills Section */}
+        {/* HEADLINE SECTION - MATCHING ABOUT STYLE */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-32"
+          className="text-center mb-16 md:mb-24"
         >
-          <div className="inline-block border-4 border-black dark:border-white bg-[#ADFF2F] px-6 py-2 mb-8 shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] -rotate-1">
-            <span className="font-black text-sm uppercase tracking-widest text-black flex items-center gap-2 italic">
-              <Sparkles size={16} fill="black" /> Showcase progress
+          {/* Badge Atas - DIPERKECIL fontnya */}
+          <div className="inline-block border-4 border-black dark:border-[#64FFDA] bg-[#05FFA1] px-4 py-1.5 mb-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_#64FFDA] -rotate-2">
+            <span className="font-black text-xs md:text-sm uppercase tracking-widest italic text-black flex items-center gap-2">
+              <Sparkles size={14} fill="black" /> Showcase Progress
             </span>
           </div>
           
-          <h2 className="text-7xl md:text-9xl font-black uppercase tracking-[-0.06em] italic leading-[0.8] text-black dark:text-white transform -rotate-2">
-            TAMED <br />
-            <span className="inline-block mt-4 text-[#FF71CE] dark:text-[#64FFDA] drop-shadow-[5px_5px_0px_#01CDFE] dark:drop-shadow-[5px_5px_0px_#B967FF] border-[6px] md:border-[10px] border-black dark:border-white bg-white dark:bg-black px-10 py-4 shadow-[15px_15px_0px_0px_#01CDFE]">
-              PROJECTS
-            </span>
+          {/* Judul Utama - DIPERBESAR ukurannya */}
+          <h2 className="text-7xl md:text-9xl font-black mb-8 tracking-tighter uppercase leading-[0.85] italic">
+            <span className="text-black dark:text-white transition-colors duration-500">Tamed</span>
+            <br />
+            
+            {/* Box Utama Headline - DIPERBESAR padding & fontnya */}
+            <motion.div 
+              whileHover={{ scale: 1.02 }}
+              className="inline-block transform rotate-1 mt-6 px-10 py-4 border-[8px] 
+                         bg-white border-black shadow-[10px_10px_0px_0px_#01CDFE]
+                         dark:bg-black dark:border-white dark:shadow-[10px_10px_0px_0px_#B967FF]"
+            >
+              <span className="text-[#FF71CE] drop-shadow-[3px_3px_0px_#01CDFE]
+                               dark:text-[#64FFDA] dark:drop-shadow-[3px_3px_0px_#B967FF]">
+                Projects
+              </span>
+            </motion.div>
           </h2>
+          
+          {/* Sub-headline Text */}
+          <div className="max-w-3xl mx-auto mt-10">
+            <p className="text-xl md:text-3xl font-black uppercase tracking-tighter italic leading-tight text-black dark:text-[#CCD6F6]">
+              "Crafting ideas into reality, one line of code at a time."
+            </p>
+            <div className="w-24 h-2 bg-[#FFFF00] dark:bg-[#64FFDA] mx-auto mt-4 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"></div>
+          </div>
         </motion.div>
 
         {/* Carousel Container */}

@@ -1,5 +1,6 @@
+import React, { useState, memo, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, memo, useMemo } from 'react';
+import { Sparkles } from 'lucide-react';
 
 // 1. DEFINISI TIPE
 interface SkillItem {
@@ -57,7 +58,7 @@ const SkillBar = memo(({ name, icon, desc, level, color, type, delay }: SkillIte
             initial={{ opacity: 0, y: 5, scale: 0.9 }}
             animate={{ opacity: 1, y: -5, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
-            className="absolute -top-14 left-0 z-50 bg-black dark:bg-[#112240] text-white p-2 border-2 border-white shadow-[4px_4px_0px_0px_#01CDFE] text-[9px] font-black uppercase italic leading-tight max-w-[180px] pointer-events-none will-change-transform"
+            className="absolute -top-14 left-0 z-50 bg-black dark:bg-[#112240] text-white p-2 border-2 border-white shadow-[4px_4px_0px_0px_#01CDFE] text-[9px] font-black uppercase italic leading-tight max-w-[180px] pointer-events-none"
           >
             {desc}
             <div className="absolute -bottom-2 left-4 w-2 h-2 bg-inherit border-r-2 border-b-2 border-white rotate-45" />
@@ -103,7 +104,6 @@ const SkillBar = memo(({ name, icon, desc, level, color, type, delay }: SkillIte
               clipPath: type === 'partial' ? 'polygon(50% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 50%)' : 'none',
               width: type === 'pulse' ? '110%' : '100%',
               left: type === 'pulse' ? '-5%' : '0',
-              willChange: 'transform, opacity'
             }}
           />
         )}
@@ -128,34 +128,39 @@ export default function SkillsSection() {
           viewport={{ once: true }}
           className="text-center mb-16 md:mb-24"
         >
-          {/* Badge Atas */}
-          <div className="inline-block border-4 border-black dark:border-[#64FFDA] bg-[#05FFA1] px-6 py-2 mb-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_#64FFDA] -rotate-2">
-            <span className="font-black text-lg md:text-xl uppercase tracking-widest italic text-black">My Toolkit</span>
+          {/* Badge Atas - Font Diperkecil */}
+          <div className="inline-block border-4 border-black dark:border-[#64FFDA] bg-[#05FFA1] px-4 py-1.5 mb-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_#64FFDA] -rotate-2">
+            <span className="font-black text-xs md:text-sm uppercase tracking-widest italic text-black flex items-center gap-2">
+              <Sparkles size={14} fill="black" /> My Toolkit
+            </span>
           </div>
           
-          <h2 className="text-6xl md:text-8xl font-black mb-8 tracking-tighter uppercase leading-[0.85] italic">
-            <span className="text-black dark:text-white transition-colors duration-500">Skill</span>
+          {/* Judul Utama - Skill Sekarang Italic & Diperbesar */}
+          <h2 className="text-7xl md:text-9xl font-black mb-8 tracking-tighter uppercase leading-[0.85] italic">
+            <span className="text-black dark:text-white transition-colors duration-500 italic">
+              Skill
+            </span>
             <br />
             
+            {/* Box Arsenal - Padding & Font Diperbesar */}
             <motion.div 
               whileHover={{ scale: 1.02 }}
-              className="inline-block transform rotate-1 mt-6 px-8 py-3 border-[6px] 
-                         bg-white border-black shadow-[8px_8px_0px_0px_#01CDFE]
-                         dark:bg-black dark:border-white dark:shadow-[8px_8px_0px_0px_#B967FF]"
+              className="inline-block transform rotate-1 mt-6 px-10 py-4 border-[8px] 
+                         bg-white border-black shadow-[10px_10px_0px_0px_#01CDFE]
+                         dark:bg-black dark:border-white dark:shadow-[10px_10px_0px_0px_#B967FF]"
             >
-              <span className="text-[#FF71CE] drop-shadow-[2px_2px_0px_#01CDFE]
-                               dark:text-[#64FFDA] dark:drop-shadow-[2px_2px_0px_#B967FF]">
+              <span className="text-[#FF71CE] drop-shadow-[3px_3px_0px_#01CDFE]
+                               dark:text-[#64FFDA] dark:drop-shadow-[3px_3px_0px_#B967FF]">
                 Arsenal
               </span>
             </motion.div>
           </h2>
           
-          {/* QUOTE - SEKARANG TANPA BINGKAI SESUAI REQUEST */}
+          {/* Quote Section */}
           <div className="max-w-3xl mx-auto mt-10">
             <p className="text-xl md:text-3xl font-black uppercase tracking-tighter italic leading-tight text-black dark:text-[#CCD6F6]">
               "Not a master yet, but definitely not at zero anymore."
             </p>
-            {/* Dekorasi Garis Bawah Biar Gak Sepi Banget */}
             <div className="w-24 h-2 bg-[#FFFF00] dark:bg-[#64FFDA] mx-auto mt-4 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"></div>
           </div>
         </motion.div>
@@ -164,8 +169,8 @@ export default function SkillsSection() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 mb-24">
           {memoizedArsenal.map(([category, items], idx) => (
             <div key={category} className="p-6 border-4 border-black dark:border-white bg-white dark:bg-[#112240] shadow-[12px_12px_0px_0px_#000] relative group transition-transform hover:-translate-y-2 will-change-transform">
-              <h3 className="font-black uppercase italic text-2xl mb-10 border-b-4 border-black dark:border-[#64FFDA] pb-3 flex items-center gap-3 text-black dark:text-white">
-                <span className="text-3xl">
+              <h3 className="font-black uppercase italic text-2xl mb-10 border-b-4 border-black dark:border-[#64FFDA] pb-3 flex items-center gap-3 text-black dark:text-white text-wrap">
+                <span className="text-3xl shrink-0">
                   {category === 'foundation' ? '🏗️' : category === 'logic' ? '🐍' : category === 'workshop' ? '🛠️' : '🚀'}
                 </span>
                 {category}
