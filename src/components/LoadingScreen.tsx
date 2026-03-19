@@ -6,9 +6,11 @@ interface CustomWindow extends Window {
 }
 
 export default function LoadingScreen({ onFinished }: { onFinished: () => void }) {
-  const [phase, setPhase] = useState<"text" | "ascii" | "photo">("text");
+  const [phase, setPhase] = useState<"text" | "ascii">("text");
   const [typedText, setTypedText] = useState("");
-  const fullText = "DECODING_SALMA_IDENTITY...";
+  
+  // Teks baru yang lebih keren & teknis
+  const fullText = "BYPASSING_SALMA_CORE_SYSTEM...";
 
   const playSound = useCallback((frequency: number, type: OscillatorType, duration: number) => {
     try {
@@ -16,23 +18,25 @@ export default function LoadingScreen({ onFinished }: { onFinished: () => void }
       const AudioContextClass = Win.AudioContext || Win.webkitAudioContext;
       if (!AudioContextClass) return;
       const context = new AudioContextClass();
+      
+      if (context.state === 'suspended') context.resume();
+
       const osc = context.createOscillator();
       const gain = context.createGain();
       osc.type = type;
       osc.frequency.setValueAtTime(frequency, context.currentTime);
-      gain.gain.setValueAtTime(0.05, context.currentTime);
+      gain.gain.setValueAtTime(0.02, context.currentTime);
       gain.gain.exponentialRampToValueAtTime(0.01, context.currentTime + duration);
       osc.connect(gain);
       gain.connect(context.destination);
       osc.start();
       osc.stop(context.currentTime + duration);
-    } catch (e) { console.log(e); }
+    } catch (e) { /* Audio error ditangani diam-diam agar tidak lag */ }
   }, []);
 
-  // ASCII Hasil Konversi Width: 80
   const asciiArt = `cllllcccccc:cclllllllllc:;;,,,;;:cc::::::::::cccccccccccccc:;;;:cccccccc:::;:::,
 ;;;;;;;;;:cloxkOO000K000Oxol:;:ccccccccllllloooolllccc:::;cccllloooooooc:::cc:;,
-,,,,,;;cldkOKNNNNXXXXXXXXXKKOdll::::codkOOO0000Oxxooxdodxlcccodoooollllllccccc:;
+,,,,,;;cldkOKNNNNXXXXXXXXXKKOdll::::codkOO0000Oxxooxdodxlcccodoooollllllccccc:;
 ,,,,;codkKXXXXXXXKKKKKKKKKKXXKOxl:coOXNWWWWWNNXXKKKK0xllkdcc::cccccllloooodddl:,
 ,,;:ldx0XXXXKKKKXXKKXKKK00000KK0kdONWWWWNNXKK0Okxddkkdolxdc:;cdkOO000KKKXK000kl,
 ,,:lxxOXXXKKKKOOkxxxkOO000OOO00KKKOk0XXXKK0Okxdolc:collk0dcc;lO000KK000OOkxxxo:,
@@ -73,10 +77,11 @@ cccllllllllookOOXKdldl'....,dkOOO0OOkO00OOOOkdddc,,clxOkOd;,;c:',,,''...'';;....
 
   useEffect(() => {
     if (typedText.length < fullText.length) {
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         setTypedText(fullText.slice(0, typedText.length + 1));
-        playSound(150, "square", 0.05);
-      }, 30);
+        playSound(150, "square", 0.03);
+      }, 40);
+      return () => clearTimeout(timer);
     } else {
       setTimeout(() => setPhase("ascii"), 600);
     }
@@ -84,72 +89,75 @@ cccllllllllookOOXKdldl'....,dkOOO0OOkO00OOOOkdddc,,clxOkOd;,;c:',,,''...'';;....
 
   useEffect(() => {
     if (phase === "ascii") {
-      setTimeout(() => { setPhase("photo"); playSound(880, "sine", 0.1); }, 1500);
-    } else if (phase === "photo") {
-      setTimeout(onFinished, 2000);
+      const timer = setTimeout(() => {
+        playSound(880, "sine", 0.1);
+        onFinished();
+      }, 3000);
+      return () => clearTimeout(timer);
     }
   }, [phase, onFinished, playSound]);
 
   return (
     <motion.div
-      exit={{ opacity: 0, filter: "blur(20px)" }}
-      className="fixed inset-0 z-[9999] bg-[#050505] flex flex-col items-center justify-center font-mono overflow-hidden"
+      exit={{ opacity: 0 }}
+      // Tambahkan touch-none & will-change agar smooth di HP
+      className="fixed inset-0 z-[9999] bg-[#050505] flex flex-col items-center justify-center font-mono overflow-hidden touch-none will-change-transform"
     >
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(100,255,218,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(100,255,218,0.02)_1px,transparent_1px)] bg-[size:30px_30px]" />
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(100,255,218,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(100,255,218,0.02)_1px,transparent_1px)] bg-[size:40px_40px]" />
 
       <AnimatePresence mode="wait">
         {phase === "text" ? (
-          <motion.div key="text" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="text-[#64FFDA] text-lg font-bold">
-            {">"} {typedText}<motion.span animate={{ opacity: [1, 0] }} transition={{ repeat: Infinity, duration: 0.5 }} className="inline-block w-2.5 h-5 bg-[#64FFDA] ml-1 align-middle" />
+          <motion.div 
+            key="text" 
+            initial={{ opacity: 0 }} 
+            animate={{ opacity: 1 }} 
+            exit={{ opacity: 0 }} 
+            className="text-[#64FFDA] text-xs sm:text-sm md:text-lg font-bold z-10"
+          >
+            {">"} {typedText}
+            <motion.span 
+              animate={{ opacity: [1, 0] }} 
+              transition={{ repeat: Infinity, duration: 0.8 }} 
+              className="inline-block w-2 h-4 bg-[#64FFDA] ml-1 align-middle" 
+            />
           </motion.div>
         ) : (
           <motion.div
-            key="frame"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="flex flex-col items-center"
+            key="ascii-container"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="flex flex-col items-center z-10 w-full px-6"
           >
-            {/* WADAH UTAMA - UKURAN TETAP */}
-            <div className="relative w-72 h-72 md:w-80 md:h-80 flex items-center justify-center overflow-hidden border border-[#64FFDA]/20 bg-black/60 rounded-2xl shadow-2xl">
-              <AnimatePresence mode="wait">
-                {phase === "ascii" ? (
-                  <motion.pre 
-                    key="ascii" 
-                    initial={{ opacity: 0 }} 
-                    animate={{ opacity: 1 }} 
-                    exit={{ opacity: 0 }} 
-                    className="text-[#64FFDA] text-[6px] sm:text-[8.5px] md:text-[9.5px] leading-[0.75] whitespace-pre font-bold tracking-[0.1px] text-center"
-                  >
-                    {asciiArt}
-                  </motion.pre>
-                ) : (
-                  <motion.img 
-                    key="photo" 
-                    src="/muslimah-produktif.jpg" 
-                    alt="Salma" 
-                    initial={{ opacity: 0, filter: "grayscale(1)" }} 
-                    animate={{ opacity: 1, filter: "grayscale(0)" }} 
-                    className="w-full h-full object-cover rounded-2xl" 
-                  />
-                )}
-              </AnimatePresence>
-              {/* Efek Garis Bergerak */}
-              <motion.div animate={{ top: ["-100%", "200%"] }} transition={{ duration: 3, repeat: Infinity, ease: "linear" }} className="absolute w-full h-10 bg-[#64FFDA]/5 pointer-events-none" />
+            <div className="relative w-full max-w-[300px] md:max-w-[350px] aspect-square flex items-center justify-center overflow-hidden border border-[#64FFDA]/10 bg-black/40 rounded-lg shadow-[0_0_30px_rgba(0,0,0,0.5)]">
+              <motion.pre 
+                className="text-[#64FFDA] text-[4px] leading-[0.85] sm:text-[6px] md:text-[8px] whitespace-pre font-bold tracking-[0.05em] text-center select-none"
+              >
+                {asciiArt}
+              </motion.pre>
+
+              {/* Garis Scanner Tipis (Ringan di prosesor HP) */}
+              <motion.div 
+                animate={{ top: ["-5%", "105%"] }} 
+                transition={{ duration: 4, repeat: Infinity, ease: "linear" }} 
+                className="absolute w-full h-[1px] bg-[#64FFDA]/30 shadow-[0_0_8px_#64FFDA]" 
+              />
             </div>
 
-            {/* LABEL DI BAWAH FRAME */}
-            {phase === "photo" && (
-              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-6 text-center">
-                <span className="text-[#64FFDA] text-[10px] tracking-[1em] font-light italic">IDENTITY VERIFIED</span>
-                <h1 className="text-white text-2xl font-bold tracking-[0.2em] uppercase mt-1">SALMA</h1>
-              </motion.div>
-            )}
+            <motion.div 
+              initial={{ opacity: 0, y: 5 }} 
+              animate={{ opacity: 1, y: 0 }} 
+              transition={{ delay: 0.4 }}
+              className="mt-8 text-center"
+            >
+              <h1 className="text-white text-lg md:text-2xl tracking-[0.4em] font-bold">SALMA</h1>
+              <p className="text-[#64FFDA] text-[7px] md:text-[9px] tracking-[0.6em] mt-3 opacity-50">IDENTITY_VERIFIED</p>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      <div className="absolute top-10 left-10 w-8 h-8 border-t border-l border-[#64FFDA]/30" />
-      <div className="absolute bottom-10 right-10 w-8 h-8 border-b border-r border-[#64FFDA]/30" />
+      <div className="absolute top-6 left-6 w-5 h-5 border-t border-l border-[#64FFDA]/20" />
+      <div className="absolute bottom-6 right-6 w-5 h-5 border-b border-r border-[#64FFDA]/20" />
     </motion.div>
   );
 }
