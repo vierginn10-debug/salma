@@ -75,11 +75,11 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* 3. TINY DECOR */}
+        {/* 3. TINY DECOR DENGAN ANIMASI HALUS */}
         <div className="mt-8 flex justify-center gap-2.5 opacity-70">
-           <div className="w-2.5 h-2.5 bg-[#FF71CE] border-2 border-black rounded-full shadow-[1px_1px_0px_0px_black]" />
-           <div className="w-2.5 h-2.5 bg-[#01CDFE] border-2 border-black rounded-full shadow-[1px_1px_0px_0px_black]" />
-           <div className="w-2.5 h-2.5 bg-[#ADFF2F] border-2 border-black rounded-full shadow-[1px_1px_0px_0px_black]" />
+            <div className="w-2.5 h-2.5 bg-[#FF71CE] border-2 border-black rounded-full shadow-[1px_1px_0px_0px_black] animate-bounce [animation-delay:-0.3s]" />
+            <div className="w-2.5 h-2.5 bg-[#01CDFE] border-2 border-black rounded-full shadow-[1px_1px_0px_0px_black] animate-bounce [animation-delay:-0.15s]" />
+            <div className="w-2.5 h-2.5 bg-[#ADFF2F] border-2 border-black rounded-full shadow-[1px_1px_0px_0px_black] animate-bounce" />
         </div>
       </div>
     </footer>
