@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Github, Instagram, Code2, Terminal, Rocket } from "lucide-react";
+import { Github, Instagram, Code2, Terminal, Rocket, Linkedin, Youtube } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import ThreeScene from "./ThreeScene";
@@ -147,6 +147,8 @@ export default function HeroSection() {
             <div className="flex flex-wrap gap-4 justify-center md:justify-start">
               {[
                 { icon: Github, href: "https://github.com/vierginn10-debug/", color: "bg-black text-white" },
+                // { icon: Linkedin, href: "#", color: "bg-[#FF71CE] text-black" },
+                // { icon: Youtube, href: "#", color: "bg-[#FF71CE] text-black" },
                 { icon: Instagram, href: "https://www.instagram.com/salmayyawnn", color: "bg-[#FF71CE] text-black" },
               ].map((social, idx) => (
                 <motion.a
