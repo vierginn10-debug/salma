@@ -1,42 +1,42 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState, useCallback } from "react";
 
-interface CustomWindow extends Window {
-  webkitAudioContext?: typeof AudioContext;
-}
-
 export default function LoadingScreen({ onFinished }: { onFinished: () => void }) {
   const [phase, setPhase] = useState<"text" | "ascii">("text");
   const [typedText, setTypedText] = useState("");
   
-  // Teks baru yang lebih keren & teknis
   const fullText = "BYPASSING_SALMA_CORE_SYSTEM...";
 
   const playSound = useCallback((frequency: number, type: OscillatorType, duration: number) => {
     try {
-      const Win = window as unknown as CustomWindow;
-      const AudioContextClass = Win.AudioContext || Win.webkitAudioContext;
-      if (!AudioContextClass) return;
-      const context = new AudioContextClass();
+      // Pengecekan AudioContext yang aman dari ESLint & TypeScript
+      const AudioContextClass = window.AudioContext || (window as typeof window & { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
       
+      if (!AudioContextClass) return;
+      
+      const context = new AudioContextClass();
       if (context.state === 'suspended') context.resume();
 
       const osc = context.createOscillator();
       const gain = context.createGain();
+      
       osc.type = type;
       osc.frequency.setValueAtTime(frequency, context.currentTime);
       gain.gain.setValueAtTime(0.02, context.currentTime);
       gain.gain.exponentialRampToValueAtTime(0.01, context.currentTime + duration);
+      
       osc.connect(gain);
       gain.connect(context.destination);
       osc.start();
       osc.stop(context.currentTime + duration);
-    } catch (e) { /* Audio error ditangani diam-diam agar tidak lag */ }
+    } catch (e) {
+      // Audio error tidak menghentikan flow
+    }
   }, []);
 
   const asciiArt = `cllllcccccc:cclllllllllc:;;,,,;;:cc::::::::::cccccccccccccc:;;;:cccccccc:::;:::,
 ;;;;;;;;;:cloxkOO000K000Oxol:;:ccccccccllllloooolllccc:::;cccllloooooooc:::cc:;,
-,,,,,;;cldkOKNNNNXXXXXXXXXKKOdll::::codkOO0000Oxxooxdodxlcccodoooollllllccccc:;
+,,,,,;;cldkOKNNNNXXXXXXXXXKKOdll::::codkOOO0000Oxxooxdodxlcccodoooollllllccccc:;
 ,,,,;codkKXXXXXXXKKKKKKKKKKXXKOxl:coOXNWWWWWNNXXKKKK0xllkdcc::cccccllloooodddl:,
 ,,;:ldx0XXXXKKKKXXKKXKKK00000KK0kdONWWWWNNXKK0Okxddkkdolxdc:;cdkOO000KKKXK000kl,
 ,,:lxxOXXXKKKKOOkxxxkOO000OOO00KKKOk0XXXKK0Okxdolc:collk0dcc;lO000KK000OOkxxxo:,
@@ -100,7 +100,6 @@ cccllllllllookOOXKdldl'....,dkOOO0OOkO00OOOOkdddc,,clxOkOd;,;c:',,,''...'';;....
   return (
     <motion.div
       exit={{ opacity: 0 }}
-      // Tambahkan touch-none & will-change agar smooth di HP
       className="fixed inset-0 z-[9999] bg-[#050505] flex flex-col items-center justify-center font-mono overflow-hidden touch-none will-change-transform"
     >
       <div className="absolute inset-0 bg-[linear-gradient(rgba(100,255,218,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(100,255,218,0.02)_1px,transparent_1px)] bg-[size:40px_40px]" />
@@ -135,7 +134,6 @@ cccllllllllookOOXKdldl'....,dkOOO0OOkO00OOOOkdddc,,clxOkOd;,;c:',,,''...'';;....
                 {asciiArt}
               </motion.pre>
 
-              {/* Garis Scanner Tipis (Ringan di prosesor HP) */}
               <motion.div 
                 animate={{ top: ["-5%", "105%"] }} 
                 transition={{ duration: 4, repeat: Infinity, ease: "linear" }} 
