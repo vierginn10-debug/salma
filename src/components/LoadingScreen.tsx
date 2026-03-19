@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 
 export default function LoadingScreen({ onFinished }: { onFinished: () => void }) {
   const [phase, setPhase] = useState<"text" | "ascii">("text");
@@ -7,34 +7,38 @@ export default function LoadingScreen({ onFinished }: { onFinished: () => void }
   
   const fullText = "BYPASSING_SALMA_CORE_SYSTEM...";
 
+  // 1. FUNGSI SUARA (Bebas dari 'any' - ESLint Friendly)
   const playSound = useCallback((frequency: number, type: OscillatorType, duration: number) => {
     try {
-      // Pengecekan AudioContext yang aman dari ESLint & TypeScript
-      const AudioContextClass = window.AudioContext || (window as typeof window & { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+      // Definisi tipe agar TypeScript mengenali AudioContext versi lama (Safari/Webkit)
+      interface CustomWindow extends Window {
+        webkitAudioContext?: typeof AudioContext;
+      }
+
+      const AudioContextClass = window.AudioContext || (window as CustomWindow).webkitAudioContext;
       
       if (!AudioContextClass) return;
-      
-      const context = new AudioContextClass();
-      if (context.state === 'suspended') context.resume();
 
+      const context = new AudioContextClass();
       const osc = context.createOscillator();
       const gain = context.createGain();
-      
+
       osc.type = type;
       osc.frequency.setValueAtTime(frequency, context.currentTime);
-      gain.gain.setValueAtTime(0.02, context.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.01, context.currentTime + duration);
+      gain.gain.setValueAtTime(0.01, context.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, context.currentTime + duration);
       
       osc.connect(gain);
       gain.connect(context.destination);
       osc.start();
       osc.stop(context.currentTime + duration);
     } catch (e) {
-      // Audio error tidak menghentikan flow
+      // Error audio tidak akan menghentikan proses loading
     }
   }, []);
 
-  const asciiArt = `cllllcccccc:cclllllllllc:;;,,,;;:cc::::::::::cccccccccccccc:;;;:cccccccc:::;:::,
+  // 2. DATA ASCII (Gunakan useMemo agar tidak render ulang terus-menerus)
+  const asciiArt = useMemo(() => `cllllcccccc:cclllllllllc:;;,,,;;:cc::::::::::cccccccccccccc:;;;:cccccccc:::;:::,
 ;;;;;;;;;:cloxkOO000K000Oxol:;:ccccccccllllloooolllccc:::;cccllloooooooc:::cc:;,
 ,,,,,;;cldkOKNNNNXXXXXXXXXKKOdll::::codkOOO0000Oxxooxdodxlcccodoooollllllccccc:;
 ,,,,;codkKXXXXXXXKKKKKKKKKKXXKOxl:coOXNWWWWWNNXXKKKK0xllkdcc::cccccllloooodddl:,
@@ -73,26 +77,30 @@ cccllllllllookOOXKdldl'....,dkOOO0OOkO00OOOOkdddc,,clxOkOd;,;c:',,,''...'';;....
 :cccccclcllllocckd,'dKo...;x0Okkxolldxdc:clooool:;,',;lcld;..;;.........';;,....
 ::::::cccccccl:;ll..cd:..;xOkxxdc:lol;,'''',,,''.,,.'.',,:'..',..........,;'....
 ;;:::::::::ccc:,:c...'',;okxdollddlcccc:::::;,........''''..',,,,,;;;;;::c::;;,:
-;;;;;;;;;::::::;::,'',;::loll:::c:;;,,,',,,,;;,,,;:cloddxxkOOO0OxxxxkkkOKKKK00OO`;
+;;;;;;;;;::::::;::,'',;::loll:::c:;;,,,',,,,;;,,,;:cloddxxkOOO0OxxxxkkkOKKKK00OO`, []);
 
+  // 3. LOGIKA PENGETIKAN (Fase 1)
   useEffect(() => {
     if (typedText.length < fullText.length) {
       const timer = setTimeout(() => {
         setTypedText(fullText.slice(0, typedText.length + 1));
-        playSound(150, "square", 0.03);
-      }, 40);
+        // Mainkan suara setiap 2 karakter agar tidak terlalu berisik
+        if (typedText.length % 2 === 0) playSound(150, "square", 0.02);
+      }, 50);
       return () => clearTimeout(timer);
     } else {
-      setTimeout(() => setPhase("ascii"), 600);
+      // Pindah ke fase ASCII setelah teks selesai
+      setTimeout(() => setPhase("ascii"), 800);
     }
   }, [typedText, playSound]);
 
+  // 4. LOGIKA SELESAI (Fase 2)
   useEffect(() => {
     if (phase === "ascii") {
       const timer = setTimeout(() => {
         playSound(880, "sine", 0.1);
         onFinished();
-      }, 3000);
+      }, 3500);
       return () => clearTimeout(timer);
     }
   }, [phase, onFinished, playSound]);
@@ -100,8 +108,12 @@ cccllllllllookOOXKdldl'....,dkOOO0OOkO00OOOOkdddc,,clxOkOd;,;c:',,,''...'';;....
   return (
     <motion.div
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[9999] bg-[#050505] flex flex-col items-center justify-center font-mono overflow-hidden touch-none will-change-transform"
+      className="fixed inset-0 z-[9999] bg-[#020202] flex flex-col items-center justify-center font-mono overflow-hidden touch-none"
     >
+      {/* MONITOR SCANLINE EFFECT */}
+      <div className="absolute inset-0 pointer-events-none z-50 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.15)_50%),linear-gradient(90deg,rgba(255,0,0,0.03),rgba(0,255,0,0.01),rgba(0,0,255,0.03))] bg-[length:100%_4px,3px_100%]" />
+
+      {/* BACKGROUND GRID */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(100,255,218,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(100,255,218,0.02)_1px,transparent_1px)] bg-[size:40px_40px]" />
 
       <AnimatePresence mode="wait">
@@ -111,51 +123,63 @@ cccllllllllookOOXKdldl'....,dkOOO0OOkO00OOOOkdddc,,clxOkOd;,;c:',,,''...'';;....
             initial={{ opacity: 0 }} 
             animate={{ opacity: 1 }} 
             exit={{ opacity: 0 }} 
-            className="text-[#64FFDA] text-xs sm:text-sm md:text-lg font-bold z-10"
+            className="text-[#64FFDA] text-sm md:text-xl font-bold z-10 tracking-[0.2em]"
           >
-            {">"} {typedText}
+            <span className="opacity-40">SYSTEM_</span>{typedText}
             <motion.span 
               animate={{ opacity: [1, 0] }} 
-              transition={{ repeat: Infinity, duration: 0.8 }} 
-              className="inline-block w-2 h-4 bg-[#64FFDA] ml-1 align-middle" 
+              transition={{ repeat: Infinity, duration: 0.5 }} 
+              className="inline-block w-2 h-5 bg-[#64FFDA] ml-2 align-middle shadow-[0_0_8px_#64FFDA]" 
             />
           </motion.div>
         ) : (
           <motion.div
             key="ascii-container"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="flex flex-col items-center z-10 w-full px-6"
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="flex flex-col items-center z-10 w-full px-4"
           >
-            <div className="relative w-full max-w-[300px] md:max-w-[350px] aspect-square flex items-center justify-center overflow-hidden border border-[#64FFDA]/10 bg-black/40 rounded-lg shadow-[0_0_30px_rgba(0,0,0,0.5)]">
+            {/* CONTAINER ASCII DENGAN GLOW SOFT */}
+            <div className="relative w-full max-w-[320px] md:max-w-[420px] aspect-square flex items-center justify-center overflow-hidden border border-[#64FFDA]/10 bg-black/40 backdrop-blur-md rounded-xl shadow-[0_0_40px_rgba(0,0,0,0.8)]">
               <motion.pre 
-                className="text-[#64FFDA] text-[4px] leading-[0.85] sm:text-[6px] md:text-[8px] whitespace-pre font-bold tracking-[0.05em] text-center select-none"
+                className="text-[#64FFDA] text-[3.2px] leading-[0.8] sm:text-[4.5px] md:text-[7.5px] whitespace-pre font-bold select-none opacity-70"
               >
                 {asciiArt}
               </motion.pre>
 
+              {/* LASER SCANNER LINE */}
               <motion.div 
                 animate={{ top: ["-5%", "105%"] }} 
                 transition={{ duration: 4, repeat: Infinity, ease: "linear" }} 
-                className="absolute w-full h-[1px] bg-[#64FFDA]/30 shadow-[0_0_8px_#64FFDA]" 
+                className="absolute w-full h-[1.5px] bg-[#64FFDA]/40 shadow-[0_0_15px_#64FFDA] z-20" 
               />
             </div>
 
+            {/* IDENTITY FOOTER */}
             <motion.div 
-              initial={{ opacity: 0, y: 5 }} 
+              initial={{ opacity: 0, y: 10 }} 
               animate={{ opacity: 1, y: 0 }} 
-              transition={{ delay: 0.4 }}
-              className="mt-8 text-center"
+              transition={{ delay: 0.6 }}
+              className="mt-12 text-center"
             >
-              <h1 className="text-white text-lg md:text-2xl tracking-[0.4em] font-bold">SALMA</h1>
-              <p className="text-[#64FFDA] text-[7px] md:text-[9px] tracking-[0.6em] mt-3 opacity-50">IDENTITY_VERIFIED</p>
+              <h1 className="text-white text-3xl md:text-5xl tracking-[0.6em] font-black italic uppercase drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">
+                Salma
+              </h1>
+              <div className="flex items-center gap-3 mt-6 justify-center">
+                <div className="h-[1px] w-12 bg-[#64FFDA]/20" />
+                <p className="text-[#64FFDA] text-[9px] md:text-[11px] tracking-[0.5em] uppercase font-bold opacity-60">
+                  Authentication Success
+                </p>
+                <div className="h-[1px] w-12 bg-[#64FFDA]/20" />
+              </div>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      <div className="absolute top-6 left-6 w-5 h-5 border-t border-l border-[#64FFDA]/20" />
-      <div className="absolute bottom-6 right-6 w-5 h-5 border-b border-r border-[#64FFDA]/20" />
+      {/* CORNER DECORATIONS */}
+      <div className="absolute top-10 left-10 w-10 h-10 border-t border-l border-[#64FFDA]/20" />
+      <div className="absolute bottom-10 right-10 w-10 h-10 border-b border-r border-[#64FFDA]/20" />
     </motion.div>
   );
 }
