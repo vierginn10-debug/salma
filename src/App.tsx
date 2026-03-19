@@ -1,8 +1,10 @@
+
 import { useState, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
 import LoadingScreen from "./components/LoadingScreen"; 
 import Index from "./pages/Index";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import FloatingNav from "./components/FloatingNav";
 
 const App = () => {
   // 1. Inisialisasi state dengan mengecek sessionStorage
@@ -22,6 +24,7 @@ const App = () => {
 
   return (
     <div className="bg-white dark:bg-[#020202] min-h-screen">
+      <FloatingNav />
       <AnimatePresence mode="wait">
         {isLoading && (
           <LoadingScreen key="loader" onFinished={handleFinished} />
