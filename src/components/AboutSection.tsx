@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { Code2, BookOpen, Laptop, Sparkles, ChevronDown, Star, LucideIcon } from "lucide-react";
+import { Code2, BookOpen, Laptop, Sparkles, ChevronDown, LucideIcon } from "lucide-react";
 import { useState, useEffect, useMemo, memo } from "react";
 
 interface StatProps {
@@ -9,12 +9,11 @@ interface StatProps {
   color: string;
 }
 
-// Komponen StatCard yang dioptimasi
+// 1. STATCARD OPTIMIZED: Mencegah re-render yang bikin scroll macet
 const StatCard = memo(({ stat }: { stat: StatProps }) => (
   <motion.div
-    layout
-    whileTap={{ scale: 0.95 }}
-    className={`${stat.color} border-[3px] border-black dark:border-white p-3 md:p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(100,255,218,0.2)] flex flex-col items-center justify-center text-black transform-gpu`}
+    whileTap={{ scale: 0.97 }}
+    className={`${stat.color} border-[3px] border-black dark:border-white p-3 md:p-4 shadow-[4px_4px_0px_0px_black] dark:shadow-[4px_4px_0px_0px_rgba(100,255,218,0.3)] flex flex-col items-center justify-center text-black transform-gpu`}
   >
     <stat.icon className="w-6 h-6 md:w-7 md:h-7 mb-2 stroke-[2.5px]" />
     <span className="text-xl md:text-3xl font-black tracking-tighter leading-none">
@@ -31,6 +30,12 @@ StatCard.displayName = "StatCard";
 export default function AboutSection() {
   const [active, setActive] = useState<number | null>(0);
   const [displayText, setDisplayText] = useState("");
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Deteksi HP sekali saja saat load
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768 || /Android|iPhone/i.test(navigator.userAgent));
+  }, []);
 
   const accordion = useMemo(() => [
     {
@@ -51,58 +56,54 @@ export default function AboutSection() {
   ], []);
 
   const stats: StatProps[] = [
-    { icon: Code2, value: "10+", label: "Projects", color: "bg-[#FF71CE]" },
-    { icon: BookOpen, value: "20+", label: "Tutorials", color: "bg-[#B967FF]" },
+    { icon: Code2, value: "50+", label: "Projects", color: "bg-[#FF71CE]" },
+    { icon: BookOpen, value: "100+", label: "Videos", color: "bg-[#B967FF]" },
     { icon: Laptop, value: "100%", label: "Self-Taught", color: "bg-[#05FFA1]" },
     { icon: Sparkles, value: "∞", label: "Curiosity", color: "bg-[#FFFB96]" },
   ];
 
-  // Efek Typing yang lebih halus
+  // 2. TYPING EFFECT TAHAN BANTING: Di HP langsung tampil biar gak kedip
   useEffect(() => {
     if (active === null) return;
+    
+    const fullText = accordion[active].content;
+
+    if (isMobile) {
+      setDisplayText(fullText); // Anti-Lag di HP
+      return;
+    }
+
     setDisplayText("");
     let i = 0;
-    const fullText = accordion[active].content;
     const speed = fullText.length > 100 ? 10 : 15;
-    
     const timer = setInterval(() => {
-      if (i <= fullText.length) {
-        setDisplayText(fullText.slice(0, i));
-        i++;
-      } else {
-        clearInterval(timer);
-      }
+      setDisplayText(fullText.slice(0, i));
+      i++;
+      if (i > fullText.length) clearInterval(timer);
     }, speed);
+
     return () => clearInterval(timer);
-  }, [active, accordion]);
+  }, [active, accordion, isMobile]);
 
   return (
     <section 
       id="about" 
-      className="py-16 md:py-24 bg-gradient-to-br from-[#E0FFFB] via-[#8EC5FC] to-[#E0C3FC] dark:from-[#000000] dark:via-[#050A30] dark:to-[#1B1464] relative overflow-hidden transition-colors duration-1000"
+      className="py-16 md:py-24 bg-gradient-to-br from-[#E0FFFB] via-[#8EC5FC] to-[#E0C3FC] dark:from-[#000000] dark:via-[#050A30] dark:to-[#1B1464] relative overflow-hidden transform-gpu"
     >
-      {/* --- DECORATION LAYER --- */}
-      <div className="absolute inset-0 pointer-events-none z-0">
-        <div className="absolute top-10 left-10 w-20 h-20 border-t-4 border-l-4 border-black dark:border-[#05FFA1] opacity-30" />
-        <div className="absolute top-10 right-10 w-20 h-20 border-t-4 border-r-4 border-black dark:border-[#FF71CE] opacity-30" />
-        <div className="absolute bottom-10 left-10 w-20 h-20 border-b-4 border-l-4 border-black dark:border-[#01CDFE] opacity-30" />
-        <div className="absolute bottom-10 right-10 w-20 h-20 border-b-4 border-r-4 border-black dark:border-[#B967FF] opacity-30" />
-        
-        {/* Dot Pattern Background Utama */}
-        <div className="absolute inset-0 opacity-[0.05]" 
-             style={{ backgroundImage: 'radial-gradient(#000 1.2px, transparent 1px)', backgroundSize: '24px 24px' }} />
-      </div>
+      {/* BACKGROUND PATTERN - Statis (Anti-Kedip) */}
+      <div className="absolute inset-0 pointer-events-none z-0 opacity-[0.05]" 
+           style={{ backgroundImage: 'radial-gradient(#000 1.2px, transparent 1px)', backgroundSize: '24px 24px' }} />
 
       <div className="container mx-auto px-6 relative z-10">
         
         {/* HEADER */}
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-16 md:mb-24"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, margin: "-100px" }}
+          className="text-center mb-16"
         >
-          <div className="inline-block border-[3px] border-black bg-[#05FFA1] px-5 py-1.5 mb-6 shadow-[4px_4px_0px_0px_#000] -rotate-2">
+          <div className="inline-block border-[3px] border-black bg-[#ADFF2F] px-5 py-1.5 mb-6 shadow-[4px_4px_0px_0px_#000] -rotate-2">
             <span className="font-black text-xs md:text-sm uppercase italic text-black tracking-widest">Student Profile</span>
           </div>
           
@@ -114,53 +115,38 @@ export default function AboutSection() {
           </h2>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-12 items-start max-w-6xl mx-auto">
           
           {/* VISUAL BOX (Magic Wand) */}
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="relative transform-gpu px-2 order-2 lg:order-1"
-          >
-            {/* KOTAK DENGAN PATTERN TITIK-TITIK HALUS */}
-            <div className="aspect-square max-w-[320px] md:max-w-md mx-auto border-[10px] border-black bg-[#B967FF] dark:bg-[#112240] shadow-[15px_15px_0px_0px_#000] dark:shadow-[15px_15px_0px_0px_#64FFDA] flex items-center justify-center overflow-hidden relative transform-gpu">
-                
-                {/* --- INNER DOT PATTERN --- */}
-                <div className="absolute inset-0 opacity-[0.2] dark:opacity-[0.1] pointer-events-none z-0"
-                     style={{ 
-                       backgroundImage: 'radial-gradient(#000 1px, transparent 1px)',
-                       backgroundSize: '15px 15px'
-                     }} />
+          <div className="relative transform-gpu px-2 order-2 lg:order-1">
+            <div className="aspect-square max-w-[300px] md:max-w-md mx-auto border-[10px] border-black bg-[#B967FF] dark:bg-[#112240] shadow-[15px_15px_0px_0px_black] dark:shadow-[15px_15px_0px_0px_#64FFDA] flex items-center justify-center overflow-hidden relative transform-gpu">
+                <div className="absolute inset-0 opacity-[0.15]"
+                     style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '15px 15px' }} />
 
                 <motion.div 
-                  animate={{ y: [0, -15, 0], rotate: [0, 5, 0] }}
+                  animate={!isMobile ? { y: [0, -15, 0], rotate: [0, 5, 0] } : {}}
                   transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
                   className="text-[140px] md:text-[200px] select-none z-10 filter drop-shadow-[5px_5px_0px_rgba(0,0,0,0.2)]"
                 >
                   🪄
                 </motion.div>
-                
-                {/* Decorative floating shapes inside box */}
-                <div className="absolute top-4 left-4 w-8 h-8 bg-[#FFFB96] border-2 border-black rotate-12 z-10" />
-                <div className="absolute bottom-8 right-6 w-6 h-6 bg-[#01CDFE] border-2 border-black -rotate-12 z-10" />
             </div>
             
-            <div className="absolute -bottom-6 -left-2 md:-left-6 bg-[#FFFB96] border-[4px] border-black px-4 py-2 shadow-[6px_6px_0px_0px_#01CDFE] rotate-[-5deg] z-20">
-               <span className="font-black uppercase text-xs md:text-sm italic text-black flex items-center gap-2">
-                 Learning Ninja <span className="text-lg">🥷</span>
+            <div className="absolute -bottom-6 -left-2 bg-[#FFFB96] border-[4px] border-black px-4 py-2 shadow-[6px_6px_0px_0px_#01CDFE] rotate-[-5deg] z-20">
+               <span className="font-black uppercase text-xs italic text-black flex items-center gap-2">
+                 Learning Ninja 🥷
                </span>
             </div>
-          </motion.div>
+          </div>
 
           {/* CONTENT (Accordion & Stats) */}
           <div className="flex flex-col gap-8 order-1 lg:order-2">
             <div className="space-y-4">
               {accordion.map((item, index) => (
-                <div key={index} className="border-[3px] border-black bg-white dark:bg-[#112240] shadow-[6px_6px_0px_0px_#000] dark:shadow-[6px_6px_0px_0px_#64FFDA] transform-gpu">
+                <div key={index} className="border-[3px] border-black bg-white dark:bg-[#112240] shadow-[6px_6px_0px_0px_#000] dark:shadow-[6px_6px_0px_0px_#64FFDA] overflow-hidden">
                   <button
                     onClick={() => setActive(active === index ? null : index)}
-                    className={`flex items-center justify-between w-full p-4 md:p-5 text-left border-b-[3px] border-black transition-colors ${active === index ? item.color : ''}`}
+                    className={`flex items-center justify-between w-full p-4 md:p-5 text-left transition-colors border-black ${active === index ? item.color + ' border-b-[3px]' : ''}`}
                   >
                     <span className={`text-sm md:text-lg font-black uppercase italic tracking-tighter ${active === index ? 'text-black' : 'text-black dark:text-white'}`}>
                       {item.title}
@@ -171,19 +157,21 @@ export default function AboutSection() {
                   <AnimatePresence initial={false}>
                     {active === index && (
                       <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: "auto", opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3, ease: "circOut" }}
-                        className="overflow-hidden bg-white dark:bg-[#0D1B2A]"
+                        initial={{ height: 0 }}
+                        animate={{ height: "auto" }}
+                        exit={{ height: 0 }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
+                        className="bg-white dark:bg-[#0D1B2A]"
                       >
-                        <div className="p-5 font-bold text-black dark:text-white leading-relaxed text-sm md:text-base border-black/5">
+                        <div className="p-5 font-bold text-black dark:text-white leading-relaxed text-sm md:text-base">
                           {displayText}
-                          <motion.span 
-                            animate={{ opacity: [1, 0] }}
-                            transition={{ duration: 0.6, repeat: Infinity }}
-                            className="inline-block w-2 h-4 bg-[#B967FF] ml-1 align-middle" 
-                          />
+                          {!isMobile && (
+                            <motion.span 
+                              animate={{ opacity: [1, 0] }} 
+                              transition={{ duration: 0.6, repeat: Infinity }} 
+                              className="inline-block w-2 h-4 bg-[#B967FF] ml-1 align-middle" 
+                            />
+                          )}
                         </div>
                       </motion.div>
                     )}
@@ -193,7 +181,7 @@ export default function AboutSection() {
             </div>
 
             {/* STATS GRID */}
-            <div className="grid grid-cols-2 gap-3 md:gap-4">
+            <div className="grid grid-cols-2 gap-3 md:gap-4 mt-2">
               {stats.map((stat, i) => (
                 <StatCard key={i} stat={stat} />
               ))}
