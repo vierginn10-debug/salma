@@ -122,31 +122,43 @@ export default function SkillsSection() {
       <div className="container mx-auto px-5">
         
         {/* HEADLINE SECTION */}
-        <div className="text-center mb-32 relative">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="flex flex-col items-center transform-gpu"
-          >
-            <h2 className="font-black uppercase italic text-7xl md:text-9xl tracking-[-0.06em] leading-[0.8] text-black dark:text-white transform -rotate-2 mb-2">
-              SKILL
-            </h2>
-
-            <div className="inline-flex border-[8px] md:border-[10px] border-black dark:border-white bg-white dark:bg-black px-8 md:px-14 py-4 md:py-6 shadow-[14px_14px_0px_0px_#01CDFE] dark:shadow-[14px_14px_0px_0px_#64FFDA]">
-              <span className="font-black uppercase italic text-6xl md:text-9xl tracking-[-0.06em] leading-none text-[#FF71CE] dark:text-[#64FFDA] drop-shadow-[5px_5px_0px_#01CDFE] dark:drop-shadow-[5px_5px_0px_#B967FF]">
-                ARSENAL
-              </span>
-            </div>
-          </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-16 md:mb-24"
+        >
+          {/* Badge Atas */}
+          <div className="inline-block border-4 border-black dark:border-[#64FFDA] bg-[#05FFA1] px-6 py-2 mb-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_#64FFDA] -rotate-2">
+            <span className="font-black text-lg md:text-xl uppercase tracking-widest italic text-black">My Toolkit</span>
+          </div>
           
-          <div className="mt-14 flex flex-col items-center">
-            <p className="font-black uppercase italic text-black/90 dark:text-[#8892B0] text-xl md:text-3xl tracking-tighter bg-[#FFFF00] dark:bg-transparent px-4 py-1 text-center">
+          <h2 className="text-6xl md:text-8xl font-black mb-8 tracking-tighter uppercase leading-[0.85] italic">
+            <span className="text-black dark:text-white transition-colors duration-500">Skill</span>
+            <br />
+            
+            <motion.div 
+              whileHover={{ scale: 1.02 }}
+              className="inline-block transform rotate-1 mt-6 px-8 py-3 border-[6px] 
+                         bg-white border-black shadow-[8px_8px_0px_0px_#01CDFE]
+                         dark:bg-black dark:border-white dark:shadow-[8px_8px_0px_0px_#B967FF]"
+            >
+              <span className="text-[#FF71CE] drop-shadow-[2px_2px_0px_#01CDFE]
+                               dark:text-[#64FFDA] dark:drop-shadow-[2px_2px_0px_#B967FF]">
+                Arsenal
+              </span>
+            </motion.div>
+          </h2>
+          
+          {/* QUOTE - SEKARANG TANPA BINGKAI SESUAI REQUEST */}
+          <div className="max-w-3xl mx-auto mt-10">
+            <p className="text-xl md:text-3xl font-black uppercase tracking-tighter italic leading-tight text-black dark:text-[#CCD6F6]">
               "Not a master yet, but definitely not at zero anymore."
             </p>
-            <div className="w-40 h-4 bg-black dark:bg-[#64FFDA] mt-4 shadow-[5px_5px_0px_0px_#01CDFE]"></div>
+            {/* Dekorasi Garis Bawah Biar Gak Sepi Banget */}
+            <div className="w-24 h-2 bg-[#FFFF00] dark:bg-[#64FFDA] mx-auto mt-4 shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]"></div>
           </div>
-        </div>
+        </motion.div>
 
         {/* GRID KATEGORI */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 mb-24">
