@@ -1,4 +1,4 @@
-import { useState, memo } from 'react';
+import { useState, memo, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Award, 
@@ -10,7 +10,23 @@ import {
   Maximize2 
 } from 'lucide-react';
 
-const certificates = [
+// 1. DEFINISI INTERFACE (Agar ESLint tidak error)
+interface Certificate {
+  title: string;
+  issuer: string;
+  date: string;
+  credentialId: string;
+  image: string;
+  color: string;
+}
+
+interface CertificateCardProps {
+  cert: Certificate;
+  index: number;
+  onSelect: (image: string) => void;
+}
+
+const certificates: Certificate[] = [
   {
     title: 'Medali Emas - Bahasa Inggris',
     issuer: 'SEAOSM 2024 (South East Asia Olympiad Of Science Medicine)',
@@ -61,105 +77,105 @@ const certificates = [
   },
 ];
 
-const CertificateCard = memo(({ cert, index, onSelect }: any) => (
+// 2. IMPLEMENTASI INTERFACE PADA KOMPONEN
+const CertificateCard = memo(({ cert, index, onSelect }: CertificateCardProps) => (
   <motion.div
-    initial={{ opacity: 0, y: 20 }}
+    initial={{ opacity: 0, y: 10 }}
     whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true, margin: "-50px" }}
-    transition={{ delay: index * 0.05 }}
-    whileHover={{ y: -8 }} 
-    className="group cursor-pointer relative"
+    viewport={{ once: true, margin: "-10px" }}
+    transition={{ duration: 0.3, delay: Math.min(index * 0.05, 0.3) }}
+    className="group relative active:scale-[0.98] transition-transform duration-200 transform-gpu"
     onClick={() => onSelect(cert.image)}
   >
-    <div className="absolute inset-0 bg-black dark:bg-[#64FFDA] translate-x-3 translate-y-3 -z-10 group-hover:translate-x-5 group-hover:translate-y-5 transition-transform duration-300" />
-    <div className="h-full bg-white dark:bg-[#0a192f] border-4 border-black dark:border-white relative flex flex-col overflow-hidden">
-      <div className="relative h-56 border-b-4 border-black dark:border-white overflow-hidden bg-slate-900">
+    <div className="absolute inset-0 bg-black dark:bg-[#64FFDA] translate-x-1.5 translate-y-1.5 -z-10" />
+    
+    <div className="h-full bg-white dark:bg-[#0a192f] border-[3px] border-black dark:border-white relative flex flex-col overflow-hidden">
+      <div className="relative h-44 border-b-[3px] border-black dark:border-white overflow-hidden bg-slate-900">
         <img 
           src={cert.image} 
           alt={cert.title}
           loading="lazy"
-          className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+          className="w-full h-full object-cover grayscale group-active:grayscale-0 transition-all duration-300"
         />
-        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-[2px]">
-          <div className="bg-[#ADFF2F] border-4 border-black p-3 shadow-[4px_4px_0px_0px_#000]">
-             <Maximize2 className="h-6 w-6 text-black" strokeWidth={3} />
-          </div>
-        </div>
-        <div className={`absolute top-4 left-4 px-3 py-1 border-2 border-black font-black text-[10px] uppercase shadow-[2px_2px_0px_0px_#000] z-20 ${cert.color}`}>
-          Awarded
+        <div className={`absolute top-2 left-2 px-2 py-0.5 border-2 border-black font-black text-[8px] uppercase shadow-[1.5px_1.5px_0px_0px_#000] z-10 ${cert.color}`}>
+          Victory
         </div>
       </div>
 
-      <div className="p-6 flex-grow flex flex-col">
-        <div className="flex items-start gap-3 mb-4">
-          <Award className="h-6 w-6 text-[#FF71CE] dark:text-[#ADFF2F] shrink-0" strokeWidth={3} />
-          <h3 className="text-xl font-black uppercase italic tracking-tight leading-[1.1] text-black dark:text-white">
+      <div className="p-4 flex-grow flex flex-col">
+        <div className="flex items-start gap-2.5 mb-2">
+          <Award className="h-4.5 w-4.5 text-[#FF71CE] dark:text-[#ADFF2F] shrink-0" strokeWidth={3} />
+          <h3 className="text-base font-black uppercase italic tracking-tight leading-none text-black dark:text-white">
             {cert.title}
           </h3>
         </div>
-        <p className="text-[11px] font-bold uppercase tracking-widest text-black/50 dark:text-white/40 mb-8 italic">
+        <p className="text-[9px] font-bold uppercase text-black/60 dark:text-white/40 mb-5 italic">
           {cert.issuer}
         </p>
-        <div className="mt-auto flex items-center justify-between border-t-2 border-black/5 dark:border-white/5 pt-4">
-          <div className="flex flex-col gap-1">
-            <div className="flex items-center gap-2 text-[10px] font-black uppercase text-black dark:text-slate-300">
-              <Calendar className="h-3 w-3" />
+        
+        <div className="mt-auto flex items-center justify-between border-t border-black/10 dark:border-white/10 pt-3">
+          <div className="flex flex-col gap-0.5 text-[8px] font-black uppercase text-black dark:text-slate-400">
+            <div className="flex items-center gap-1">
+              <Calendar className="h-2.5 w-2.5" />
               <span>{cert.date}</span>
             </div>
-            <div className="flex items-center gap-2 text-[10px] font-mono font-bold text-black/30 dark:text-white/20">
-              <Bookmark className="h-3 w-3" />
-              <span className="truncate w-32">ID: {cert.credentialId}</span>
-            </div>
+            <span className="font-mono opacity-40 truncate w-20">ID: {cert.credentialId}</span>
           </div>
-          <ShieldCheck className="h-8 w-8 text-black dark:text-[#64FFDA] opacity-20" />
+          <ShieldCheck className="h-5 w-5 text-black dark:text-[#64FFDA] opacity-10" />
         </div>
       </div>
     </div>
   </motion.div>
 ));
 
+CertificateCard.displayName = "CertificateCard";
+
 export default function CertificatesSection() {
   const [selectedImg, setSelectedImg] = useState<string | null>(null);
+
+  const BackgroundDecor = useMemo(() => (
+    <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden select-none opacity-10">
+      <div className="absolute top-8 left-8 w-16 h-16 border-t-[5px] border-l-[5px] border-black dark:border-white" />
+      <div className="absolute top-8 right-8 w-16 h-16 border-t-[5px] border-r-[5px] border-black dark:border-white" />
+      <div className="absolute bottom-8 left-8 w-16 h-16 border-b-[5px] border-l-[5px] border-black dark:border-white" />
+      <div className="absolute bottom-8 right-8 w-16 h-16 border-b-[5px] border-r-[5px] border-black dark:border-white" />
+    </div>
+  ), []);
 
   return (
     <section 
       id="certificates" 
-      className="py-24 relative overflow-hidden bg-gradient-to-br from-[#E0FFFB] via-[#8EC5FC] to-[#E0C3FC] dark:from-[#000000] dark:via-[#050A30] dark:to-[#1B1464] border-t-8 border-black dark:border-white"
+      className="py-16 relative overflow-hidden bg-gradient-to-br from-[#E0FFFB] via-[#8EC5FC] to-[#E0C3FC] dark:from-[#000000] dark:via-[#050A30] dark:to-[#1B1464] border-t-[6px] border-black dark:border-white transform-gpu"
     >
-      <div className="absolute top-0 left-0 w-64 h-64 bg-[#ADFF2F] opacity-5 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+      {BackgroundDecor}
 
       <div className="container mx-auto px-6 relative z-10">
         
-        {/* HEADER */}
-        <div className="text-center mb-20">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="inline-block border-4 border-black dark:border-white bg-[#ADFF2F] px-6 py-2 mb-8 shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] -rotate-2"
-          >
-            <span className="font-black text-xs uppercase tracking-[0.2em] text-black flex items-center gap-2 italic">
-              <Sparkles className="h-4 w-4" fill="black" />
+        {/* HEADER SECTION - IDENTIK DENGAN ABOUT */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="text-center mb-16 transform-gpu"
+        >
+          <div className="inline-block border-[3px] border-black bg-[#ADFF2F] px-4 py-1.5 mb-6 shadow-[4px_4px_0px_0px_#000] -rotate-2">
+            <span className="font-black text-[10px] md:text-xs uppercase tracking-widest italic text-black flex items-center gap-2">
+              <Sparkles className="h-3 w-3" fill="black" />
               Victory Gallery
             </span>
-          </motion.div>
+          </div>
           
-          <h2 className="text-6xl md:text-8xl font-black uppercase tracking-tighter italic leading-[0.85] text-black dark:text-white">
-            ACADEMIC <br />
-            
-            {/* BOX HEADLINE - MENGIKUTI GAMBAR 1 & 2 */}
-            <span className="inline-block mt-6 p-1.5 border-4 border-black dark:border-[#64FFDA] bg-white dark:bg-black shadow-[10px_10px_0px_0px_#000] dark:shadow-[10px_10px_0px_0px_white]">
-              <span className="inline-block border-0 dark:border-4 dark:border-white p-4">
-                <span className="text-[#FF71CE] dark:text-[#64FFDA] drop-shadow-[4px_4px_0px_#01CDFE] dark:drop-shadow-[4px_4px_0px_#B967FF]">
-                  RECORDS
-                </span>
+          <h2 className="text-5xl md:text-8xl font-black mb-6 tracking-tighter uppercase leading-[0.85] italic transition-colors duration-500">
+            <span className="text-black dark:text-white">Academic</span> <br />
+            <span className="inline-block rotate-1 mt-4 px-6 py-2 border-[5px] bg-white border-black shadow-[8px_8px_0px_0px_#01CDFE] dark:bg-black dark:border-white dark:shadow-[8px_8px_0px_0px_#B967FF] transform-gpu">
+              <span className="text-[#FF71CE] drop-shadow-[2px_2px_0px_#01CDFE] dark:text-[#64FFDA] dark:drop-shadow-[2px_2px_0px_#B967FF]">
+                Records
               </span>
             </span>
           </h2>
-        </div>
+        </motion.div>
 
-        {/* GRID */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
           {certificates.map((cert, index) => (
             <CertificateCard 
               key={cert.credentialId} 
@@ -170,67 +186,44 @@ export default function CertificatesSection() {
           ))}
         </div>
 
-        {/* FULLSCREEN MODAL */}
         <AnimatePresence>
           {selectedImg && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-[100] bg-black/95 backdrop-blur-sm flex items-center justify-center p-4"
+              className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-4 touch-none"
               onClick={() => setSelectedImg(null)}
             >
               <motion.div
-                initial={{ scale: 0.9, rotate: -2 }}
-                animate={{ scale: 1, rotate: 0 }}
-                exit={{ scale: 0.9, rotate: 2 }}
+                initial={{ scale: 0.9 }}
+                animate={{ scale: 1 }}
                 onClick={(e) => e.stopPropagation()}
-                className="relative max-w-5xl w-full bg-white dark:bg-[#050A30] border-[4px] border-black dark:border-white shadow-[12px_12px_0px_0px_#ADFF2F] flex flex-col overflow-hidden"
+                className="relative max-w-4xl w-full bg-white dark:bg-[#050A30] border-[4px] border-black dark:border-white shadow-[6px_6px_0px_0px_#ADFF2F] overflow-hidden transform-gpu"
               >
                 <button 
                   onClick={() => setSelectedImg(null)}
-                  className="absolute top-2 right-2 z-50 bg-[#FF71CE] border-2 border-black p-2 shadow-[4px_4px_0px_0px_#000] active:translate-y-0.5 active:shadow-none transition-all"
+                  className="absolute -top-3 -right-3 z-50 bg-[#FF71CE] border-2 border-black p-2 shadow-[3px_3px_0px_0px_#000] active:translate-y-0.5 active:shadow-none"
                 >
                   <X className="h-5 w-5 text-black" strokeWidth={4} />
                 </button>
                 
-                <div className="overflow-auto max-h-[80vh] bg-slate-200">
-                  <img 
-                    src={selectedImg} 
-                    alt="Certificate" 
-                    className="w-full h-auto object-contain" 
-                  />
-                </div>
-
-                <div className="bg-black dark:bg-white p-3 flex justify-between items-center border-t-2 border-black dark:border-white">
-                  <span className="text-white dark:text-black font-black uppercase italic text-[10px] tracking-widest">
-                    Verification // Success
-                  </span>
-                  <div className="flex gap-2">
-                    <div className="w-2 h-2 rounded-full bg-[#ADFF2F]" />
-                    <div className="w-2 h-2 rounded-full bg-[#FF71CE]" />
-                  </div>
-                </div>
+                <img 
+                  src={selectedImg} 
+                  alt="Certificate" 
+                  className="w-full h-auto max-h-[80vh] object-contain" 
+                />
               </motion.div>
             </motion.div>
           )}
         </AnimatePresence>
 
-        {/* BOTTOM DECORATION */}
-        <div className="mt-32 flex flex-col items-center">
-          <div className="w-full h-1 bg-black dark:bg-white/10 relative mb-8">
-            <div className="absolute left-1/2 -translate-x-1/2 -top-4 bg-[#ADFF2F] text-black border-4 border-black px-10 py-2 font-black italic uppercase text-xs">
-              End of Gallery
-            </div>
-          </div>
+        <div className="mt-20 text-center">
           <button 
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            className="group flex items-center gap-3 font-black uppercase italic text-sm text-black dark:text-white active:text-[#FF71CE]"
+            className="font-black uppercase italic text-[10px] text-black dark:text-white border-b-2 border-black dark:border-white pb-1 active:text-[#FF71CE] transform-gpu"
           >
-            Back to Top
-            <div className="p-2 border-2 border-black dark:border-white group-hover:bg-[#ADFF2F] group-hover:text-black transition-all">
-               <Maximize2 className="h-4 w-4 rotate-180" />
-            </div>
+            Back to Top ↑
           </button>
         </div>
       </div>
