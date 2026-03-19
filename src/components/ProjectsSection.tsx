@@ -86,33 +86,43 @@ const projects: Project[] = [
   },
 ];
 
+// OPTIMIZED TYPEWRITER: Less heavy on mobile CPU
 const Typewriter = ({ text }: { text: string }) => {
+  const words = text.split(" ");
   return (
-    <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-      {text.split("").map((char, i) => (
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true }}
+      variants={{
+        visible: { transition: { staggerChildren: 0.1 } }
+      }}
+    >
+      {words.map((word, i) => (
         <motion.span
           key={i}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.01, delay: i * 0.03 }}
+          variants={{
+            hidden: { opacity: 0, y: 5 },
+            visible: { opacity: 1, y: 0 }
+          }}
+          className="inline-block mr-1.5"
         >
-          {char}
+          {word}
         </motion.span>
       ))}
-    </motion.span>
+    </motion.div>
   );
 };
 
 const ProjectCard = memo(({ project }: { project: Project }) => (
   <motion.div
     layout
-    initial={{ opacity: 0, scale: 0.95 }}
-    animate={{ opacity: 1, scale: 1 }}
-    exit={{ opacity: 0, scale: 0.95 }}
-    transition={{ duration: 0.2 }}
-    whileHover={{ y: -5 }}
-    className="bg-white dark:bg-[#112240] border-[4px] border-black dark:border-white shadow-[6px_6px_0px_0px_#000] dark:shadow-[6px_6px_0px_0px_#64FFDA] flex flex-col h-[460px] md:h-[500px] overflow-hidden transition-all group mb-4"
+    initial={{ opacity: 0, scale: 0.98 }}
+    whileInView={{ opacity: 1, scale: 1 }}
+    viewport={{ once: true }}
+    className="bg-white dark:bg-[#112240] border-[4px] border-black dark:border-white shadow-[6px_6px_0px_0px_#000] dark:shadow-[6px_6px_0px_0px_#64FFDA] flex flex-col h-[460px] md:h-[500px] overflow-hidden transition-all group mb-4 transform-gpu"
   >
+    {/* Bar Window */}
     <div className="border-b-[4px] border-black dark:border-white bg-white dark:bg-slate-900 p-2 flex justify-between items-center px-3">
       <div className="flex gap-1.5">
         <div className="w-2 h-2 rounded-full bg-[#FF71CE] border border-black" />
@@ -122,11 +132,13 @@ const ProjectCard = memo(({ project }: { project: Project }) => (
       <span className="font-black text-[7px] uppercase dark:text-white italic tracking-widest opacity-60">sys.v26</span>
     </div>
 
+    {/* Image Container */}
     <div className={`h-36 md:h-40 border-b-[4px] border-black dark:border-white relative flex items-center justify-center overflow-hidden ${project.color}`}>
       <div className="absolute inset-0 opacity-[0.05] bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:10px_10px]" />
-      <img src={project.image} alt={project.title} loading="lazy" className="z-10 w-20 h-20 md:w-24 md:h-24 object-contain transition-transform duration-300 group-hover:scale-110" />
+      <img src={project.image} alt={project.title} loading="lazy" className="z-10 w-20 h-20 md:w-24 md:h-24 object-contain transition-transform duration-300 group-hover:scale-110 transform-gpu" />
     </div>
 
+    {/* Info Container */}
     <div className="p-4 md:p-5 flex flex-col flex-grow">
       <h3 className="text-lg md:text-xl font-black uppercase italic tracking-tighter mb-2 text-black dark:text-white group-hover:text-[#FF71CE] transition-colors line-clamp-1">
         {project.title}
@@ -135,22 +147,24 @@ const ProjectCard = memo(({ project }: { project: Project }) => (
         {project.description}
       </p>
 
+      {/* Tags */}
       <div className="flex flex-wrap gap-1.5 mb-4">
         {project.tags.map((tag) => (
-          <span key={tag} className="text-[7px] font-black border-2 border-black dark:border-white px-1.5 py-0.5 bg-white dark:bg-black text-black dark:text-[#64FFDA] uppercase">
+          <span key={tag} className="text-[7px] font-black border-2 border-black dark:border-white px-1.5 py-0.5 bg-white dark:bg-black text-black dark:text-[#64FFDA] uppercase shadow-[2px_2px_0px_0px_black] dark:shadow-[2px_2px_0px_0px_#64FFDA]">
             #{tag}
           </span>
         ))}
       </div>
 
+      {/* Action Buttons */}
       <div className="flex gap-2 mt-auto">
         {project.category === 'code' ? (
           <>
-            <a href={project.github} className="flex-1 flex items-center justify-center gap-1.5 py-2 border-[2px] border-black dark:border-white bg-black dark:bg-[#64FFDA] text-white dark:text-black font-black uppercase text-[8px] active:scale-95 shadow-[3px_3px_0px_0px_#FF71CE]"><Github size={10} /> Code</a>
-            <a href={project.demo} className="flex-1 flex items-center justify-center gap-1.5 py-2 border-[2px] border-black dark:border-white bg-white dark:text-black font-black uppercase text-[8px] active:scale-95 shadow-[3px_3px_0px_0px_#ADFF2F]"><ExternalLink size={10} /> Demo</a>
+            <a href={project.github} className="flex-1 flex items-center justify-center gap-1.5 py-2 border-[2px] border-black dark:border-white bg-black dark:bg-[#64FFDA] text-white dark:text-black font-black uppercase text-[8px] active:scale-95 shadow-[3px_3px_0px_0px_#FF71CE] transition-all"><Github size={10} /> Code</a>
+            <a href={project.demo} className="flex-1 flex items-center justify-center gap-1.5 py-2 border-[2px] border-black dark:border-white bg-white dark:text-black font-black uppercase text-[8px] active:scale-95 shadow-[3px_3px_0px_0px_#ADFF2F] transition-all"><ExternalLink size={10} /> Demo</a>
           </>
         ) : (
-          <a href={project.youtube} className="w-full flex items-center justify-center gap-1.5 py-2 border-[2px] border-black dark:border-white bg-[#FF71CE] text-black font-black uppercase text-[8px] active:scale-95 shadow-[3px_3px_0px_0px_black]"><Play size={10} fill="black" /> Watch Video Content</a>
+          <a href={project.youtube} className="w-full flex items-center justify-center gap-1.5 py-2 border-[2px] border-black dark:border-white bg-[#FF71CE] text-black font-black uppercase text-[8px] active:scale-95 shadow-[3px_3px_0px_0px_black] transition-all"><Play size={10} fill="black" /> Watch Content</a>
         )}
       </div>
     </div>
@@ -192,11 +206,11 @@ export default function ProjectsSection() {
   return (
     <section id="projects" className="py-16 md:py-32 relative overflow-hidden bg-gradient-to-br from-[#E0FFFB] via-[#8EC5FC] to-[#E0C3FC] dark:from-[#000000] dark:via-[#050A30] dark:to-[#1B1464] border-t-[6px] border-black dark:border-white transition-colors duration-1000">
       
-      {/* Mesh Dot Matrix Pattern Background */}
-      <div className="absolute inset-0 opacity-[0.15] pointer-events-none transform-gpu z-0" 
+      {/* Mesh Dot Background - Optimized */}
+      <div className="absolute inset-0 opacity-[0.08] pointer-events-none transform-gpu z-0" 
            style={{ 
              backgroundImage: 'radial-gradient(#000 1.2px, transparent 1px)', 
-             backgroundSize: '24px 24px' 
+             backgroundSize: '30px 30px' 
            }} />
 
       <div className="container mx-auto px-4 relative z-10">
@@ -217,14 +231,14 @@ export default function ProjectsSection() {
           </h2>
           
           <div className="max-w-[280px] md:max-w-xl mx-auto mt-8">
-            <p className="text-[11px] md:text-lg font-black uppercase tracking-tight italic opacity-80 text-black dark:text-[#CCD6F6] leading-tight min-h-[40px]">
+            <div className="text-[11px] md:text-lg font-black uppercase tracking-tight italic opacity-80 text-black dark:text-[#CCD6F6] leading-tight min-h-[40px]">
               <Typewriter text='"Crafting ideas into reality, one line of code at a time."' />
-            </p>
+            </div>
             <div className="w-16 h-1.5 bg-[#FFFF00] dark:bg-[#64FFDA] mx-auto mt-4 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]"></div>
           </div>
         </div>
 
-        {/* FILTER BUTTONS (Fixed ESLint any error) */}
+        {/* FILTER BUTTONS */}
         <div className="flex flex-wrap justify-center gap-3 mb-12">
           {[
             { id: 'all', label: 'All Works', icon: Sparkles },
@@ -254,7 +268,7 @@ export default function ProjectsSection() {
                   <motion.div 
                     key={project.title}
                     layout
-                    className="flex-[0_0_88%] sm:flex-[0_0_50%] lg:flex-[0_0_33.333%] min-w-0 pl-[1rem]"
+                    className="flex-[0_0_88%] sm:flex-[0_0_50%] lg:flex-[0_0_33.333%] min-w-0 pl-[1rem] transform-gpu"
                   >
                     <ProjectCard project={project} />
                   </motion.div>
