@@ -9,7 +9,7 @@ interface StatProps {
   color: string;
 }
 
-// 1. STATCARD OPTIMIZED: Mencegah re-render yang bikin scroll macet
+// 1. STATCARD OPTIMIZED: Mencegah re-render berat saat scroll
 const StatCard = memo(({ stat }: { stat: StatProps }) => (
   <motion.div
     whileTap={{ scale: 0.97 }}
@@ -32,9 +32,14 @@ export default function AboutSection() {
   const [displayText, setDisplayText] = useState("");
   const [isMobile, setIsMobile] = useState(false);
 
-  // Deteksi HP sekali saja saat load
+  // Deteksi Device (Mobile vs Desktop)
   useEffect(() => {
-    setIsMobile(window.innerWidth < 768 || /Android|iPhone/i.test(navigator.userAgent));
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768 || /Android|iPhone/i.test(navigator.userAgent));
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
   const accordion = useMemo(() => [
@@ -62,14 +67,14 @@ export default function AboutSection() {
     { icon: Sparkles, value: "∞", label: "Curiosity", color: "bg-[#FFFB96]" },
   ];
 
-  // 2. TYPING EFFECT TAHAN BANTING: Di HP langsung tampil biar gak kedip
+  // 2. TYPING EFFECT LOGIC (Optimized for Mobile)
   useEffect(() => {
     if (active === null) return;
     
     const fullText = accordion[active].content;
 
     if (isMobile) {
-      setDisplayText(fullText); // Anti-Lag di HP
+      setDisplayText(fullText); // Instan di HP agar performa mulus
       return;
     }
 
@@ -90,7 +95,7 @@ export default function AboutSection() {
       id="about" 
       className="py-16 md:py-24 bg-gradient-to-br from-[#E0FFFB] via-[#8EC5FC] to-[#E0C3FC] dark:from-[#000000] dark:via-[#050A30] dark:to-[#1B1464] relative overflow-hidden transform-gpu"
     >
-      {/* BACKGROUND PATTERN - Statis (Anti-Kedip) */}
+      {/* BACKGROUND PATTERN */}
       <div className="absolute inset-0 pointer-events-none z-0 opacity-[0.05]" 
            style={{ backgroundImage: 'radial-gradient(#000 1.2px, transparent 1px)', backgroundSize: '24px 24px' }} />
 
@@ -98,8 +103,8 @@ export default function AboutSection() {
         
         {/* HEADER */}
         <motion.div 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           className="text-center mb-16"
         >
@@ -119,21 +124,21 @@ export default function AboutSection() {
           
           {/* VISUAL BOX (Magic Wand) */}
           <div className="relative transform-gpu px-2 order-2 lg:order-1">
-            <div className="aspect-square max-w-[300px] md:max-w-md mx-auto border-[10px] border-black bg-[#B967FF] dark:bg-[#112240] shadow-[15px_15px_0px_0px_black] dark:shadow-[15px_15px_0px_0px_#64FFDA] flex items-center justify-center overflow-hidden relative transform-gpu">
+            <div className="aspect-square max-w-[280px] md:max-w-md mx-auto border-[10px] border-black bg-[#B967FF] dark:bg-[#112240] shadow-[12px_12px_0px_0px_black] dark:shadow-[12px_12px_0px_0px_#64FFDA] flex items-center justify-center overflow-hidden relative transform-gpu">
                 <div className="absolute inset-0 opacity-[0.15]"
                      style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '15px 15px' }} />
 
                 <motion.div 
                   animate={!isMobile ? { y: [0, -15, 0], rotate: [0, 5, 0] } : {}}
                   transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                  className="text-[140px] md:text-[200px] select-none z-10 filter drop-shadow-[5px_5px_0px_rgba(0,0,0,0.2)]"
+                  className="text-[120px] md:text-[200px] select-none z-10 filter drop-shadow-[5px_5px_0px_rgba(0,0,0,0.2)]"
                 >
                   🪄
                 </motion.div>
             </div>
             
-            <div className="absolute -bottom-6 -left-2 bg-[#FFFB96] border-[4px] border-black px-4 py-2 shadow-[6px_6px_0px_0px_#01CDFE] rotate-[-5deg] z-20">
-               <span className="font-black uppercase text-xs italic text-black flex items-center gap-2">
+            <div className="absolute -bottom-4 -left-2 bg-[#FFFB96] border-[4px] border-black px-4 py-2 shadow-[5px_5px_0px_0px_#01CDFE] rotate-[-5deg] z-20">
+               <span className="font-black uppercase text-[10px] md:text-xs italic text-black flex items-center gap-2">
                  Learning Ninja 🥷
                </span>
             </div>
@@ -143,7 +148,7 @@ export default function AboutSection() {
           <div className="flex flex-col gap-8 order-1 lg:order-2">
             <div className="space-y-4">
               {accordion.map((item, index) => (
-                <div key={index} className="border-[3px] border-black bg-white dark:bg-[#112240] shadow-[6px_6px_0px_0px_#000] dark:shadow-[6px_6px_0px_0px_#64FFDA] overflow-hidden">
+                <div key={index} className="border-[3px] border-black bg-white dark:bg-[#112240] shadow-[5px_5px_0px_0px_#000] dark:shadow-[5px_5px_0px_0px_#64FFDA] overflow-hidden">
                   <button
                     onClick={() => setActive(active === index ? null : index)}
                     className={`flex items-center justify-between w-full p-4 md:p-5 text-left transition-colors border-black ${active === index ? item.color + ' border-b-[3px]' : ''}`}
@@ -163,13 +168,14 @@ export default function AboutSection() {
                         transition={{ duration: 0.3, ease: "easeInOut" }}
                         className="bg-white dark:bg-[#0D1B2A]"
                       >
-                        <div className="p-5 font-bold text-black dark:text-white leading-relaxed text-sm md:text-base">
+                        {/* Tambahkan break-words di sini agar aman di layar HP sempit */}
+                        <div className="p-5 font-bold text-black dark:text-white leading-relaxed text-sm md:text-base break-words">
                           {displayText}
                           {!isMobile && (
                             <motion.span 
                               animate={{ opacity: [1, 0] }} 
                               transition={{ duration: 0.6, repeat: Infinity }} 
-                              className="inline-block w-2 h-4 bg-[#B967FF] ml-1 align-middle" 
+                              className="inline-block w-2 h-4 bg-[#B967FF] ml-1 align-middle shadow-[0_0_5px_#B967FF]" 
                             />
                           )}
                         </div>
